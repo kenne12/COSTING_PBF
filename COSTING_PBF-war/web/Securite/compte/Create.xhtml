@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition>
+
+        <p:dialog id="CompteUtilisateurCreateDlg" 
+                  widgetVar="CompteUtilisateurCreateDialog" 
+                  modal="true" resizable="false" appendTo="@(body)" 
+                  header="#{langue['compte_utilisateur.formulaire_creation']}"
+                  closeOnEscape="true">
+
+            <h:form id="CompteUtilisateurCreateForm">
+
+                <h:panelGroup id="display" rendered="true">
+
+                    <div class="form-group">
+                        <p:outputLabel value="#{langue.utilisateur}" for="utilisateur" />
+                        <h:selectOneMenu class="form-control" disabled="#{compteUtilisateurController.mode.equals('Edit')}" id="utilisateur" value="#{compteUtilisateurController.utilisateur.idUtilisateur}" required="true" requiredMessage="Valeur obligatoire">
+                            <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue=""/>
+                            <f:selectItems value="#{compteUtilisateurController.utilisateurs}" var="item" itemLabel="#{item.nom} #{item.prenom}" itemValue="#{item.idUtilisateur}"/>                     
+                        </h:selectOneMenu>
+                    </div>
+
+                    <div class="form-group">
+                        <p:outputLabel value="#{langue['compte_utilisateur.login']}" for="login" />
+                        <h:inputText class="form-control" id="login" value="#{compteUtilisateurController.compte.login}" required="true" requiredMessage="#{langue['common.valeur_requise']}" />
+                    </div>
+
+                    <div class="form-group">
+                        <p:outputLabel rendered="#{compteUtilisateurController.mode.equals('Create')}" value="#{langue['compte_utilisateur.password']}" for="password" />
+                        <h:inputSecret class="form-control" rendered="#{compteUtilisateurController.mode.equals('Create')}" id="password" value="#{compteUtilisateurController.compte.mdp}"  required="true" requiredMessage="#{langue['common.valeur_requise']}" />
+                    </div>
+
+                    <div class="form-group">
+                        <p:outputLabel rendered="#{compteUtilisateurController.mode.equals('Create')}" value="#{langue.repeter_mot_de_passe}" for="repeat" />
+                        <h:inputSecret class="form-control" rendered="#{compteUtilisateurController.mode.equals('Create')}" id="repeat" value="#{compteUtilisateurController.repeatPassword}"  required="true" requiredMessage="#{langue['common.valeur_requise']}" />
+                    </div>
+
+                    <div class="form-group">
+                        <p:outputLabel rendered="#{compteUtilisateurController.mode.equals('Edit')}" value="Etat" for="etat" />
+                        <h:selectOneMenu class="form-control" rendered="#{compteUtilisateurController.mode.equals('Edit')}" id="etat" value="#{compteUtilisateurController.utilisateur.etat}" required="true" requiredMessage="#{langue['common.valeur_requise']}">
+                            <f:selectItem itemLabel="#{langue['common.actif']}" itemValue="Actif"/>
+                            <f:selectItem itemLabel="#{langue['common.inactif']}" itemValue="Inactif"/>                    
+                        </h:selectOneMenu>
+                    </div>
+
+                    <p:separator/>
+
+                    <center>
+                        <p:commandButton  value="#{langue['common.annuler']}" 
+                                         onclick="PF('CompteUtilisateurCreateDialog').hide()"
+                                         icon="ui-icon-close"/>
+
+                        <p:commandButton icon="ui-icon-save" actionListener="#{compteUtilisateurController.save()}" value="#{langue['common.enregistrer']}" update="display,:CompteUtilisateurListerForm:dataTable,:CompteUtilisateurListerForm:growl">
+                            <p:confirm header="#{langues.ConfirmationHeader}" message="#{langues.ConfirmCreateMessage}" icon="ui-icon-alert"/>
+                        </p:commandButton>
+                    </center>
+
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+    </ui:composition>
+</html>

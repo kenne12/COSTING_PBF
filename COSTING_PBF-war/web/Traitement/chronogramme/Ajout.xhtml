@@ -1,0 +1,199 @@
+<ui:composition 
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    template="/s2b_template/template.xhtml"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:jsf="http://xmlns.jcp.org/jsf"
+    xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:define name="contenu" >
+
+        <h1 class="mt-4"></h1>
+        <ol class="breadcrumb mb-4">
+            <li class="breadcrumb-item active">#{langue['chronogramme.gestion']}</li>
+        </ol>
+
+        <h:form id="NotifZone">
+            <p:growl id="grow_msg" />
+
+            <p:messages id="growl" closable="true">
+                <p:effect type="pulsate" event="load" delay="50" />
+            </p:messages>
+        </h:form>
+
+        <div class="card">
+            <div class="card-header bg-success">#{langue['tache.list']}</div>
+            <div class="card-body">
+                <h:form id="MoyensForm">
+
+                    <div class="row">
+                        <div class="ml-md-6">
+                            <div class="form-group">
+                                <label>#{langue.structure}</label>
+                                <h:selectOneMenu id="structure" class="form-control" value="#{chronogrammeController.structure.idstructure}" required="true">
+                                    <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="0" />
+                                    <f:selectItems value="#{chronogrammeController.structures}" var="st" itemLabel="#{st.nom}" itemValue="#{st.idstructure}" />                                    
+                                    <p:ajax listener="#{chronogrammeController.filtreActivite()}" update="datalist" />
+                                </h:selectOneMenu>                            
+                            </div>
+                        </div>
+
+                        <div class="ml-md-2">
+                            <div class="form-group">
+                                <label>#{langue.periode}</label>
+                                <h:selectOneMenu id="periode" class="form-control" value="#{chronogrammeController.periode.idperiode}" required="true">
+                                    <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="0" />
+                                    <f:selectItems value="#{chronogrammeController.periodes}" var="p" itemLabel="#{p.nom}" itemValue="#{p.idperiode}" />                                    
+                                    <p:ajax listener="#{chronogrammeController.filtreActivite()}" update="datalist" />
+                                </h:selectOneMenu>                            
+                            </div>
+                        </div>           
+                    </div>
+
+                    <p:dataTable id="datalist" value="#{chronogrammeController.taches}" var="item"                             
+                                 paginator="true"
+                                 editable="true"
+                                 editMode="cell"
+                                 rows="#{chronogrammeController.taches.size()}"
+                                 rowsPerPageTemplate="10,20,30,40,50"
+                                 style="margin-top: 1%;font-size: 15px"
+                                 rowIndexVar="index"
+                                 emptyMessage="#{langue['common.tableau_vide']}">
+
+                        <p:column class="hardBreak" style="width: 26%;" >
+                            <f:facet name="header">
+                                <h:outputText value="#{langue.activite}"/>
+                            </f:facet>
+                            <h:outputText class="hardBreak" value="#{item.idactivite.code} - #{item.idactivite.nom}"/> 
+                        </p:column>
+
+                        <p:column class="hardBreak" style="width: 26%;" >
+                            <f:facet name="header">
+                                <h:outputText value="#{langue['common.nom']}"/>
+                            </f:facet>
+                            <h:outputText class="hardBreak" value="#{item.numordre} - #{item.nom}"/> 
+                        </p:column>
+
+
+                        <p:column class="hardBreak" style="width: 4%;text-align: center" >
+                            <f:facet name="header">
+                                <h:outputText value="M1" />
+                            </f:facet>
+                            <h:selectBooleanCheckbox value="#{item.m1}">
+                                <p:ajax update="datalist" />
+                            </h:selectBooleanCheckbox> 
+                        </p:column>
+
+                        <p:column class="hardBreak" style="width: 4%;text-align: center" >
+                            <f:facet name="header">
+                                <h:outputText value="M2" />
+                            </f:facet>
+                            <h:selectBooleanCheckbox value="#{item.m2}">
+                                <p:ajax update="datalist" />
+                            </h:selectBooleanCheckbox> 
+                        </p:column>
+
+                        <p:column class="hardBreak" style="width: 4%;text-align: center" >
+                            <f:facet name="header">
+                                <h:outputText value="M3" />
+                            </f:facet>
+                            <h:selectBooleanCheckbox value="#{item.m3}">
+                                <p:ajax update="datalist" />
+                            </h:selectBooleanCheckbox> 
+                        </p:column>
+
+                        <p:column class="hardBreak" style="width: 4%;text-align: center" >
+                            <f:facet name="header">
+                                <h:outputText value="M4" />
+                            </f:facet>
+                            <h:selectBooleanCheckbox value="#{item.m4}">
+                                <p:ajax update="datalist" />
+                            </h:selectBooleanCheckbox> 
+                        </p:column>
+
+                        <p:column class="hardBreak" style="width: 4%;text-align: center" >
+                            <f:facet name="header">
+                                <h:outputText value="M5" />
+                            </f:facet>
+                            <h:selectBooleanCheckbox value="#{item.m5}">
+                                <p:ajax update="datalist" />
+                            </h:selectBooleanCheckbox> 
+                        </p:column>
+
+                        <p:column class="hardBreak" style="width: 4%;text-align: center" >
+                            <f:facet name="header">
+                                <h:outputText value="M6" />
+                            </f:facet>
+                            <h:selectBooleanCheckbox value="#{item.m6}">
+                                <p:ajax update="datalist" />
+                            </h:selectBooleanCheckbox> 
+                        </p:column>
+
+                        <p:column class="hardBreak" style="width: 4%;text-align: center" >
+                            <f:facet name="header">
+                                <h:outputText value="M7" />
+                            </f:facet>
+                            <h:selectBooleanCheckbox value="#{item.m7}">
+                                <p:ajax update="datalist" />
+                            </h:selectBooleanCheckbox> 
+                        </p:column>
+
+                        <p:column class="hardBreak" style="width: 4%;text-align: center" >
+                            <f:facet name="header">
+                                <h:outputText value="M8"/>
+                            </f:facet>
+                            <h:selectBooleanCheckbox value="#{item.m8}">
+                                <p:ajax update="datalist" />
+                            </h:selectBooleanCheckbox> 
+                        </p:column>
+
+                        <p:column class="hardBreak" style="width: 4%;text-align: center" >
+                            <f:facet name="header">
+                                <h:outputText value="M9" />
+                            </f:facet>
+                            <h:selectBooleanCheckbox value="#{item.m9}">
+                                <p:ajax update="datalist" />
+                            </h:selectBooleanCheckbox> 
+                        </p:column>
+
+                        <p:column class="hardBreak" style="width: 4%;text-align: center" >
+                            <f:facet name="header">
+                                <h:outputText value="M10" />
+                            </f:facet>
+                            <h:selectBooleanCheckbox value="#{item.m10}">
+                                <p:ajax update="datalist" />
+                            </h:selectBooleanCheckbox> 
+                        </p:column>
+                        
+                        <p:column class="hardBreak" style="width: 4%;text-align: center" >
+                            <f:facet name="header">
+                                <h:outputText value="M11" />
+                            </f:facet>
+                            <h:selectBooleanCheckbox value="#{item.m11}">
+                                <p:ajax update="datalist" />
+                            </h:selectBooleanCheckbox> 
+                        </p:column>
+
+                        <p:column class="hardBreak" style="width: 4%;text-align: center" >
+                            <f:facet name="header">
+                                <h:outputText value="M12" />
+                            </f:facet>
+                            <h:selectBooleanCheckbox value="#{item.m12}">
+                                <p:ajax update="datalist" />
+                            </h:selectBooleanCheckbox> 
+                        </p:column>
+ 
+                    </p:dataTable>
+
+                    <br/>
+
+                    <p:commandButton value="#{langue['common.enregistrer']}"
+                                     actionListener="#{chronogrammeController.save()}"
+                                     update="MoyensForm,:NotifZone"/>
+                </h:form>
+            </div>
+        </div>
+
+    </ui:define>
+</ui:composition>

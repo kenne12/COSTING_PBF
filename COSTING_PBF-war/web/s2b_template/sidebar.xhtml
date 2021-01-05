@@ -1,0 +1,177 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+    <div id="layoutSidenav_nav">
+        <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+            <div class="sb-sidenav-menu">
+                <div class="nav">
+                    <div class="sb-sidenav-menu-heading">Core</div>
+                    <a class="nav-link" href="#{request.contextPath}/index.html">
+                        <div class="sb-nav-link-icon">
+                            <i class="fas fa-tachometer-alt"></i>
+                        </div>
+                        #{langue.tableau_de_bord}
+                    </a>
+
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#SecuriteMenu" aria-expanded="false" aria-controls="SecuriteMenu" >
+                        <div class="sb-nav-link-icon">
+                            <i class="fa fa-user"></i>
+                        </div>
+                        #{langue['menu.securite']}
+                        <div class="sb-sidenav-collapse-arrow">
+                            <i class="fas fa-angle-down"></i>
+                        </div>
+                    </a>
+
+                    <div class="collapse" id="SecuriteMenu" aria-labelledby="headingTwo" data-parent="#sidenavAccordion">
+                        <nav class="sb-sidenav-menu-nested nav accordion active" id="sidenavAccordionPages">
+                            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#pagesCollapseAuth" aria-expanded="false" aria-controls="pagesCollapseAuth">
+                                #{langue['menu.securite']}
+                                <div class="sb-sidenav-collapse-arrow">
+                                    <i class="fas fa-angle-down"></i>
+                                </div>
+                            </a>
+
+                            <div class="collapse" id="pagesCollapseAuth" aria-labelledby="headingOne" data-parent="#sidenavAccordionPages">
+                                <nav class="sb-sidenav-menu-nested nav active">
+                                    <a class="nav-link" href="#{request.contextPath}/Securite/utilisateur/utilisateur.html">#{langue.utilisateur}</a>
+                                    <a class="nav-link" href="#{request.contextPath}/Securite/compte/compte.html">#{langue.compte_utilisateur}</a>
+                                    <a class="nav-link" href="#{request.contextPath}/Securite/privilege/privilege.html">#{langue.privileges}</a>
+                                    <a class="nav-link" href="#{request.contextPath}/Securite/active_compte/active_compte.html">#{langue['compte_utilisateur.activation']}</a>
+                                    <a class="nav-link" href="#{request.contextPath}/Securite/desactive_compte/desactive_compte.html">#{langue['compte_utilisateur.desactivation']}</a>
+                                </nav>
+                            </div>
+                        </nav>
+                    </div>
+
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#ParametrageMenu" aria-expanded="false" aria-controls="ParametrageMenu" >
+                        <div class="sb-nav-link-icon">
+                            <i class="fa fa-cogs"></i>
+                        </div>
+                        #{langue['menu.parametrages']}
+                        <div class="sb-sidenav-collapse-arrow">
+                            <i class="fas fa-angle-down"></i>
+                        </div>
+                    </a>
+
+                    <div class="collapse" id="ParametrageMenu" aria-labelledby="headingTwo" data-parent="#sidenavAccordion">
+                        <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
+                            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#pagesCollapseAuth" aria-expanded="false" aria-controls="pagesCollapseAuth">
+                                #{langue['menu.parametrages']}
+                                <div class="sb-sidenav-collapse-arrow">
+                                    <i class="fas fa-angle-down"></i>
+                                </div>
+                            </a>
+
+                            <div class="collapse" id="pagesCollapseAuth" aria-labelledby="headingOne" data-parent="#sidenavAccordionPages">
+                                <nav class="sb-sidenav-menu-nested nav">
+                                    <a class="nav-link" href="#{request.contextPath}/Parametrage/institution/institution.html">#{langue.institution}</a>
+                                    <a class="nav-link" href="#{request.contextPath}/Parametrage/structure/structure.html">#{langue.structure}</a>
+                                    <a class="nav-link" href="#{request.contextPath}/Parametrage/programme/programme.html">#{langue.programme}</a>
+                                    <a class="nav-link" href="#{request.contextPath}/Parametrage/action/action.html">#{langue.action}</a> 
+                                    <a class="nav-link" href="#{request.contextPath}/Traitement/activite/activite.html">#{langue.activite}</a>                             
+                                    <a class="nav-link" href="#{request.contextPath}/Parametrage/paragraphe/paragraphe.html">#{langue.paragraphe}</a>
+                                    <a class="nav-link" href="#{request.contextPath}/Parametrage/costing/costing.html">#{langue.costing}</a>
+                                    <a class="nav-link" href="#{request.contextPath}/Parametrage/unite/unite.html">#{langue.unite}</a>
+                                    <a class="nav-link" href="#{request.contextPath}/Parametrage/element_cout/element_cout.html">#{langue.element_cout}</a>
+                                    <a class="nav-link" href="#{request.contextPath}/Parametrage/bailleurfond/bailleurfond.html">#{langue.bailleur_fond}</a>
+                                </nav>
+                            </div>
+
+                            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#pagesCollapseError" aria-expanded="false" aria-controls="pagesCollapseError" >Critères / Sous - critères
+                                <div class="sb-sidenav-collapse-arrow">
+                                    <i class="fas fa-angle-down"></i>
+                                </div>
+                            </a>
+
+                            <div class="collapse" id="pagesCollapseError" aria-labelledby="headingOne" data-parent="#sidenavAccordionPages">
+                                <nav class="sb-sidenav-menu-nested nav">
+                                    <a class="nav-link" href="#{request.contextPath}/Parametrage/critere/critere.html">#{langue.critere}</a>
+                                    <a class="nav-link" href="#{request.contextPath}/Parametrage/sous_critere/sous_critere.html">#{langue.sous_critere}</a>
+                                    <a class="nav-link" href="#{request.contextPath}/Parametrage/critere_str/critere_str.html">Critere / Uo</a>
+                                    <a class="nav-link" href="#{request.contextPath}/Parametrage/s_critere_str/s_critere_str.html">Sous - Critere / Uo</a>
+                                </nav>
+                            </div>
+                        </nav>
+                    </div>
+
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#TraitementMenu" aria-expanded="false" aria-controls="TraitementMenu" >
+                        <div class="sb-nav-link-icon">
+                            <i class="fas fa-book-open"></i>
+                        </div>
+                        #{langue['menu.traitements']}
+                        <div class="sb-sidenav-collapse-arrow">
+                            <i class="fas fa-angle-down"></i>
+                        </div>
+                    </a>
+
+                    <div class="collapse" id="TraitementMenu" aria-labelledby="headingTwo" data-parent="#sidenavAccordion">
+                        <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
+                            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#pagesCollapseAuth" aria-expanded="false" aria-controls="pagesCollapseAuth">
+                                #{langue['menu.traitements']}
+                                <div class="sb-sidenav-collapse-arrow">
+                                    <i class="fas fa-angle-down"></i>
+                                </div>
+                            </a>
+
+                            <div class="collapse" id="pagesCollapseAuth" aria-labelledby="headingOne" data-parent="#sidenavAccordionPages">
+                                <nav  class="sb-sidenav-menu-nested nav">                                              
+                                    <a class="nav-link" href="#{request.contextPath}/Traitement/evaluation/evaluation.html">#{langue.evaluation}</a>
+                                    <a class="nav-link" href="#{request.contextPath}/Traitement/tache/tache.html">#{langue.tache}</a>                                    
+                                    <a class="nav-link" href="#{request.contextPath}/Traitement/contrat/contrat.html">#{langue.contrat}</a>
+                                    <a class="nav-link" href="#{request.contextPath}/Traitement/costing_contrat/costing_contrat.html">#{langue.costing_detaille}</a>
+                                    <a class="nav-link" href="#{request.contextPath}/Traitement/chronogramme/Ajout.html">#{langue.chronogramme}</a>
+                                </nav>
+                            </div>
+                            
+                        </nav>
+                    </div>
+                                    
+                    
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#AnalyseMenu" aria-expanded="false" aria-controls="AnalyseMenu" >
+                        <div class="sb-nav-link-icon">
+                            <i class="fas fa-book-open"></i>
+                        </div>
+                        #{langue['menu.analyse']}
+                        <div class="sb-sidenav-collapse-arrow">
+                            <i class="fas fa-angle-down"></i>
+                        </div>
+                    </a>
+
+                    <div class="collapse" id="AnalyseMenu" aria-labelledby="headingTwo" data-parent="#sidenavAccordion">
+                        <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
+                            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#pagesCollapseAuth" aria-expanded="false" aria-controls="pagesCollapseAuth">
+                                #{langue['menu.analyse']}
+                                <div class="sb-sidenav-collapse-arrow">
+                                    <i class="fas fa-angle-down"></i>
+                                </div>
+                            </a>
+
+                            <div class="collapse" id="pagesCollapseAuth" aria-labelledby="headingOne" data-parent="#sidenavAccordionPages">
+                                <nav class="sb-sidenav-menu-nested nav">                                              
+                                    <a class="nav-link" href="#{request.contextPath}/Analyse/annexe_01/annexe_01.html">Annexes - 01</a>
+                                    <a class="nav-link" href="#{request.contextPath}/Analyse/annexe_02/annexe_02.html">Annexes - 02</a>
+                                    <a class="nav-link" href="#{request.contextPath}/Analyse/annexe_03/annexe_03.html">Annexes - 03</a>
+                                    <a class="nav-link" href="#{request.contextPath}/Analyse/costing/costing.html">Costing des activités</a>
+                                    <a class="nav-link" href="#{request.contextPath}/Analyse/chronogramme/chronogramme.html">Chronogramme des activités</a>
+                                    <a class="nav-link" href="#{request.contextPath}/Analyse/annexe_bailleur/annexe_bailleur.html">Analyse par bailleur</a>
+                                    <a class="nav-link" href="#{request.contextPath}/Analyse/annexe_c/annexe_c.html">Analyse par Composante</a>
+                                    <a class="nav-link" href="#{request.contextPath}/Analyse/annexe_sc/annexe_sc.html">Analyse par sous-composante</a>
+                                </nav>
+                            </div>
+                            
+                        </nav>
+                    </div>                    
+                </div>
+            </div>
+            <div class="sb-sidenav-footer">
+                <div class="small">Année : #{loginController.annee.nom}</div>
+                #{loginController.utilisateur.nom} #{loginController.utilisateur.prenom}
+            </div>
+        </nav>
+    </div>
+</ui:composition>
+
+
+
+

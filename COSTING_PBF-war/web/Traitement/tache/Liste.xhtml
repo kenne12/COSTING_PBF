@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:jsf="http://xmlns.jcp.org/jsf">
+
+    <h:form id="TacheListerForm">
+
+        <p:messages id="growl" closable="true">
+            <p:effect type="pulsate" event="load" delay="50" />
+        </p:messages>
+
+        
+            <div class="card">
+
+                <div style="color: white" class="card-header bg-success">#{langue['tache.list']}</div>
+
+                <div class="card-body">
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>#{langue.structure}</label>
+                                <h:selectOneMenu id="structure" class="form-control" value="#{tacheController.structure.idstructure}" required="true">
+                                    <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="0" />
+                                    <f:selectItems value="#{tacheController.structures}" var="st" itemLabel="#{st.nom}" itemValue="#{st.idstructure}" />                                    
+                                    <p:ajax listener="#{tacheController.filtreActivite()}" update="datalist" />
+                                </h:selectOneMenu>                            
+                            </div>
+                        </div>
+
+                        <div class="ml-md-2">
+                            <div class="form-group">
+                                <label>#{langue.periode}</label>
+                                <h:selectOneMenu id="periode" class="form-control" value="#{tacheController.periode.idperiode}" required="true">
+                                    <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="0" />
+                                    <f:selectItems value="#{tacheController.periodes}" var="p" itemLabel="#{p.nom}" itemValue="#{p.idperiode}" />                                    
+                                    <p:ajax listener="#{tacheController.filtreActivite()}" update="datalist" />
+                                </h:selectOneMenu>                            
+                            </div>
+                        </div> 
+                    </div>
+
+
+                    <div class="table-responsive">
+                        <table class="table table-bordered" id="dataTable" jsf:id="datalist" width="100%" cellspacing="0">
+                            <thead>
+                                <tr>
+                                    <th style="width: 22%">#{langue.activite}</th>
+                                    <th style="width: 35%">#{langue['common.nom']}</th>
+                                    <th style="width: 20%">#{langue.structure}</th>
+                                    <th style="width: 10%">#{langue['common.montant_total']}</th>                                                                                              
+                                    <th style="width: 12%">#{langue['common.actions']}</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                <ui:repeat value="#{tacheController.taches}" var="item">
+                                    <tr>
+                                        <td>#{item.idactivite.code} - #{item.idactivite.nom}</td>
+                                        <td>#{item.nom}</td>                                    
+                                        <td>#{item.idstructure.nom}</td>
+                                        <td><h:outputLabel value="#{item.totalmontantaloue}"><f:convertNumber /></h:outputLabel></td>                                                                                                                                                                                                                      
+                                        <td> 
+                                            <p:commandButton class="btn btn-danger btn-sm" icon="ui-icon-trash" 
+                                                             actionListener="#{tacheController.delete(item)}"
+                                                             update="TacheListerForm:datalist,TacheListerForm:growl">
+                                                <p:confirm header="#{langue['notification.confirm_delete_dialog_header']}"
+                                                           message="#{langue['notification.confirm_delete_message']}?"
+                                                           icon="ui-icon-alert"/>
+                                            </p:commandButton>
+
+                                            <a style="margin-left: 5px" class="btn btn-success btn-sm" jsf:actionListener="#{tacheController.prepareEdit(item)}"><span class="fa fa-edit"></span></a>
+
+                                            <a class="btn btn-info btn-sm"><span class="fa fa-eye"></span></a>                                        
+                                        </td>
+                                    </tr>
+                                </ui:repeat>
+
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+
+            </div>
+        
+    </h:form>
+
+
+    <!-- ****************************************Information************************************************************************************************************************************************************************************************************** -->
+
+    <p:dialog id="notify1" widgetVar="NotifyDialog1" height="400" width="700" resizable="true" responsive="true" modal="true" style="text-align: center; font-size: 14px; font-family: Cambria;">
+        <f:facet name="header">
+            <h:outputText style="font-family: Cambria; font-size: 14px;" value="#{tacheController.routine.titleNotify}" />
+        </f:facet>
+        <h:form id="NotifyForm1">
+            <h:graphicImage id="nt_img" url="#{tacheController.routine.iconMessage}" style="cursor:pointer" />
+
+            <hr size="3" style="background-color: cornflowerblue;"/>
+
+            <h:outputText id="nt_msg" value="#{tacheController.routine.message}"/>
+
+            <hr size="3" style="background-color: cornflowerblue; margin-top: 5%;"/>
+
+            <p:commandButton style="font-family: Cambria; font-size: 14px;" value="#{langue['common.fermer']}" onclick="PF('NotifyDialog1').hide()" type="button" immediate="true"/>
+
+            <hr size="3" style="background-color: cornflowerblue;"/>
+        </h:form>
+    </p:dialog>
+
+    <!-- ****************************************Information************************************************************************************************************************************************************************************************************** -->
+
+</ui:composition>

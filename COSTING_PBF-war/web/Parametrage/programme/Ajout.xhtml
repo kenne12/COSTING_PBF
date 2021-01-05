@@ -1,0 +1,168 @@
+<ui:composition 
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    template="/s2b_template/template.xhtml"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:jsf="http://xmlns.jcp.org/jsf"
+    xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:define name="contenu" >
+
+        <h1 class="mt-4"></h1>
+        <ol class="breadcrumb mb-4">
+            <li class="breadcrumb-item active">#{langue['programme.gestion']}</li>
+        </ol>
+
+        <h:form id="NotifZone">
+            <p:growl id="grow_msg" />
+
+            <p:messages id="growl" closable="true">
+                <p:effect type="pulsate" event="load" delay="50" />
+            </p:messages>
+        </h:form>
+
+        <h:form id="ProgrammeCreateForm">
+
+            <div class="row">
+
+                <div class="col-md-12">
+
+                    <div class="card ">
+
+                        <div style="color: white" class="card-header bg-success">#{langue['programme.formulaire_creation']}</div>
+
+                        <div class="card-body">
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label>#{langue.institution}</label>
+                                        <h:selectOneMenu class="form-control" value="#{programmeController.institution.idinstitution}">
+                                            <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="" />
+                                            <f:selectItems value="#{programmeController.institutions}" var="i" itemLabel="#{i.nom}" itemValue="#{i.idinstitution}" />                                    
+                                        </h:selectOneMenu>                                                        
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label>#{langue['common.nom']}</label>
+                                        <h:inputTextarea rows="2" class="form-control" value="#{programmeController.programme.nom}" required="true" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <div class="form-group">
+                                        <label>#{langue['common.code']}</label>
+                                        <h:inputText class="form-control" value="#{programmeController.programme.code}" required="true" />
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4" jsf:rendered="#{programmeController.mode.equals('Edit')}">
+                                    <div class="form-group">
+                                        <label>#{langue['common.etat']}</label>
+                                        <h:selectOneMenu class="form-control" value="#{programmeController.programme.etat}">
+                                            <f:selectItem itemLabel="#{langue['common.actif']}" itemValue="Actif" />
+                                            <f:selectItem itemLabel="#{langue['common.inactif']}" itemValue="Inactif" />
+                                        </h:selectOneMenu>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>#{langue['programme.axe_strategique']}</label>
+                                        <h:selectOneMenu class="form-control" value="#{programmeController.axestrategique.idaxestrategique}">
+                                            <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="" />
+                                            <f:selectItems value="#{programmeController.axestrategiques}" var="ax" itemLabel="#{ax.nom}" itemValue="#{ax.idaxestrategique}" />                                    
+                                        </h:selectOneMenu>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>#{langue.sous_secteur}</label>
+                                        <h:selectOneMenu class="form-control" value="#{programmeController.soussecteur.idsoussecteur}">
+                                            <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="" />
+                                            <f:selectItems value="#{programmeController.soussecteurs}" var="ss" itemLabel="#{ss.nom}" itemValue="#{ss.idsoussecteur}" />                                    
+                                        </h:selectOneMenu>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label>#{langue['common.indicateur']}</label>
+                                        <h:inputTextarea  class="form-control" value="#{programmeController.programme.indicateur}" required="true" rows="2" />
+                                    </div>
+                                </div>                            
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <div class="form-group">
+                                        <label>#{langue['common.baseline']}</label>
+                                        <h:inputText class="form-control" value="#{programmeController.programme.baseline}"  >
+                                            <f:convertNumber />
+                                        </h:inputText>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-2">
+                                    <div class="form-group">
+                                        <label>#{langue['common.cible']}</label>
+                                        <h:inputText class="form-control" value="#{programmeController.programme.cible}" >
+                                            <f:convertNumber />
+                                        </h:inputText>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-2">
+                                    <div class="form-group">
+                                        <label>Montant disponible</label>
+                                        <h:inputText class="form-control" value="#{programmeController.programme.montantdisponible}" >
+                                            <f:convertNumber />
+                                        </h:inputText>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label>#{langue['common.objectifs']}</label>
+                                        <h:inputTextarea class="form-control" value="#{programmeController.programme.objectifs}" rows="3"  />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label>#{langue['common.objectif_strategique']}</label>
+                                        <h:inputTextarea class="form-control" value="#{programmeController.programme.objectifstrategique}" rows="4"  />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card-footer">
+                            <p:link class="btn btn-info" outcome="/Parametrage/programme/programme">#{langue['common.retour']}</p:link>                  
+                            <button class="btn btn-success" style="margin-left: 10px" type="submit" jsf:update="ProgrammeCreateForm,:NotifZone" jsf:actionListener="#{programmeController.save()}"><span class="fa fa-save"></span>   #{langue['common.enregistrer']}</button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </h:form>
+
+    </ui:define>
+
+</ui:composition>

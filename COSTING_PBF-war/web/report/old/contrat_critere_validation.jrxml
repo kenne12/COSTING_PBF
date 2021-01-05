@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="contrat_critere_validation" language="groovy" pageWidth="595" pageHeight="842" columnWidth="549" leftMargin="10" rightMargin="36" topMargin="2" bottomMargin="20" uuid="29e8d073-19a2-4975-88ed-f34af3e96501">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="idcontrat" class="java.lang.Long">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT DISTINCT
+     (imputation."nicename") AS imputation_nicename,
+     contrat."idcontrat" AS contrat_idcontrat,
+     imputation."code" AS imputation_code,
+     imputation."criterevalidation" AS imputation_criterevalidation,
+     unite."code" AS unite_code,
+     unite."nom" AS unite_nom
+FROM
+     "public"."contrat" contrat INNER JOIN "public"."contrat_moyens" contrat_moyens ON contrat."idcontrat" = contrat_moyens."idcontrat"
+     INNER JOIN "public"."moyens" moyens ON contrat_moyens."idmoyens" = moyens."idmoyens"
+     INNER JOIN "public"."imputation" imputation ON moyens."idimputation" = imputation."idimputation"
+     INNER JOIN "public"."unite" unite ON imputation."idunite" = unite."idunite"
+WHERE
+     contrat.idcontrat = $P{idcontrat}
+ORDER BY
+     imputation.code,
+     imputation.nicename;]]>
+	</queryString>
+	<field name="imputation_nicename" class="java.lang.String"/>
+	<field name="contrat_idcontrat" class="java.lang.Long"/>
+	<field name="imputation_code" class="java.lang.String"/>
+	<field name="imputation_criterevalidation" class="java.lang.String"/>
+	<field name="unite_code" class="java.lang.String"/>
+	<field name="unite_nom" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="25" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="523" height="20" uuid="8a521f47-b17c-488b-a40e-1c03437583af"/>
+				<box leftPadding="2"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Les critères de vérification et de validation des outputs sont les suivants : ]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="32" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="246" height="32" uuid="240e4246-1e3e-4949-a34c-fe0a51e8ec60"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[	Indicateur output]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="246" y="0" width="286" height="32" uuid="f1247d8e-1446-498e-b2ce-337bd4051859"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Critères de validation]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="37" splitType="Stretch">
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="246" height="37" uuid="92fff5ae-d8b5-4b17-8018-02937658b023"/>
+				<box topPadding="3" leftPadding="3" bottomPadding="3" rightPadding="3">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{imputation_code} +" - "+$F{imputation_nicename}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToBandHeight" x="246" y="0" width="286" height="37" uuid="1f6abd7d-de18-4e3d-9d87-4afd3f115057"/>
+				<box topPadding="3" leftPadding="3" bottomPadding="3" rightPadding="3">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12" isItalic="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{imputation_criterevalidation}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

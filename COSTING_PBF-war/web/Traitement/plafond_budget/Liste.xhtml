@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:jsf="http://xmlns.jcp.org/jsf">
+
+    <h:form id="NotifZone">
+        <p:growl id="grow_msg" />
+        <p:messages id="growl" closable="true">
+            <p:effect type="pulsate" event="load" delay="50" />
+        </p:messages>
+    </h:form>
+
+    <h:form id="PlafondBudgetListerForm">
+
+        <div class="card">
+
+            <div style="color: white" class="card-header bg-success">#{langue['common.zone_recherche']}</div>
+
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-5">
+                        <div class="form-group">
+                            <label>#{langue.structure}</label>
+                            <h:selectOneMenu id="structure" class="form-control" value="#{plafondbudgetController.structure.idstructure}" required="true">
+                                <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="" />
+                                <f:selectItems value="#{plafondbudgetController.structures}" var="st" itemLabel="#{st.nom}" itemValue="#{st.idstructure}" />                                    
+                                <p:ajax listener="#{plafondbudgetController.updateData()}" update="datalist" />
+                            </h:selectOneMenu>                            
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <p:dataTable id="datalist" value="#{plafondbudgetController.plafondbudgets}" var="item"                             
+                                 paginator="true"
+                                 editable="true" 
+                                 rowKey="#{item.idplafondbudget}"
+                                 rows="15"
+                                 rowsPerPageTemplate="10,20,30,40,50"
+                                 style="width: 98%;margin-left: 1%;margin-top: 1%; font-style: oblique;font-size: 15px"
+                                 rowIndexVar="index"
+                                 emptyMessage="#{langue['common.tableau_vide']}">
+
+                        <p:column class="hardBreak" style="width: 44%;" >
+                            <f:facet name="header">
+                                <h:outputText value="#{langue.paragraphe}"/>
+                            </f:facet>
+                            <h:outputText class="hardBreak" value="#{item.idmodelecosting.idimputation.code} - #{item.idmodelecosting.idimputation.nicename}"/> 
+                        </p:column>
+
+                        <p:column style="width: 8% ; text-align:center" headerText="#{langue['common.cu']}">
+                            <p:cellEditor>
+                                <f:facet name="output">
+                                    <h:outputText value="#{item.cu}" >
+                                        <f:convertNumber />
+                                    </h:outputText>
+                                </f:facet>
+                                <f:facet name="input">
+                                    <p:inputText required="true" value="#{item.cu}">                                             
+                                        <p:ajax event="keyup" />
+                                    </p:inputText>
+                                </f:facet>
+                            </p:cellEditor>
+                        </p:column>
+
+                        <p:column style="width: 5% ; text-align:center" headerText="#{langue['common.qte']}">
+                            <p:cellEditor>
+                                <f:facet name="output">
+                                    <h:outputText value="#{item.quantite}" >
+                                        <f:convertNumber />
+                                    </h:outputText>    
+                                </f:facet>
+                                <f:facet name="input">
+                                    <p:inputText required="true" value="#{item.quantite}">
+                                        <f:convertNumber />
+                                        <p:ajax event="keyup" />
+                                    </p:inputText>
+                                </f:facet>
+                            </p:cellEditor>
+                        </p:column>
+
+                        <p:column style="width: 5%; text-align:center" headerText="Coef">
+                            <p:cellEditor>
+                                <f:facet name="output">
+                                    <h:outputText value="#{item.coefficient}" >
+                                        <f:convertNumber />
+                                    </h:outputText>    
+                                </f:facet>
+                                <f:facet name="input">
+                                    <p:inputText required="true" value="#{item.coefficient}">
+                                        <f:convertNumber />
+                                        <p:ajax event="keyup" />
+                                    </p:inputText>
+                                </f:facet>
+                            </p:cellEditor>
+                        </p:column>
+
+                        <p:column style="width: 10% ; text-align:center" >
+                            <f:facet name="header">
+                                <h:outputText value="#{langue['common.montant_an']}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.montantannuel}">
+                                <f:convertNumber />
+                            </h:outputText>  
+                        </p:column>
+
+                        <p:column style="width: 8% ; text-align:center" >
+                            <f:facet name="header">
+                                <h:outputText value="#{langue['common.montant_trim']}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.montanttrim}">
+                                <f:convertNumber />
+                            </h:outputText>  
+                        </p:column>
+
+                        <p:column style="width:3% ; text-align: center">
+                            <p:rowEditor />
+                        </p:column>
+
+                        <p:column style="width: 4%" >
+                            <f:facet name="header">
+                                <h:outputText value="Action"/>
+                            </f:facet>
+                            <p:commandButton class="btn btn-danger btn-sm" icon="ui-icon-trash" 
+                                             actionListener="#{plafondbudgetController.delete(item)}"
+                                             update="PlafondBudgetListerForm:datalist,:NotifZone">
+                                <p:confirm header="#{langue['notification.confirm_delete_dialog_header']}"
+                                           message="#{langue['notification.confirm_delete_message']}?"
+                                           icon="ui-icon-alert"/>
+                            </p:commandButton>
+                        </p:column>
+
+                        <p:columnGroup type="footer">
+                            <p:row>
+                                <p:column colspan="4" style="text-align:right" footerText="Totaux" />                                                                          
+                                <p:column style="text-align:center" footerText="#{plafondbudgetController.formatToStringMoney(plafondbudgetController.montantAnnuel)}"/>
+                                <p:column style="text-align:center" footerText="#{plafondbudgetController.formatToStringMoney( plafondbudgetController.montantTrim)}"/>
+                                <p:column colspan="2" style="text-align:center" footerText=" / " /> 
+                            </p:row>
+                        </p:columnGroup>
+
+                    </p:dataTable>
+                </div>
+                <br/>
+                <button class="btn btn-success" jsf:update=":NotifZone" jsf:actionListener="#{plafondbudgetController.save()}"><i class="fa fa-save"></i> #{langue['common.enregistrer']}</button>
+            </div>
+        </div>
+    </h:form>
+
+    <!-- ****************************************Information************************************************************************************************************************************************************************************************************** -->
+
+    <p:dialog id="notify1" widgetVar="NotifyDialog1" height="400" width="700" resizable="true" responsive="true" modal="true" style="text-align: center; font-size: 14px; font-family: Cambria;">
+        <f:facet name="header">
+            <h:outputText style="font-family: Cambria; font-size: 14px;" value="#{activiteController.routine.titleNotify}" />
+        </f:facet>
+        <h:form id="NotifyForm1">
+            <h:graphicImage id="nt_img" url="#{activiteController.routine.iconMessage}" style="cursor:pointer" />
+
+            <hr size="3" style="background-color: cornflowerblue;"/>
+
+            <h:outputText id="nt_msg" value="#{activiteController.routine.message}"/>
+
+            <hr size="3" style="background-color: cornflowerblue; margin-top: 5%;"/>
+
+            <p:commandButton style="font-family: Cambria; font-size: 14px;" value="#{langue['common.fermer']}" onclick="PF('NotifyDialog1').hide()" type="button" immediate="true"/>
+
+            <hr size="3" style="background-color: cornflowerblue;"/>
+        </h:form>
+    </p:dialog>
+
+    <!-- ****************************************Information************************************************************************************************************************************************************************************************************** -->
+
+</ui:composition>

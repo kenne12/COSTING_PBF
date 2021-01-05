@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:jsf="http://xmlns.jcp.org/jsf">
+
+    <h:form id="NotifZone">
+        <p:growl id="grow_msg" />
+
+        <p:messages id="growl" closable="true">
+            <p:effect type="pulsate" event="load" delay="50" />
+        </p:messages>
+    </h:form>
+
+    <h:form id="CompteUtilisateurListerForm">
+
+        <div class="card">
+
+            <div style="color: white" class="card-header bg-success">#{langue['compte_utilisateur.list']}</div>
+
+            <div class="card-body">
+
+                <div class="table-responsive">
+
+                    <table class="table table-bordered" id="dataTable" jsf:id="dataTable" width="100%" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th style="width: 20%">#{langue.utilisateur}</th>
+                                <th style="width: 20%">#{langue['compte_utilisateur.login']}</th>
+                                <th style="width: 15%">#{langue['compte_utilisateur.password']}</th>                                
+                                <th style="width: 15%">#{langue['common.datecreation']}</th>
+                                <th style="width: 10%">#{langue['common.etat']}</th>
+                                <th style="width: 15%">#{langue['common.actions']}</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+
+                            <ui:repeat value="#{compteUtilisateurController.compteInactifs}" var="item">
+                                <tr>
+                                    <td>#{item.idUtilisateur.nom} #{item.idUtilisateur.prenom}</td>
+                                    <td>#{item.login}</td>
+                                    <td>#{item.mdp}</td>                                    
+                                    <td> 
+                                        <h:outputLabel value="#{item.dateEnregistre}" >
+                                            <f:convertDateTime pattern="dd/MM/yyyy" />
+                                        </h:outputLabel> 
+                                    </td>
+                                    <td>#{item.etat}</td>
+
+                                    <td>                                        
+                                        <p:selectBooleanCheckbox>
+                                            <p:ajax update="CompteUtilisateurListerForm,:NotifZone" listener="#{compteUtilisateurController.changeStatus(item, 'activer')}"/>  
+                                        </p:selectBooleanCheckbox>                                        
+                                    </td>
+                                </tr>
+                            </ui:repeat>
+
+                        </tbody>
+                    </table>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </h:form>
+
+
+    <!-- ****************************************Information************************************************************************************************************************************************************************************************************** -->
+
+    <p:dialog id="notify1" widgetVar="NotifyDialog1" height="400" width="700" resizable="true" responsive="true" modal="true" style="text-align: center; font-size: 14px; font-family: Cambria;">
+        <f:facet name="header">
+            <h:outputText style="font-family: Cambria; font-size: 14px;" value="#{compteUtilisateurController.routine.titleNotify}" />
+        </f:facet>
+        <h:form id="NotifyForm1">
+            <h:graphicImage id="nt_img" url="#{compteUtilisateurController.routine.iconMessage}" style="cursor:pointer" />
+
+            <hr size="3" style="background-color: cornflowerblue;"/>
+
+            <h:outputText id="nt_msg" value="#{compteUtilisateurController.routine.message}"/>
+
+            <hr size="3" style="background-color: cornflowerblue; margin-top: 5%;"/>
+
+            <p:commandButton style="font-family: Cambria; font-size: 14px;" value="#{langue['common.fermer']}" onclick="PF('NotifyDialog1').hide()" type="button" immediate="true"/>
+
+            <hr size="3" style="background-color: cornflowerblue;"/>
+        </h:form>
+    </p:dialog>
+
+    <!-- ****************************************Information************************************************************************************************************************************************************************************************************** -->
+
+</ui:composition>

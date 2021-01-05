@@ -1,0 +1,57 @@
+<ui:composition 
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    template="/s2b_template/template.xhtml"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:define name="contenu">
+
+        <p:dialog id="SessionCreerDlg" 
+                  widgetVar="MenuCreerDialog" 
+                  modal="true" 
+                  resizable="false" 
+                  appendTo="@(body)"
+                  closable="false"
+                  visible="#{loginController.showSessionPanel}"
+                  header="#{langue.donnee_session}">
+
+            <h:form id="SessionCreerForm">
+
+                <p:messages id="growl" closable="true">
+                    <p:effect type="pulsate" event="load" delay="50" />
+                </p:messages>
+
+                <h:panelGrid columns="3" columnClasses="column">
+
+                    <p:outputLabel value="Institution"  for="institution"/>
+                    <p:selectOneMenu id="institution" value="#{loginController.institution.idinstitution}" requiredMessage="Valeur Obligatoire" >
+                        <f:selectItem itemLabel="#{langues.choisir}" itemValue="" />
+                        <f:selectItems value="#{loginController.institutions}" var="item" itemLabel="#{item.nom}" itemValue="#{item.idinstitution}" />
+                    </p:selectOneMenu>
+                    <p:message for="institution" />
+
+                    <p:outputLabel value="Année" for="annee" />
+                    <p:selectOneMenu id="annee" value="#{loginController.annee.idannee}" requiredMessage="Valeur Obligatoire" >
+                        <f:selectItem itemLabel="#{langues.choisir}" itemValue="" />
+                        <f:selectItems value="#{loginController.annees}" var="annee" itemLabel="#{annee.nom}" itemValue="#{annee.idannee}"  />
+                    </p:selectOneMenu>
+                    <p:message for="annee" />
+
+                </h:panelGrid>
+
+                <p:separator/>
+
+                <center>
+                    <p:commandButton partialSubmit="true" actionListener="#{loginController.initSession()}" value="#{langue.valider}" 
+                                     update="SessionCreerForm,:SessionCreerDlg,growl" icon="ui-icon-check"/>
+                </center>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:define>
+
+</ui:composition>

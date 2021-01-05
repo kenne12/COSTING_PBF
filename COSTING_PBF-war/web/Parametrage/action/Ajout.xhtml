@@ -1,0 +1,150 @@
+<ui:composition 
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    template="/s2b_template/template.xhtml"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:jsf="http://xmlns.jcp.org/jsf"
+    xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:define name="contenu" >
+
+        <h1 class="mt-4"></h1>
+        <ol class="breadcrumb mb-4">
+            <li class="breadcrumb-item active">#{langue['action.gestion']}</li>
+        </ol>
+
+        <h:form id="NotifZone">
+            <p:growl id="grow_msg" />
+
+            <p:messages id="growl" closable="true">
+                <p:effect type="pulsate" event="load" delay="50" />
+            </p:messages>
+        </h:form>
+
+        <h:form id="ActionCreateForm">
+
+            <div class="row">
+                <div class="col-md-12">
+
+                    <div class="card">
+
+                        <div style="color: white" class="card-header bg-success">#{langue['action.formulaire_creation']}</div>
+
+                        <div class="card-body">
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label>#{langue.programme}</label>
+                                        <h:selectOneMenu class="form-control" value="#{actionController.programme.idprogramme}" required="true">
+                                            <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="" />
+                                            <f:selectItems value="#{actionController.programmes}" var="prg" itemLabel="#{prg.code} - #{prg.nom}" itemValue="#{prg.idprogramme}" />                                    
+                                        </h:selectOneMenu>                                                        
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label>#{langue['common.nom']}</label>
+                                        <h:inputTextarea id="nom" class="form-control" value="#{actionController.action.nom}" rows="2" required="true" requiredMessage="#{langue['common.nom']} : #{langue['common.valeur_requise']}"/>
+                                        <p:message for="nom" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <div class="form-group">
+                                        <label>#{langue['common.code']}</label>
+                                        <h:inputText  class="form-control" value="#{actionController.action.code}" required="true" />
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>#{langue['programme.responsable']}</label>
+                                        <h:inputText class="form-control" value="#{actionController.action.respomeo}" />
+                                    </div> 
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <div class="form-group">
+                                        <label>#{langue['common.cible']}</label>
+                                        <h:inputText class="form-control" value="#{actionController.action.cible}"  />
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="form-group">
+                                        <label>#{langue['common.baseline']}</label>
+                                        <h:inputText class="form-control" value="#{actionController.action.baseline}" />
+                                    </div>
+                                </div>
+
+                                <div class="col-md-2">
+                                    <label>Montant disponible</label>
+                                    <h:inputText class="form-control" value="#{actionController.action.montantdisponible}" >
+                                        <f:convertNumber />
+                                    </h:inputText>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label>#{langue['common.indicateur']}</label>
+                                        <h:inputTextarea class="form-control" value="#{actionController.action.indicateur}" rows="2" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label>#{langue['common.objectifs']}</label>
+                                        <h:inputTextarea class="form-control" value="#{actionController.action.objectifs}" rows="2" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label>#{langue['common.effet']}</label>
+                                        <h:inputTextarea class="form-control" value="#{actionController.action.effet}" rows="2" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-4" jsf:rendered="#{actionController.mode.equals('Edit')}">
+                                    <div class="form-group">
+                                        <label>#{langue['common.etat']}</label>
+                                        <h:selectOneMenu class="form-control" value="#{actionController.action.etat}">
+                                            <f:selectItem itemLabel="#{langue['common.actif']}" itemValue="Actif" />
+                                            <f:selectItem itemLabel="#{langue['common.inactif']}" itemValue="Inactif" />
+                                        </h:selectOneMenu>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                        </div>
+
+                        <div class="card-footer">
+                            <p:link class="btn btn-info" outcome="/Parametrage/action/action" >#{langue['common.retour']}</p:link>               
+                            <button class="btn btn-success" style="margin-left: 10px" type="submit" jsf:update="ActionCreateForm,:NotifZone" jsf:actionListener="#{actionController.save()}"><span class="fa fa-save"></span>  #{langue['common.enregistrer']}</button>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </h:form>
+
+    </ui:define>
+
+</ui:composition>

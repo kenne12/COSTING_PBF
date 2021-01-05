@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="contrat_evaluation_qualite" pageWidth="595" pageHeight="842" columnWidth="549" leftMargin="10" rightMargin="36" topMargin="2" bottomMargin="15" uuid="bc7e10ea-6ddb-41f2-a6c6-94015b38a2a9">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="idstructure" class="java.lang.Long">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+     detailsc."point_max" AS detailsc_point_max,
+     detailsc."detail" AS detailsc_detail,
+     souscritere."code" AS souscritere_code,
+     souscritere."nom" AS souscritere_nom,
+     structure."contracte_s_name" AS structure_contracte_s_name,
+     critere."nom" AS critere_nom,
+     critere."poids" AS critere_poids,
+     structure."de_la_du_contracte" AS structure_de_la_du_contracte
+FROM
+     "public"."structure" structure INNER JOIN "public"."detailsc" detailsc ON structure."idstructure" = detailsc."idstructure"
+     INNER JOIN "public"."souscritere" souscritere ON detailsc."idsouscritere" = souscritere."idsouscritere"
+     INNER JOIN "public"."critere" critere ON souscritere."idcritere" = critere."idcritere"
+WHERE
+     structure.idstructure = $P{idstructure}
+ AND critere.idcritere = 1
+ORDER BY  souscritere.code]]>
+	</queryString>
+	<field name="detailsc_point_max" class="java.lang.Double"/>
+	<field name="detailsc_detail" class="java.lang.String"/>
+	<field name="souscritere_code" class="java.lang.String"/>
+	<field name="souscritere_nom" class="java.lang.String"/>
+	<field name="structure_contracte_s_name" class="java.lang.String"/>
+	<field name="critere_nom" class="java.lang.String"/>
+	<field name="critere_poids" class="java.lang.Double"/>
+	<field name="structure_de_la_du_contracte" class="java.lang.String"/>
+	<variable name="detailsc_point_max_1" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{detailsc_point_max}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="78" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="42" width="534" height="25" uuid="f0c163bb-a612-4237-8ff9-ce829541c6d4"/>
+				<box leftPadding="2"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Indicateurs d’évaluation de la qualité trimestrielle "+$F{structure_de_la_du_contracte} +" "+$F{structure_contracte_s_name}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="0" width="534" height="42" uuid="2e422a2a-aaff-4a0d-afb9-f889adfce406"/>
+				<textElement>
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA["En dehors des résultats quantité vérifiés et validés tels que décrit ci-dessus, l’évaluation de la qualité "+$F{structure_de_la_du_contracte}+ " "+$F{structure_contracte_s_name}+" sera effectuée avec la grille d’évaluation qualité suivante par l’équipe d’évaluation."]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="34" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="439" height="34" uuid="5abe23b8-a0d8-4f9b-89ef-5eb2f87ec955"/>
+				<box topPadding="2" leftPadding="3" bottomPadding="2" rightPadding="3">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<text><![CDATA[Critères de performance des Structures du Ministère de Santé Central pour des évaluations trimestrielles de pairs dans le MINSANTE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="439" y="0" width="47" height="34" uuid="4d64eb8b-ffa3-4591-b25b-2058647476f2"/>
+				<box topPadding="2" leftPadding="3" bottomPadding="2" rightPadding="3">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<text><![CDATA[Point]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="486" y="0" width="48" height="34" uuid="1b6fa150-ab75-444c-aa4c-b0929366869e"/>
+				<box topPadding="2" leftPadding="3" bottomPadding="2" rightPadding="3">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<text><![CDATA[Score]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="51" splitType="Stretch">
+			<textField isStretchWithOverflow="true">
+				<reportElement positionType="Float" x="0" y="0" width="439" height="20" uuid="58dfd08c-12de-4a88-81be-a926add94605"/>
+				<box topPadding="2" leftPadding="3" bottomPadding="2" rightPadding="3">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{souscritere_code}+" - "+$F{souscritere_nom}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement positionType="Float" x="0" y="20" width="439" height="31" uuid="e8c0be63-8f33-45a0-bc49-e9a55f228450"/>
+				<box topPadding="3" leftPadding="3" bottomPadding="3" rightPadding="3">
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" isItalic="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{detailsc_detail}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="###0">
+				<reportElement stretchType="RelativeToBandHeight" x="439" y="0" width="47" height="51" uuid="6d7de140-d900-4c17-9359-34e4cd8c210e"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{detailsc_point_max}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="###0">
+				<reportElement stretchType="RelativeToBandHeight" x="486" y="0" width="48" height="51" uuid="8d728799-9414-43fa-b8a2-2759c9bf1bbd"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[""]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="28" splitType="Stretch">
+			<textField isStretchWithOverflow="true" pattern="###0">
+				<reportElement x="439" y="0" width="47" height="28" uuid="d29c2206-2547-463e-a538-39d80ec7e611"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{detailsc_point_max_1}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="486" y="0" width="48" height="28" uuid="5fda22a3-8854-40cb-84da-266195271074"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textFieldExpression><![CDATA[""]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="0" y="0" width="439" height="28" uuid="814010d2-e780-440d-8b24-82ee1f7f75ca"/>
+				<box leftPadding="3">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Total"]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

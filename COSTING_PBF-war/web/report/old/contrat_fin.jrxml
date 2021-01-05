@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="contrat_fin" pageWidth="595" pageHeight="842" columnWidth="565" leftMargin="10" rightMargin="20" topMargin="15" bottomMargin="20" uuid="666a2cef-ccd1-4ced-9b43-c3734d92ce2c">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="idstructure" class="java.lang.Long">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+     structure."nom" AS structure_nom,
+     structure."contracte_s_name" AS structure_contracte_s_name,
+     structure."contracte_full_name" AS structure_contracte_full_name,
+     structure."rep_contracte" AS structure_rep_contracte,
+     structure."titre_contracte" AS structure_titre_contracte,
+     structure."idstructure" AS structure_idstructure,
+     structure."titre_rep_contractant" AS structure_titre_rep_contractant,
+     structure."rep_contractant" AS structure_rep_contractant,
+     structure."contractant" AS structure_contractant,
+     structure."de_la_du_contracte" AS structure_de_la_du_contracte,
+     structure."article_contracte_full_name" AS structure_article_contracte_full_name
+FROM
+     "public"."structure" structure
+WHERE
+     structure.idstructure = $P{idstructure}]]>
+	</queryString>
+	<field name="structure_nom" class="java.lang.String"/>
+	<field name="structure_contracte_s_name" class="java.lang.String"/>
+	<field name="structure_contracte_full_name" class="java.lang.String"/>
+	<field name="structure_rep_contracte" class="java.lang.String"/>
+	<field name="structure_titre_contracte" class="java.lang.String"/>
+	<field name="structure_idstructure" class="java.lang.Long"/>
+	<field name="structure_titre_rep_contractant" class="java.lang.String"/>
+	<field name="structure_rep_contractant" class="java.lang.String"/>
+	<field name="structure_contractant" class="java.lang.String"/>
+	<field name="structure_de_la_du_contracte" class="java.lang.String"/>
+	<field name="structure_article_contracte_full_name" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band splitType="Stretch"/>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="367" splitType="Stretch">
+			<textField isStretchWithOverflow="true">
+				<reportElement positionType="Float" x="2" y="27" width="547" height="29" uuid="e21c21e5-d6de-4d1d-818c-27a41f441a33"/>
+				<textElement>
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA["	L’évaluation du présent contrat sera faite au plus tard 15 jours après la fin chaque trimestre. Elle sera précédée par le dépôt des rapports d’exécution du contrat, au plus tard 10 jours après la fin de la période contractuelle. L’évaluation proprement dite sera conduite par une équipe mise en place par le Ministre de la santé publique"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement positionType="Float" x="2" y="0" width="395" height="24" uuid="e1bb8d97-3610-496a-ab80-c48382b3f2fd"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Article 6 : Modalités d’évaluation]]></text>
+			</staticText>
+			<textField>
+				<reportElement positionType="Float" x="2" y="344" width="232" height="20" uuid="91a21627-f912-419b-80bf-40a4de219de2"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{structure_contracte_full_name}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement positionType="Float" x="185" y="315" width="100" height="20" uuid="6b294333-cc7c-483c-b811-9659e1272ada"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[Fait à Yaoundé, le ]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true">
+				<reportElement positionType="Float" x="2" y="62" width="547" height="20" uuid="ebf3906e-fefb-404f-b141-1bdc7e9566e6"/>
+				<textElement>
+					<font fontName="Times New Roman" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Article 7 : Utilisation des fonds mise à la disposition "+$F{structure_de_la_du_contracte}+" "+$F{structure_contracte_s_name}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement positionType="Float" x="285" y="332" width="100" height="1" uuid="2d2ea351-98e6-414f-86a1-7e96c6c28cb7"/>
+			</line>
+			<textField isStretchWithOverflow="true">
+				<reportElement positionType="Float" x="2" y="87" width="547" height="25" uuid="ef7c083e-5153-47cb-ac58-0be2c2911bda"/>
+				<textElement textAlignment="Justified">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Les fonds mise à la disposition "+$F{structure_de_la_du_contracte}+" "+$F{structure_contracte_s_name}+" dans le cadre du présent contrat seront utilisés pour la réalisation des activités inscrites à l’Article 2, le paiement des primes de performances à tout le personnel selon l’approche outil indice et pour l'amélioration des conditions de travail.\nLes fonds utilisés par "+$F{structure_article_contracte_full_name}+" "+$F{structure_contracte_s_name}+" seront audités par la CTN en collaboration avec l’Inspection Générale des Services  Administratifs."]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="269" y="344" width="267" height="20" uuid="06ebfcc7-e269-4ed0-8206-96027b6d8697"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{structure_titre_rep_contractant}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement positionType="Float" x="2" y="117" width="412" height="20" uuid="72a681d2-6c5e-4abe-b5bc-2313a498d87e"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Article 8: Fraudes"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement positionType="Float" x="2" y="142" width="547" height="35" uuid="036f26b1-9381-45df-b162-9723fd972af4"/>
+				<textElement>
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA["	En cas de fraude affectant certains indicateurs, la partie affectée par la fraude sera annulée. Si la fraude affecte toute la facture ou est de nature à discréditer l’effectivité et la qualité du travail, toute la facture sera annulée."]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement positionType="Float" x="2" y="207" width="547" height="20" uuid="e7db2849-d509-43dc-a8c5-558e218cec83"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Article 9 : Rupture du Contrat"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement positionType="Float" x="2" y="177" width="547" height="25" uuid="484701f1-6aba-465d-bf1c-3d2550803cbc"/>
+				<textElement>
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA["	Les exemples de fraudes qui pourront entrainer des annulations sont: (i) La déclaration d'une activité fictive; (ii) Activités menées par une personne non habilitée et signée par une autre personne; (iii) Insertion dans la liste de présence des noms des personnes qui n'étaient pas présentes à l'évaluation, à la réunion ou pendant la conduite de l’activité; (iv) Remplissage ou signature des documents  de travail en dehors de la structure évaluée  /inspectée ou du cadre de travail; (v) Falsification des notes, des listes de présence; etc."]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement positionType="Float" x="2" y="231" width="547" height="28" uuid="cffd965d-8d48-4038-9034-1922dbbcac39"/>
+				<textElement>
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA["	En cas de déviation ou de non-respect de l'une ou l'autre des dispositions du présent contrat, chacune des deux parties contractantes peut, après concertation et dialogue, demander sa résiliation moyennant notification écrite à l'autre partie. Le contrat sera alors liquidé au prorata des prestations exécutées au moment de sa résiliation."]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement positionType="Float" x="2" y="262" width="547" height="23" uuid="fe717220-9b67-4925-aa05-2f3939680ea9"/>
+				<textElement>
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA["	Les parties s'engagent à résoudre à l'amiable ou par conciliation tout différend susceptible de survenir à l'occasion du présent contrat."]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement positionType="Float" x="2" y="290" width="547" height="20" uuid="7e869f53-faf2-408d-8d39-f21390bba9bf"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA["	Le siège légal du présent contrat est fixé à Yaoundé-Cameroun."]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

@@ -1,0 +1,23 @@
+<ui:composition 
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    template="/s2b_template/template.xhtml"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:p="http://primefaces.org/ui">
+
+    <ui:define name="contenu" >
+
+        <h1 class="mt-4"></h1>
+        <ol class="breadcrumb mb-4">
+            <li class="breadcrumb-item active">#{langue['paragraphe.gestion']}</li>
+        </ol>
+
+        <ol class="breadcrumb mb-4">
+            <ui:include src="Action.xhtml"/>
+        </ol>
+
+        <ui:include src="Liste.xhtml" />
+
+    </ui:define>
+
+</ui:composition>

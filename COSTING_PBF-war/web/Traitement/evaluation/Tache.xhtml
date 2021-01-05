@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition>
+        <p:dialog id="TacheCreateDlg" 
+                  widgetVar="TacheCreateDialog" 
+                  modal="true" resizable="false" appendTo="@(body)" 
+                  header="#{langue['tache.formulaire_creation']}"
+                  closeOnEscape="true"
+                  width="80%"
+                  height="640">
+
+            <h:form id="TacheCreateForm">
+                
+                <div class="col-md-12">
+
+                    <h:panelGroup id="display">
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>#{langue.programme}</label>
+                                    <h:selectOneMenu disabled="#{evaluationController.mode.equals('Edit')}" id="programme" class="form-control" value="#{evaluationController.programme.idprogramme}" required="true">
+                                        <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="" />
+                                        <f:selectItems value="#{evaluationController.programmes}" var="prg" itemLabel="#{prg.code} - #{prg.nom}" itemValue="#{prg.idprogramme}" />                                    
+                                        <p:ajax listener="#{evaluationController.filtreActionByProgram()}" update="idaction" />
+                                    </h:selectOneMenu>                                                        
+                                </div>                                                       
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>#{langue.action}</label>
+                                    <h:selectOneMenu disabled="#{evaluationController.mode.equals('Edit')}" id="idaction" class="form-control" value="#{evaluationController.action.idaction}" required="true">
+                                        <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="" />
+                                        <f:selectItems value="#{evaluationController.actions}" var="act" itemLabel="#{act.code} - #{act.nom}" itemValue="#{act.idaction}" />                                    
+                                        <p:ajax listener="#{evaluationController.filtreActiviteByAction()}" update="idactivite" />
+                                    </h:selectOneMenu>                                                        
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>#{langue.activite}</label>
+                                    <h:selectOneMenu disabled="#{evaluationController.mode.equals('Edit')}" id="idactivite" class="form-control" value="#{evaluationController.activite.idactivite}" required="true">
+                                        <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="" />
+                                        <f:selectItems value="#{evaluationController.activites}" var="obj" itemLabel="#{obj.code} - #{obj.nom}" itemValue="#{obj.idactivite}" />                                    
+                                        <p:ajax />
+                                    </h:selectOneMenu>                                                        
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label>#{langue.bailleur_fond}</label>
+                                    <h:selectOneMenu id="type_activite" class="form-control" value="#{evaluationController.bailleurfond.idbailleurfond}" required="true">
+                                        <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="" />
+                                        <f:selectItems value="#{evaluationController.bailleurfonds}" var="b" itemLabel="#{b.nom}" itemValue="#{b.idbailleurfond}" />                                    
+                                        <p:ajax />
+                                    </h:selectOneMenu>                                                        
+                                </div>
+                            </div>
+
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label>#{langue.risque}</label>
+                                    <h:selectOneMenu id="rang" class="form-control" value="#{evaluationController.risque.idrisque}" required="true">
+                                        <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="" />
+                                        <f:selectItems value="#{evaluationController.risques}" var="r" itemLabel="#{r.nom}" itemValue="#{r.idrisque}" />                                    
+                                        <p:ajax />
+                                    </h:selectOneMenu>                                                        
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>#{langue['common.nom']}</label>
+                                    <h:inputTextarea id="nom" class="form-control" value="#{evaluationController.tache.nom}" rows="4" required="true" requiredMessage="#{langue['common.nom']} : #{langue['common.valeur_requise']}">
+                                        <p:ajax />
+                                    </h:inputTextarea>
+                                    <p:message for="nom" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>#{langue['common.resultat_attentu']}</label>
+                                    <h:inputTextarea id="resultat_attentu" class="form-control" value="#{evaluationController.tache.resultatattendu}" rows="2" >
+                                        <p:ajax />
+                                    </h:inputTextarea>
+                                    <p:message for="resultat_attentu" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <p:separator/>
+
+                        <p:commandButton value="#{langue['common.ajouter']}"
+                                         icon="ui-icon-plus"
+                                         actionListener="#{evaluationController.addTache()}"
+                                         update="display,datalist"/>
+
+                        <p:dataTable id="datalist" value="#{evaluationController.taches}" var="item"                             
+                                     paginator="true"
+                                     editable="true"
+                                     editMode="cell"
+                                     rows="15"
+                                     rowsPerPageTemplate="10,20,30,40,50"
+                                     style="margin-top: 1%;font-size: 15px"
+                                     rowIndexVar="index"
+                                     emptyMessage="#{langue['common.tableau_vide']}">
+
+                            <p:column class="hardBreak" style="width: 22%;text-align: left" >
+                                <f:facet name="header">
+                                    <h:outputText value="#{langue.sous_critere}"/>
+                                </f:facet>
+                                <h:outputText class="hardBreak" value="#{item.idevaluationstructure.iddetailsc.idsouscritere.nom}"/> 
+                            </p:column>
+
+                            <p:column style="width: 35%; text-align:left" headerText="#{langue['common.libelle']}">
+                                <p:cellEditor>
+                                    <f:facet name="output">
+                                        <h:outputText class="hardBreak" value="#{item.nom}" />
+                                    </f:facet>
+                                    <f:facet name="input">
+                                        <p:inputTextarea rows="3" style="width: 100%" required="true" value="#{item.nom}">                                             
+                                            <p:ajax event="keyup" />
+                                        </p:inputTextarea>
+                                    </f:facet>
+                                </p:cellEditor>
+                            </p:column>
+
+                            <p:column style="width: 25%; text-align:left" headerText="#{langue['common.resultat_attentu']}">
+                                <p:cellEditor>
+                                    <f:facet name="output">
+                                        <h:outputText class="hardBreak" value="#{item.resultatattendu}" />
+                                    </f:facet>
+                                    <f:facet name="input">
+                                        <p:inputTextarea rows="3" style="width: 100%" required="true" value="#{item.resultatattendu}">                                             
+                                            <p:ajax event="keyup" />
+                                        </p:inputTextarea>
+                                    </f:facet>
+                                </p:cellEditor>
+                            </p:column>
+
+                            <p:column style="width: 13%; text-align:left" headerText="#{langue.bailleur_fond}">
+                                <p:cellEditor>
+                                    <f:facet name="output">
+                                        <h:outputText class="hardBreak" value="#{item.idbailleurfond.nom}" />
+                                    </f:facet>
+                                    <f:facet name="input">
+                                        <p:selectOneMenu value="#{item.idbailleurfond}" converter="bailleurfondConverter">
+                                            <f:selectItems value="#{evaluationController.bailleurfonds}" var="bf" itemLabel="#{bf.nom}" itemValue="#{bf}" />
+                                        </p:selectOneMenu>                  
+                                    </f:facet>
+                                </p:cellEditor>
+                            </p:column>
+
+                            <p:column style="width: 5%" >
+                                <f:facet name="header">
+                                    <h:outputText value="Action"/>
+                                </f:facet>
+                                <p:commandButton icon="ui-icon-trash">
+                                    <p:ajax update="datalist" event="click" listener="#{evaluationController.removeCritere(item)}" />
+                                </p:commandButton> 
+                            </p:column>
+
+                        </p:dataTable>
+
+                        <p:separator/>
+
+                        <center>
+                            <p:commandButton value="#{langue['common.fermer']}"
+                                             icon="ui-icon-close"
+                                             update=":EvaluationListerForm:datalist"
+                                             onclick="PF('TacheCreateDialog').hide()"/>
+                        </center>
+
+                    </h:panelGroup>
+                </div>
+            </h:form>
+        </p:dialog>
+    </ui:composition>
+</html>

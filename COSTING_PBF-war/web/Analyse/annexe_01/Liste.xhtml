@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:jsf="http://xmlns.jcp.org/jsf">
+
+    <h:form id="NotifZone">
+        <p:growl id="grow_msg" />
+
+        <p:messages id="growl" closable="true">
+            <p:effect type="pulsate" event="load" delay="50" />
+        </p:messages>
+    </h:form>
+
+    <h:form id="ActionListerForm">
+
+        <div class="card">
+
+            <div style="color: white" class="card-header bg-success">#{langue['contrat.list']}</div>
+
+            <div class="card-body">
+
+                <div class="row ml-md-2">
+                    <div class="form-group">
+                        <label>#{langue.structure}</label>
+                        <h:selectOneMenu id="structure" class="form-control" value="#{contratController.structure.idstructure}" required="true">
+                            <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="0" />
+                            <f:selectItems value="#{contratController.structures}" var="st" itemLabel="#{st.nom}" itemValue="#{st.idstructure}" />                                    
+                            <p:ajax listener="#{contratController.filtreContrat()}" update="datalist,ActionListerForm" />
+                        </h:selectOneMenu>                            
+                    </div>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="table table-bordered" id="dataTable" jsf:id="datalist" width="100%" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th style="width: 20%">#{langue.structure}</th>
+                                <th style="width: 30%">#{langue['common.libelle']}</th>
+                                <th style="width: 15%">#{langue.periode}</th>
+                                <th style="width: 10%">#{langue['common.montant']}</th>
+                                <th style="width: 25%">#{langue['common.actions']}</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <ui:repeat value="#{contratController.contrats}" var="item">
+                                <tr>
+                                    <td>#{item.idstructure.nom}</td>
+                                    <td>#{item.libelle}</td>
+                                    <td>#{item.idperiode.nom}</td>
+                                    <td><h:outputLabel value="#{item.montant}"> <f:convertNumber /> </h:outputLabel>  </td>
+                                    <td>                                         
+                                        <p:commandButton value="C P" style="margin-left: 3px" ajax="false" actionListener="#{contratController.printContrat(item , 'pdf')}" />
+                                        <p:commandButton value="A P" style="margin-left: 3px" ajax="false" actionListener="#{contratController.printAnnexe(item.idcontrat , 'pdf')}" />
+                                        
+                                        <p:commandButton value="C W" style="margin-left: 3px" ajax="false" actionListener="#{contratController.printContrat(item , 'docx')}" />
+                                        <p:commandButton value="A W" style="margin-left: 3px" ajax="false" actionListener="#{contratController.printAnnexe(item.idcontrat , 'docx')}" />
+                                    </td>
+                                </tr>
+
+                            </ui:repeat>
+                        </tbody>
+
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </h:form>
+
+
+    <!-- ****************************************Information************************************************************************************************************************************************************************************************************** -->
+
+    <p:dialog id="notify1" widgetVar="NotifyDialog1" height="400" width="700" resizable="true" responsive="true" modal="true" style="text-align: center; font-size: 14px; font-family: Cambria;">
+        <f:facet name="header">
+            <h:outputText style="font-family: Cambria; font-size: 14px;" value="#{activiteController.routine.titleNotify}" />
+        </f:facet>
+        <h:form id="NotifyForm1">
+            <h:graphicImage id="nt_img" url="#{activiteController.routine.iconMessage}" style="cursor:pointer" />
+
+            <hr size="3" style="background-color: cornflowerblue;"/>
+
+            <h:outputText id="nt_msg" value="#{activiteController.routine.message}"/>
+
+            <hr size="3" style="background-color: cornflowerblue; margin-top: 5%;"/>
+
+            <p:commandButton style="font-family: Cambria; font-size: 14px;" value="#{langue['common.fermer']}" onclick="PF('NotifyDialog1').hide()" type="button" immediate="true"/>
+
+            <hr size="3" style="background-color: cornflowerblue;"/>
+        </h:form>
+    </p:dialog>
+
+    <!-- ****************************************Information************************************************************************************************************************************************************************************************************** -->
+
+
+</ui:composition>

@@ -1,0 +1,987 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="annexe_02" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="837" leftMargin="5" rightMargin="0" topMargin="10" bottomMargin="20" uuid="a1ab3a54-a221-4d37-a160-9f3592b487ba">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="idBudget" class="java.lang.Integer"/>
+	<parameter name="idInstitution" class="java.lang.Long"/>
+	<parameter name="idPeriode" class="java.lang.Integer"/>
+	<parameter name="total_bailleur" class="java.lang.Double"/>
+	<parameter name="total_sc" class="java.lang.Double"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["D:\\report costing\\trimestre\\"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+     contrat_moyens."quantite" AS contrat_moyens_quantite,
+     contrat_moyens."cu" AS contrat_moyens_cu,
+     contrat_moyens."ct" AS contrat_moyens_ct,
+     contrat."executant" AS contrat_executant,
+     imputation."nicename" AS imputation_nicename,
+     imputation."code" AS imputation_code,
+     tache."resultatattendu" AS tache_resultatattendu,
+     tache."nom" AS tache_nom,
+     contrat."idcontrat" AS contrat_idcontrat,
+     unite."nom" AS unite_nom,
+     moyens."observation" AS moyens_observation,
+     contrat_moyens."observation" AS contrat_moyens_observation,
+     activite."nom" AS activite_nom,
+     action."code" AS action_code,
+     action."nom" AS action_nom,
+     activite."idactivite" AS activite_idactivite,
+     programme."idprogramme" AS programme_idprogramme,
+     programme."nom" AS programme_nom,
+     programme."code" AS programme_code,
+     action."idaction" AS action_idaction,
+     tache."idtache" AS tache_idtache,
+     tache."m1" AS tache_m1,
+     tache."m2" AS tache_m2,
+     tache."m3" AS tache_m3,
+     tache."m4" AS tache_m4,
+     tache."m5" AS tache_m5,
+     tache."m6" AS tache_m6,
+     tache."m7" AS tache_m7,
+     tache."m8" AS tache_m8,
+     tache."m9" AS tache_m9,
+     tache."m10" AS tache_m10,
+     tache."m11" AS tache_m11,
+     tache."m12" AS tache_m12,
+     activite."code" AS activite_code,
+     structure."nom" AS structure_nom,
+     structure."idinstitution" AS structure_idinstitution,
+     programme."idinstitution" AS programme_idinstitution,
+     contrat."idbudget" AS contrat_idbudget,
+     periode."idperiode" AS periode_idperiode,
+     periode."nom" AS periode_nom,
+     structure."contracte_s_name" AS structure_contracte_s_name,
+     structure."etat" AS structure_etat,
+     bailleurfond."nom" AS bailleurfond_nom,
+     bailleurfond."code" AS bailleurfond_code,
+     contrat_moyens."observation_auto" AS contrat_moyens_observation_auto,
+     contrat_tache."etat" AS contrat_tache_etat
+FROM
+     "public"."moyens" moyens INNER JOIN "public"."contrat_moyens" contrat_moyens ON moyens."idmoyens" = contrat_moyens."idmoyens"
+     INNER JOIN "public"."contrat" contrat ON contrat_moyens."idcontrat" = contrat."idcontrat"
+     INNER JOIN "public"."structure" structure ON contrat."idstructure" = structure."idstructure"
+     INNER JOIN "public"."periode" periode ON contrat."idperiode" = periode."idperiode"
+     INNER JOIN "public"."contrat_tache" contrat_tache ON contrat."idcontrat" = contrat_tache."idcontrat"
+     INNER JOIN "public"."tache" tache ON contrat_tache."idtache" = tache."idtache"
+     AND structure."idstructure" = tache."idstructure"
+     AND moyens."idtache" = tache."idtache"
+     INNER JOIN "public"."activite" activite ON tache."idactivite" = activite."idactivite"
+     INNER JOIN "public"."bailleurfond" bailleurfond ON tache."idbailleurfond" = bailleurfond."idbailleurfond"
+     INNER JOIN "public"."action" action ON activite."idaction" = action."idaction"
+     INNER JOIN "public"."programme" programme ON action."idprogramme" = programme."idprogramme"
+     INNER JOIN "public"."imputation" imputation ON moyens."idimputation" = imputation."idimputation"
+     INNER JOIN "public"."unite" unite ON imputation."idunite" = unite."idunite"
+WHERE
+     contrat.idperiode = $P{idPeriode}
+ AND structure.idinstitution = $P{idInstitution}
+ AND contrat.idbudget = $P{idBudget}
+ AND structure.etat = 'Actif'
+ AND contrat_tache.etat = true
+ AND contrat_moyens.ct > 0
+ORDER BY
+     programme.code ASC,
+     action.code ASC,
+     activite.code ASC,
+     tache.idtache ASC,
+     imputation.code ASC]]>
+	</queryString>
+	<field name="contrat_moyens_quantite" class="java.lang.Double"/>
+	<field name="contrat_moyens_cu" class="java.lang.Double"/>
+	<field name="contrat_moyens_ct" class="java.lang.Double"/>
+	<field name="contrat_executant" class="java.lang.String"/>
+	<field name="imputation_nicename" class="java.lang.String"/>
+	<field name="imputation_code" class="java.lang.String"/>
+	<field name="tache_resultatattendu" class="java.lang.String"/>
+	<field name="tache_nom" class="java.lang.String"/>
+	<field name="contrat_idcontrat" class="java.lang.Long"/>
+	<field name="unite_nom" class="java.lang.String"/>
+	<field name="moyens_observation" class="java.lang.String"/>
+	<field name="contrat_moyens_observation" class="java.lang.String"/>
+	<field name="activite_nom" class="java.lang.String"/>
+	<field name="action_code" class="java.lang.String"/>
+	<field name="action_nom" class="java.lang.String"/>
+	<field name="activite_idactivite" class="java.lang.Long"/>
+	<field name="programme_idprogramme" class="java.lang.Long"/>
+	<field name="programme_nom" class="java.lang.String"/>
+	<field name="programme_code" class="java.lang.String"/>
+	<field name="action_idaction" class="java.lang.Long"/>
+	<field name="tache_idtache" class="java.lang.Long"/>
+	<field name="tache_m1" class="java.lang.Boolean"/>
+	<field name="tache_m2" class="java.lang.Boolean"/>
+	<field name="tache_m3" class="java.lang.Boolean"/>
+	<field name="tache_m4" class="java.lang.Boolean"/>
+	<field name="tache_m5" class="java.lang.Boolean"/>
+	<field name="tache_m6" class="java.lang.Boolean"/>
+	<field name="tache_m7" class="java.lang.Boolean"/>
+	<field name="tache_m8" class="java.lang.Boolean"/>
+	<field name="tache_m9" class="java.lang.Boolean"/>
+	<field name="tache_m10" class="java.lang.Boolean"/>
+	<field name="tache_m11" class="java.lang.Boolean"/>
+	<field name="tache_m12" class="java.lang.Boolean"/>
+	<field name="activite_code" class="java.lang.String"/>
+	<field name="structure_nom" class="java.lang.String"/>
+	<field name="structure_idinstitution" class="java.lang.Long"/>
+	<field name="programme_idinstitution" class="java.lang.Long"/>
+	<field name="contrat_idbudget" class="java.lang.Integer"/>
+	<field name="periode_idperiode" class="java.lang.Integer"/>
+	<field name="periode_nom" class="java.lang.String"/>
+	<field name="structure_contracte_s_name" class="java.lang.String"/>
+	<field name="structure_etat" class="java.lang.String"/>
+	<field name="bailleurfond_nom" class="java.lang.String"/>
+	<field name="bailleurfond_code" class="java.lang.String"/>
+	<field name="contrat_moyens_observation_auto" class="java.lang.String"/>
+	<field name="contrat_tache_etat" class="java.lang.Boolean"/>
+	<variable name="contrat_moyens_ct_1" class="java.lang.Double" resetType="Group" resetGroup="tache_group" calculation="Sum">
+		<variableExpression><![CDATA[$F{contrat_moyens_ct}]]></variableExpression>
+	</variable>
+	<variable name="contrat_moyens_ct_2" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{contrat_moyens_ct}]]></variableExpression>
+	</variable>
+	<variable name="contrat_moyens_ct_3" class="java.lang.Double" resetType="Group" resetGroup="tache_group" calculation="Sum">
+		<variableExpression><![CDATA[$F{contrat_moyens_ct}]]></variableExpression>
+	</variable>
+	<variable name="contrat_moyens_ct_4" class="java.lang.Double" resetType="Group" resetGroup="action_group" calculation="Sum">
+		<variableExpression><![CDATA[$F{contrat_moyens_ct}]]></variableExpression>
+	</variable>
+	<variable name="contrat_moyens_ct_5" class="java.lang.Double" resetType="Group" resetGroup="programme_group" calculation="Sum">
+		<variableExpression><![CDATA[$F{contrat_moyens_ct}]]></variableExpression>
+	</variable>
+	<variable name="contrat_moyens_ct_6" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{contrat_moyens_ct}]]></variableExpression>
+	</variable>
+	<group name="programme_group">
+		<groupExpression><![CDATA[$F{programme_idprogramme}]]></groupExpression>
+		<groupHeader>
+			<band height="28">
+				<textField isStretchWithOverflow="true">
+					<reportElement stretchType="RelativeToBandHeight" mode="Transparent" x="17" y="0" width="802" height="28" backcolor="#CCCCCC" uuid="7674a77b-d2db-4605-ae22-e282e2feea7b"/>
+					<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Times New Roman" size="11" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{programme_code}+" - "+ $F{programme_nom}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="23">
+				<textField isStretchWithOverflow="true">
+					<reportElement stretchType="RelativeToBandHeight" x="17" y="0" width="430" height="23" uuid="da5e3534-8ed3-4e8d-9d16-9f066e93ee46"/>
+					<box topPadding="2" leftPadding="3" bottomPadding="2" rightPadding="3">
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Times New Roman" size="11" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Total : "+ $F{programme_code}+" - "+$F{programme_nom}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" pattern="#,##0">
+					<reportElement stretchType="RelativeToBandHeight" x="447" y="0" width="90" height="23" uuid="15843475-b73e-4675-85e3-1fcbe5df6839"/>
+					<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="3">
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Times New Roman" size="10" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{contrat_moyens_ct_5}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement stretchType="RelativeToBandHeight" mode="Transparent" x="537" y="0" width="282" height="23" backcolor="#33CCFF" uuid="a15e0141-b1f2-4446-9623-91820478adff"/>
+					<box>
+						<topPen lineWidth="0.0"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textFieldExpression><![CDATA[""]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupFooter>
+	</group>
+	<group name="action_group">
+		<groupExpression><![CDATA[$F{action_idaction}]]></groupExpression>
+		<groupHeader>
+			<band height="28">
+				<textField isStretchWithOverflow="true">
+					<reportElement stretchType="RelativeToBandHeight" mode="Transparent" x="17" y="0" width="802" height="28" backcolor="#CCFFFF" uuid="2daa2ee4-2b72-41b0-b832-9077ea7cb417"/>
+					<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Times New Roman" size="11" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{action_code}+" - "+$F{action_nom}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="23">
+				<textField isStretchWithOverflow="true">
+					<reportElement stretchType="RelativeToBandHeight" x="17" y="0" width="430" height="23" uuid="1a94b10b-f04f-45eb-b4e4-1f5d93a3d186"/>
+					<box topPadding="2" leftPadding="3" bottomPadding="2" rightPadding="3">
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Times New Roman" size="11" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Total : "+$F{action_code}+" - "+$F{action_nom}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" pattern="#,##0">
+					<reportElement stretchType="RelativeToBandHeight" x="447" y="0" width="90" height="23" uuid="70440168-7902-47eb-a5f9-2dfb7174b63f"/>
+					<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="3">
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Times New Roman" size="10" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{contrat_moyens_ct_4}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement stretchType="RelativeToBandHeight" x="537" y="0" width="282" height="23" uuid="a4bbd994-1918-4883-8a98-04b7c3f7e2ab"/>
+					<box>
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textFieldExpression><![CDATA[""]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupFooter>
+	</group>
+	<group name="activite_group">
+		<groupExpression><![CDATA[$F{activite_idactivite}]]></groupExpression>
+		<groupHeader>
+			<band height="23">
+				<textField isStretchWithOverflow="true">
+					<reportElement stretchType="RelativeToBandHeight" x="17" y="0" width="802" height="23" uuid="06cffaba-29ae-4834-a874-835f39e47a66"/>
+					<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Times New Roman" size="11" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Stratégie : "+$F{activite_code}+" - "+$F{activite_nom}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band/>
+		</groupFooter>
+	</group>
+	<group name="tache_group">
+		<groupExpression><![CDATA[$F{tache_idtache}]]></groupExpression>
+		<groupHeader>
+			<band height="42">
+				<textField isStretchWithOverflow="true">
+					<reportElement stretchType="RelativeToBandHeight" x="17" y="0" width="232" height="42" uuid="7f302a14-fefa-4462-b402-f8ba318d2c95"/>
+					<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.0"/>
+					</box>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Times New Roman" size="10"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{tache_nom}+" [ "+$F{structure_contracte_s_name}+" ] "]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement stretchType="RelativeToBandHeight" x="627" y="0" width="16" height="42" uuid="3f872b47-997c-4cea-875c-f96eef95ad03"/>
+					<box>
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Times New Roman" size="12" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{tache_m1}.equals(true) ? 'X' : '']]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement stretchType="RelativeToBandHeight" x="643" y="0" width="16" height="42" uuid="091db20c-07b6-4581-88d8-522220f7fb72"/>
+					<box>
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Times New Roman" size="12" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{tache_m2}.equals(true) ? 'X' : '']]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement stretchType="RelativeToBandHeight" x="659" y="0" width="16" height="42" uuid="4571d7c3-6a37-4e83-830c-2edc0b737726"/>
+					<box>
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Times New Roman" size="12" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{tache_m3}.equals(true) ? 'X' : '']]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement stretchType="RelativeToBandHeight" x="675" y="0" width="16" height="42" uuid="81426b36-a8bf-4b04-b3d5-aae34c2def8d"/>
+					<box>
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Times New Roman" size="12" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{tache_m4}.equals(true) ? 'X' : '']]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement stretchType="RelativeToBandHeight" x="691" y="0" width="16" height="42" uuid="a9d4e67e-7716-4f90-b3cd-754212c7678b"/>
+					<box>
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Times New Roman" size="12" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{tache_m5}.equals(true) ? 'X' : '']]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement stretchType="RelativeToBandHeight" x="707" y="0" width="16" height="42" uuid="1b898535-f683-484e-a33d-9c871260e8db"/>
+					<box>
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Times New Roman" size="12" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{tache_m6}.equals(true) ? 'X' : '']]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement stretchType="RelativeToBandHeight" x="723" y="0" width="16" height="42" uuid="bc17fa8a-fa43-4ae7-9a60-8c46bb78821e"/>
+					<box>
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Times New Roman" size="12" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{tache_m7}.equals(true) ? 'X' : '']]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement stretchType="RelativeToBandHeight" x="739" y="0" width="16" height="42" uuid="662dc30a-d376-4fc7-b87f-99b8a836bfc8"/>
+					<box>
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Times New Roman" size="12" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{tache_m8}.equals(true) ? 'X' : '']]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement stretchType="RelativeToBandHeight" x="755" y="0" width="16" height="42" uuid="94e54ffa-732f-4d90-8e4c-fd2cb5ca3d47"/>
+					<box>
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Times New Roman" size="12" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{tache_m9}.equals(true) ? 'X' : '']]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement stretchType="RelativeToBandHeight" x="771" y="0" width="16" height="42" uuid="5b1be6c4-7da0-4ab7-9e9f-bfc8b0d97cf6"/>
+					<box>
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Times New Roman" size="12" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{tache_m10}.equals(true) ? 'X' : '']]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement stretchType="RelativeToBandHeight" x="787" y="0" width="16" height="42" uuid="0e6071ba-8e01-449c-b40d-a29860ed2d8f"/>
+					<box>
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Times New Roman" size="12" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{tache_m11}.equals(true) ? 'X' : '']]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement stretchType="RelativeToBandHeight" x="803" y="0" width="16" height="42" uuid="8098e8aa-277a-40aa-b1aa-16ce9a5d67c7"/>
+					<box>
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Times New Roman" size="12" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{tache_m12}.equals(true) ? 'X' : '']]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" evaluationTime="Group" evaluationGroup="tache_group" pattern="#,##0">
+					<reportElement stretchType="RelativeToBandHeight" x="447" y="0" width="90" height="42" uuid="8b805182-c310-43c5-a285-cd6d0db3f692"/>
+					<box leftPadding="2" rightPadding="2">
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Times New Roman" size="9" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{contrat_moyens_ct_3}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement stretchType="RelativeToBandHeight" x="537" y="0" width="90" height="42" uuid="8b980720-09e6-4721-9e2f-06d839dd8322"/>
+					<box>
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Times New Roman" size="9"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{bailleurfond_nom}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement stretchType="RelativeToBandHeight" x="249" y="0" width="198" height="42" uuid="3b0ecc87-cbb9-472b-bb6c-293c3bfea5a4"/>
+					<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.0"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Times New Roman" size="10"/>
+					</textElement>
+					<textFieldExpression><![CDATA[""+$F{tache_resultatattendu}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band/>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="28" splitType="Stretch">
+			<staticText>
+				<reportElement x="17" y="0" width="464" height="20" uuid="71001653-46d5-4435-b38e-3caec32b40e2"/>
+				<box leftPadding="2"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ANNEXE 02]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="63" splitType="Stretch">
+			<staticText>
+				<reportElement x="17" y="30" width="312" height="33" uuid="c99e2480-9156-4fdd-b844-63c8e65fb1d4"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Element de cout]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="329" y="30" width="48" height="33" uuid="f96883f5-b83e-48ec-85a1-a545755202f9"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Quantité
+Déclarée]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="377" y="30" width="70" height="33" uuid="e0ab9194-030b-4166-ac10-c149c24df3d1"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Cout
+unitaire]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="447" y="0" width="90" height="63" uuid="e5792284-cbb2-48f1-90b3-c6fbf7fb279a"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Cout total]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="627" y="0" width="192" height="17" uuid="a97e6ec9-ff36-4ffd-88fb-e65a909f50d1"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Chronogramme]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="627" y="17" width="16" height="46" uuid="1bcb175a-7e5e-4ef5-bdd4-b699b2cf463a"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="Left">
+					<font fontName="Times New Roman" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[JAN]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="643" y="17" width="16" height="46" uuid="5a1566e2-d83f-47f1-b5b8-fbdee934d7da"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="Left">
+					<font fontName="Times New Roman" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[FEV]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="659" y="17" width="16" height="46" uuid="fafa4ee2-f166-4b9b-874f-845ca47408dc"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="Left">
+					<font fontName="Times New Roman" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[MAR]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="675" y="17" width="16" height="46" uuid="62f9f0f9-769c-47c4-b8c7-92ac0ed464c4"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="Left">
+					<font fontName="Times New Roman" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[AVR]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="691" y="17" width="16" height="46" uuid="e12f55c2-6069-4e9d-ac65-b775833b72e3"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="Left">
+					<font fontName="Times New Roman" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[MAI]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="707" y="17" width="16" height="46" uuid="2b370b64-9fd3-41ce-9961-fffd3fffda7f"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="Left">
+					<font fontName="Times New Roman" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[JUIN]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="723" y="17" width="16" height="46" uuid="16ff4f99-6c14-42ef-b3a2-2792677990b5"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="Left">
+					<font fontName="Times New Roman" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[JUIL]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="739" y="17" width="16" height="46" uuid="7952987a-7e07-4acb-9581-66b9b873b685"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="Left">
+					<font fontName="Times New Roman" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[AOUT]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="755" y="17" width="16" height="46" uuid="ca351d08-cebf-4db6-ab6d-bf4bf982f4e6"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="Left">
+					<font fontName="Times New Roman" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[SEPT]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="771" y="17" width="16" height="46" uuid="7b54ea8f-920d-43d2-addb-e24fc411bd4e"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="Left">
+					<font fontName="Times New Roman" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[OCT]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="787" y="17" width="16" height="46" uuid="e11b9d6e-045c-444c-aa0d-0cf821dd8fc6"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="Left">
+					<font fontName="Times New Roman" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[NOV]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="803" y="17" width="16" height="46" uuid="1299fa38-d2dd-463d-b309-71f1205ca2d8"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="Left">
+					<font fontName="Times New Roman" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[DEC]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="17" y="0" width="232" height="30" uuid="7e72c120-4569-4b7c-ba0f-05d1e45c5aa8"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Activité]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="537" y="0" width="90" height="63" uuid="935761a0-a84b-436e-842e-1adf05a3a624"/>
+				<box leftPadding="1" rightPadding="1">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Bailleur]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="249" y="0" width="198" height="30" uuid="0efe487f-2145-4c9c-a8f6-0b75e764b55c"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Résultats attendus]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="38" splitType="Stretch">
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToBandHeight" x="33" y="0" width="296" height="38" uuid="c6dcf47a-8e73-452b-b930-6f3f34d6bc41"/>
+				<box topPadding="2" leftPadding="10" bottomPadding="2" rightPadding="3">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="9" isItalic="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{imputation_code}+" - "+$F{imputation_nicename} +" ["+$F{contrat_moyens_observation_auto}+"]"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0">
+				<reportElement stretchType="RelativeToBandHeight" x="329" y="0" width="48" height="38" uuid="adc24eac-feaf-41cf-85f2-19a4a35d7b8b"/>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="3">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="9" isItalic="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{contrat_moyens_quantite}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0">
+				<reportElement stretchType="RelativeToBandHeight" x="377" y="0" width="70" height="38" uuid="cc098864-ecd2-44a7-9b30-bac0f6bfbd92"/>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="3">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="9" isItalic="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{contrat_moyens_cu}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0">
+				<reportElement stretchType="RelativeToBandHeight" x="447" y="0" width="90" height="38" uuid="28429c25-107d-42d1-8888-c7c9ad80397b"/>
+				<box leftPadding="2" rightPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="9" isItalic="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{contrat_moyens_ct}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0">
+				<reportElement stretchType="RelativeToBandHeight" x="537" y="0" width="266" height="38" uuid="c3ad2449-4d6e-405e-9e78-90b1c7f574bf"/>
+				<box leftPadding="3" rightPadding="3">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="9" isItalic="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{contrat_moyens_observation}.equals(null) ? '' : $F{contrat_moyens_observation}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="104" splitType="Stretch">
+			<textField isStretchWithOverflow="true" pattern="#,##0">
+				<reportElement positionType="Float" stretchType="RelativeToBandHeight" mode="Transparent" x="447" y="0" width="90" height="19" backcolor="#33CCFF" uuid="7ce1a26a-798d-4cf2-9340-3540ea9e1d49"/>
+				<box leftPadding="2" rightPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{contrat_moyens_ct_2}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement positionType="Float" stretchType="RelativeToBandHeight" mode="Transparent" x="537" y="0" width="282" height="19" backcolor="#33CCFF" uuid="a5458a8a-125c-4354-9809-b924e2cd69f5"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textFieldExpression><![CDATA[""]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement positionType="Float" stretchType="RelativeToBandHeight" mode="Transparent" x="17" y="0" width="430" height="19" backcolor="#33CCFF" uuid="6fc466af-0b27-4873-a831-b8b5a22a10f1"/>
+				<box leftPadding="3">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="11" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Total 1"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="17" y="49" width="430" height="20" uuid="56212f92-e8dc-4e4e-9d01-d4a7b131e1b9"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="11" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["TOTAL = Total 1 + Bonus Qualité"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToBandHeight" x="17" y="19" width="430" height="30" uuid="aca02d7a-f47d-4afd-832e-12eba35b49ca"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="11" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Bonus Qualité =  Total 1 x 15% x  Score Évaluation qualité globale 100% (50% x Score qualité technique + 50% x Score qualité application Outil indice )"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="537" y="49" width="282" height="20" uuid="eeb1f9a2-2b22-463a-97be-d82300e8baaa"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textFieldExpression><![CDATA[""]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToBandHeight" x="537" y="19" width="282" height="30" uuid="cff82c97-d0e5-46e2-99a8-81d5f304d479"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textFieldExpression><![CDATA[""]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0">
+				<reportElement x="447" y="49" width="90" height="20" uuid="0cdc6910-905a-4a3e-9363-c68631636a90"/>
+				<box rightPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[((($V{contrat_moyens_ct_2} * 15 ) / 100)) + $V{contrat_moyens_ct_2}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0">
+				<reportElement stretchType="RelativeToBandHeight" x="447" y="19" width="90" height="30" uuid="b0885017-bec7-4585-a29c-7afaeb18c75e"/>
+				<box rightPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[(($V{contrat_moyens_ct_2} * 15 ) / 100)]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

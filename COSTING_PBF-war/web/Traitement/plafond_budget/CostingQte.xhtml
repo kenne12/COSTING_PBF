@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition>
+
+        <p:dialog id="CostingQteEditDlg" 
+                  widgetVar="CostingQteEditDialog" 
+                  modal="true" resizable="false" appendTo="@(body)" 
+                  header="#{langue.costing_quantite}"
+                  closeOnEscape="true"
+                  width="50%"
+                  height="550">
+
+            <h:form id="CostingQteEditForm">
+
+                <p:outputLabel style="color: red ; font-size: 17px" id="error_msg" value="#{plafondbudgetController.message}" />
+
+                <div class="col-md-12">
+
+                    <h:panelGroup id="display">
+
+                        <p:selectManyCheckbox id="grid_" value="#{plafondbudgetController.selectedUniteCostings}" layout="grid" columns="1" converter="uniteCostingConverter">
+                            <f:selectItems value="#{plafondbudgetController.uniteCostings}" var="u" itemLabel="#{u.nom}" itemValue="#{u}" />
+                            <p:ajax />
+                        </p:selectManyCheckbox>
+
+                        <p:separator />
+
+                        <p:commandButton value="#{langue['common.ajouter']}"
+                                         actionListener="#{plafondbudgetController.addUniteToTable()}"
+                                         update="datalist_1" icon="ui-icon-plus" />
+
+                        <p:separator />
+
+                        <p:dataTable id="datalist_1" value="#{plafondbudgetController.costingPbQtes}" var="item"                             
+                                     paginator="true"
+                                     editable="true"
+                                     editMode="cell"
+                                     rows="15"
+                                     rowsPerPageTemplate="10,20,30,40,50"
+                                     style="width: 98%;margin-left: 1%;margin-top: 1%;font-size: 15px"
+                                     rowIndexVar="index"
+                                     emptyMessage="#{langue['common.tableau_vide']}">
+
+                            <p:column class="hardBreak" style="width: 70%;" >
+                                <f:facet name="header">
+                                    <h:outputText value="#{langue.unite}"/>
+                                </f:facet>
+                                <h:outputText class="hardBreak" value="#{item.uniteCosting.nom}"/> 
+                            </p:column>
+
+                            <p:column style="width: 20% ; text-align:center" headerText="#{langue['common.qte']}">
+                                <p:cellEditor>
+                                    <f:facet name="output">
+                                        <h:outputText value="#{item.quantite}" >
+                                            <f:convertNumber />
+                                        </h:outputText>    
+                                    </f:facet>
+                                    <f:facet name="input">
+                                        <p:inputText required="true" value="#{item.quantite}">
+                                            <f:convertNumber />
+                                            <p:ajax event="keyup" />
+                                        </p:inputText>
+                                    </f:facet>
+                                </p:cellEditor>
+                            </p:column>
+
+                            <p:column style="width: 10%" >
+                                <f:facet name="header">
+                                    <h:outputText value="Action"/>
+                                </f:facet>
+                                <p:commandButton icon="ui-icon-trash">
+                                    <p:ajax event="click" />
+                                </p:commandButton>  
+                            </p:column>
+
+                        </p:dataTable>
+
+                        <p:separator/>
+
+                        <center>
+                            <p:commandButton value="#{langue['common.fermer']}" 
+                                             onclick="PF('CostingQteEditDialog').hide()"/>
+
+                            <p:commandButton icon="ui-icon-save" actionListener="#{plafondbudgetController.editCostingQte()}" 
+                                             value="#{langue['common.enregistrer']}" 
+                                             update=":CostingForm:datalist,:NotifZone">
+                                <p:confirm header="#{langue['notification.confirmation']}" 
+                                           message="#{langue['notification.confirmation_enregistrement']}" 
+                                           icon="ui-icon-alert"/>
+                            </p:commandButton>
+                        </center>
+
+                    </h:panelGroup>
+
+                </div>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

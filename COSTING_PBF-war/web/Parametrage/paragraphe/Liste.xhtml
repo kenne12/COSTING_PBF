@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:jsf="http://xmlns.jcp.org/jsf">
+
+    <h:form id="ParagrapheListerForm">
+
+        <p:messages id="growl" closable="true">
+            <p:effect type="pulsate" event="load" delay="50" />
+        </p:messages>
+
+        <div class="card">
+
+            <div style="color: white" class="card-header bg-success">#{langue.indicateur_output_list}</div>
+
+            <div class="card-body">
+
+                <div class="table-responsive">
+                    <table class="table table-bordered" id="dataTable" jsf:id="datalist" width="100%" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th style="width: 15%">#{langue.sous_rubrique}</th>
+                                <th style="width: 38%">#{langue['common.nom']}</th>
+                                <th style="width: 10%">#{langue['common.cu']}</th>                                
+                                <th style="width: 15%">#{langue.origine}</th>                                                             
+                                <th style="width: 10%">#{langue.unite}</th>
+                                <th style="width: 12%">#{langue['common.actions']}</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+
+                            <ui:repeat value="#{paragrapheController.imputations}" var="item">
+
+                                <tr>
+                                    <td>#{item.idsousrubrique.nom}</td>
+                                    <td>#{item.nom}</td>
+                                    <td><h:outputLabel value="#{item.coutUnitaire}"> <f:convertNumber/> </h:outputLabel> </td>
+                                    <td>#{item.idorigine.nom}</td>
+                                    <td>#{item.idunite.nom}</td>                                                                                                                                                                                    
+                                    <td>  
+                                        <p:commandButton class="btn btn-danger btn-sm" icon="ui-icon-trash" 
+                                                         actionListener="#{paragrapheController.delete(item)}"
+                                                         update="ParagrapheListerForm,ParagrapheListerForm:datalist,ParagrapheListerForm:growl">
+                                            <p:confirm header="#{langue['notification.confirm_delete_dialog_header']}"
+                                                       message="#{langue['notification.confirm_delete_message']}?"
+                                                       icon="ui-icon-alert"/>
+                                        </p:commandButton>
+
+                                        <a style="margin-left: 5px" class="btn btn-success btn-sm" jsf:actionListener="#{paragrapheController.prepareEdit(item)}"><span class="fa fa-edit" ></span></a>
+
+                                        <a class="btn btn-info btn-sm"><span class="fa fa-eye"></span></a>                                        
+                                    </td>
+                                </tr>
+
+                            </ui:repeat>
+
+
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+
+        </div>
+
+    </h:form>
+
+
+    <!-- ****************************************Information************************************************************************************************************************************************************************************************************** -->
+
+    <p:dialog id="notify1" widgetVar="NotifyDialog1" height="400" width="700" resizable="true" responsive="true" modal="true" style="text-align: center; font-size: 14px; font-family: Cambria;">
+        <f:facet name="header">
+            <h:outputText style="font-family: Cambria; font-size: 14px;" value="#{paragrapheController.routine.titleNotify}" />
+        </f:facet>
+        <h:form id="NotifyForm1">
+            <h:graphicImage id="nt_img" url="#{paragrapheController.routine.iconMessage}" style="cursor:pointer" />
+
+            <hr size="3" style="background-color: cornflowerblue;"/>
+
+            <h:outputText id="nt_msg" value="#{paragrapheController.routine.message}"/>
+
+            <hr size="3" style="background-color: cornflowerblue; margin-top: 5%;"/>
+
+            <p:commandButton style="font-family: Cambria; font-size: 14px;" value="#{langue['common.fermer']}" onclick="PF('NotifyDialog1').hide()" type="button" immediate="true"/>
+
+            <hr size="3" style="background-color: cornflowerblue;"/>
+        </h:form>
+    </p:dialog>
+
+    <!-- ****************************************Information************************************************************************************************************************************************************************************************************** -->
+
+</ui:composition>

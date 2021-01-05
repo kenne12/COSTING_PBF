@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <f:view locale="#{localeManagedBean.locale}">
+
+        <h:head>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0"/>                       
+            <meta charset="utf-8" />
+            <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+            <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+            <meta name="description" content="" />
+            <meta name="author" content="" />
+            <title>Costing PBF</title>
+            <link href="#{request.contextPath}/s2b_template/resources/style.css" rel="stylesheet" />
+            <link href="#{request.contextPath}/s2b_template/resources/css/styles.css" rel="stylesheet" />
+            <link href="#{request.contextPath}/s2b_template/resources/font/font-awesome.min.css" rel="stylesheet" />
+            <!--<link href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css" rel="stylesheet" crossorigin="anonymous" />-->
+            <link href="#{request.contextPath}/s2b_template/resources/jquery/dataTables.bootstrap4.min.css" rel="stylesheet" />
+            <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/js/all.min.js" crossorigin="anonymous"></script>-->
+            <script src="#{request.contextPath}/s2b_template/resources/jquery/all.min.js" ></script>
+
+        </h:head>
+
+        <body class="sb-nav-fixed">
+            <ui:include src="autres_popup.xhtml"/>
+            <ui:include src="/includes/confirmation.xhtml"/>
+            <ui:include src="menu_top.xhtml"/>
+
+            <div id="layoutSidenav">
+
+                <ui:include src="sidebar.xhtml"/>
+
+                <div id="layoutSidenav_content">
+                    <main>
+                        <div class="container-fluid">
+                            <ui:insert name="contenu">
+
+                            </ui:insert>
+                        </div>
+                    </main>
+                    <footer class="py-4 bg-light mt-auto">
+                        <div class="container-fluid">
+                            <div class="d-flex align-items-center justify-content-between small">
+                                <div class="text-muted">Copyright  BEIN INFO + 2020</div>
+                                <div>
+                                    <a href="#">Privacy Policy</a>
+
+                                    <a href="#">Terms  Conditions</a>
+                                </div>
+                            </div>
+                        </div>
+                    </footer>
+                </div>
+            </div>
+                                    
+            <!--<script src="https://code.jquery.com/jquery-3.4.1.min.js" crossorigin="anonymous"></script>-->
+            <!--<script src="#{request.contextPath}/s2b_template/resources/jquery/jquery-3.4.1.min.js"></script>-->
+            <!--<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>-->
+            <script src="#{request.contextPath}/s2b_template/resources/jquery/bootstrap.bundle.min.js"></script>
+            <script src="#{request.contextPath}/s2b_template/resources/js/scripts.js"></script>
+            <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>-->
+            <!--<script src="#{request.contextPath}/s2b_template/resources/jquery/Chart.min.js"></script>-->
+            <!--<script src="#{request.contextPath}/s2b_template/resources/assets/demo/chart-area-demo.js"></script>-->
+            <!--<script src="#{request.contextPath}/s2b_template/resources/assets/demo/chart-bar-demo.js"></script>-->
+            <!--<script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js" crossorigin="anonymous"></script>-->
+            <script src="#{request.contextPath}/s2b_template/resources/jquery/jquery.dataTables.min.js" ></script>
+            <!--<script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js" crossorigin="anonymous"></script>-->
+            <script src="#{request.contextPath}/s2b_template/resources/jquery/dataTables.bootstrap4.min.js"></script>
+            <script src="#{request.contextPath}/s2b_template/resources/assets/demo/datatables-demo.js"></script>
+        </body>
+
+    </f:view>
+</html>

@@ -1,0 +1,85 @@
+<ui:composition 
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    template="/s2b_template/template.xhtml"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:jsf="http://xmlns.jcp.org/jsf"
+    xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:define name="contenu" >
+
+        <h1 class="mt-4"></h1>
+        <ol class="breadcrumb mb-4">
+            <li class="breadcrumb-item active">#{langue['utilisateur.gestion']}</li>
+        </ol>
+
+        <h:form id="UtilisateurCreateForm">
+
+            <p:messages id="growl" closable="true">
+                <p:effect type="pulsate" event="load" delay="50" />
+            </p:messages>
+
+            <div class="row">
+
+                <div class="col-md-7">
+
+                    <div class="card">
+                        <div class="card-header bg-success">#{langue['utilisateur.ajout']}</div>
+
+                        <div class="card-body">
+
+                            <div class="row row-cols-2">
+                                <div class="form-group">
+                                    <label>#{langue['utilisateur.nom']}</label>
+                                    <input type="text" class="form-control" jsf:value="#{utilisateurController.utilisateur.nom}" required="true" />
+                                </div>
+
+                                <div class="form-group">
+                                    <label>#{langue['utilisateur.prenom']}</label>
+                                    <input type="text" class="form-control" jsf:value="#{utilisateurController.utilisateur.prenom}"  />
+                                </div>
+
+                            </div>
+
+                            <div class="row row-cols-2">
+                                <div class="form-group">
+                                    <label>#{langue['utilisateur.cni']}</label>
+                                    <input type="text" class="form-control" jsf:value="#{utilisateurController.utilisateur.cni}" />
+                                </div>
+                            </div>
+
+                            <div class="row row-cols-2">
+                                <div class="form-group">
+                                    <label>#{langue['utilisateur.sexe']}</label>
+                                    <h:selectOneMenu class="form-control" value="#{utilisateurController.utilisateur.sexe}">
+                                        <f:selectItem itemLabel="#{langue['common.masculin']}" itemValue="M" />
+                                        <f:selectItem itemLabel="#{langue['common.feminin']}" itemValue="F" />
+                                    </h:selectOneMenu>
+                                </div>
+                            </div>
+
+                            <div jsf:rendered="#{utilisateurController.mode.equals('Edit')}" class="row row-cols-6">
+                                <div class="form-group">
+                                    <label>#{langue['common.etat']}</label>
+                                    <h:selectOneMenu class="form-control" value="#{utilisateurController.utilisateur.etat}">
+                                        <f:selectItem itemLabel="#{langue['common.actif']}" itemValue="Actif" />
+                                        <f:selectItem itemLabel="#{langue['common.inactif']}" itemValue="Inactif" />
+                                    </h:selectOneMenu>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="card-footer">
+                            <p:link class="btn btn-info" outcome="/Securite/utilisateur/utilisateur">#{langue['common.retour']}</p:link>                 
+                            <button class="btn btn-success" style="margin-left: 10px" type="submit" jsf:update="UtilisateurCreateForm" jsf:actionListener="#{utilisateurController.save()}"><i class="fa fa-save"></i>   #{langue['common.enregistrer']}</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </h:form>
+
+    </ui:define>
+
+</ui:composition>

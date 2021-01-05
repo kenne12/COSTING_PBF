@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition>
+
+        <p:dialog id="EvaluationCreateDlg" 
+                  widgetVar="EvaluationCreateDialog" 
+                  modal="true" resizable="false" appendTo="@(body)" 
+                  header="#{langue['evaluation.formulaire_creation']}"
+                  closeOnEscape="true"
+                  width="90%"
+                  height="640">
+
+            <h:form id="EvaluationCreateForm">
+
+                <p:outputLabel style="color: red ; font-size: 17px" id="error_msg" value="#{evaluationController.message}" />
+
+                <div class="col-md-12">
+
+                    <h:panelGroup id="display">
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <p:outputLabel value="#{langue.structure}" for="structure" />
+                                    <h:selectOneMenu disabled="#{evaluationController.mode.equals('Edit')}" 
+                                                     class="form-control" 
+                                                     id="structure" value="#{evaluationController.structure.idstructure}">
+                                        <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="0" />
+                                        <f:selectItems value="#{evaluationController.structures}" var="item" itemLabel="#{item.nom}" itemValue="#{item.idstructure}" />
+                                        <p:ajax update="datalist,:NotifZone:grow_msg" listener="#{evaluationController.updateData()}"/>
+                                    </h:selectOneMenu>                                                
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <p:outputLabel value="#{langue.periode}" for="periode" />
+                                    <h:selectOneMenu 
+                                        class="form-control" 
+                                        id="periode" value="#{evaluationController.periode.idperiode}">
+                                        <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="0" />
+                                        <f:selectItems value="#{evaluationController.periodes}" var="p" itemLabel="#{p.nom}" itemValue="#{p.idperiode}" />
+                                        <p:ajax update="datalist,:NotifZone:grow_msg" listener="#{evaluationController.updateData()}"/>
+                                    </h:selectOneMenu>                                                
+                                </div>
+                            </div>
+                        </div>
+
+                        <p:separator/>
+
+                        <p:dataTable id="datalist" value="#{evaluationController.evaluationstructures}" var="item"                             
+                                     paginator="true"
+                                     editable="true"
+                                     editMode="cell"
+                                     rows="#{evaluationController.evaluationstructures.size()}"
+                                     rowsPerPageTemplate="10,20,30,40,50"
+                                     style="margin-top: 1%;font-size: 15px"
+                                     rowIndexVar="index"
+                                     emptyMessage="#{langue['common.tableau_vide']}">
+
+                            <p:column class="hardBreak" style="width: 20%;" >
+                                <f:facet name="header">
+                                    <h:outputText value="#{langue.critere}"/>
+                                </f:facet>
+                                <h:outputText class="hardBreak" value="#{item.iddetailsc.idsouscritere.idcritere.nom}"/> 
+                            </p:column>
+
+                            <p:column class="hardBreak" style="width: 30%;" >
+                                <f:facet name="header">
+                                    <h:outputText value="#{langue.sous_critere}"/>
+                                </f:facet>
+                                <h:outputText class="hardBreak" value="#{item.iddetailsc.idsouscritere.nom} [#{item.iddetailsc.pointMax}]"/> 
+                            </p:column>
+
+                            <p:column style="width: 6%; text-align:center" headerText="#{langue['evaluation.score_prec']}">
+                                <p:cellEditor>
+                                    <f:facet name="output">
+                                        <h:outputText value="#{item.scorePeriodePrec}" >
+                                            <f:convertNumber />
+                                        </h:outputText>
+                                    </f:facet>
+                                    <f:facet name="input">
+                                        <p:inputText required="true" value="#{item.scorePeriodePrec}">                                             
+                                            <p:ajax event="keyup" />
+                                        </p:inputText>
+                                    </f:facet>
+                                </p:cellEditor>
+                            </p:column>
+
+                            <p:column style="width: 6%; text-align:center" headerText="#{langue['evaluation.score_prev']}">
+                                <p:cellEditor>
+                                    <f:facet name="output">
+                                        <h:outputText value="#{item.scorePeriodeActuelPrevi}" >
+                                            <f:convertNumber />
+                                        </h:outputText>
+                                    </f:facet>
+                                    <f:facet name="input">
+                                        <p:inputText required="true" value="#{item.scorePeriodeActuelPrevi}">                                             
+                                            <p:ajax event="keyup" />
+                                        </p:inputText>
+                                    </f:facet>
+                                </p:cellEditor>
+                            </p:column>  
+
+                            <p:column style="width: 6%; text-align:center" headerText="#{langue['evaluation.score_real']}">
+                                <p:cellEditor>
+                                    <f:facet name="output">
+                                        <h:outputText value="#{item.scorePeriodeActuelReal}" >
+                                            <f:convertNumber />
+                                        </h:outputText>
+                                    </f:facet>
+                                    <f:facet name="input">
+                                        <p:inputText required="true" value="#{item.scorePeriodeActuelReal}">                                             
+                                            <p:ajax event="keyup" />
+                                        </p:inputText>
+                                    </f:facet>
+                                </p:cellEditor>
+                            </p:column>
+
+                            <p:column class="hardBreak" style="width: 6%;" >
+                                <f:facet name="header">
+                                    <h:outputText value="#{langue['evaluation.applicabilite']}"/>
+                                </f:facet>
+                                <h:selectBooleanCheckbox value="#{item.applicable}" >
+                                    <p:ajax />
+                                </h:selectBooleanCheckbox>  
+                            </p:column>
+                            
+                            <p:column style="width: 26% ; text-align:left" headerText="#{langue.probleme}">
+                                <p:cellEditor>
+                                    <f:facet name="output">
+                                        <h:outputText value="#{item.probleme}" >
+                                            <f:convertNumber />
+                                        </h:outputText>
+                                    </f:facet>
+                                    <f:facet name="input">
+                                        <p:inputTextarea rows="4" style="width: 100%" value="#{item.probleme}">                                             
+                                            <p:ajax event="keyup" />
+                                        </p:inputTextarea>
+                                    </f:facet>
+                                </p:cellEditor>
+                            </p:column>
+
+                            <p:column style="width: 8%" >
+                                <f:facet name="header">
+                                    <h:outputText value="Action"/>
+                                </f:facet>
+                                <p:commandButton icon="ui-icon-trash">
+                                    <p:ajax disabled="true" update="datalist" event="click" listener="#{evaluationController.removeCritere(item)}" />
+                                </p:commandButton>
+                                
+                                <p:commandButton icon="ui-icon-plus">
+                                    <p:ajax update=":TacheCreateForm" event="click" listener="#{evaluationController.prepareAddTache(item)}" />
+                                </p:commandButton>
+                            </p:column>
+
+                            <p:columnGroup type="footer" id="footer_tab">
+                                <p:row>
+                                    <p:column colspan="2" style="text-align:right" footerText="Totaux" />                                                                          
+                                    <p:column style="text-align:center" footerText="#{evaluationController.scorePrec}"/>
+                                    <p:column style="text-align:center" footerText="#{evaluationController.scorePrev}"/>
+                                    <p:column style="text-align:center" footerText="#{evaluationController.scoreReal}"/>
+                                    <p:column style="text-align:center" footerText=""/>
+                                    <p:column colspan="2" style="text-align:right" footerText="" /> 
+                                </p:row>
+                            </p:columnGroup>
+
+                        </p:dataTable>
+
+                        <p:separator/>
+
+                        <center>
+
+                            <p:commandButton value="#{langue['common.fermer']}"
+                                             icon="ui-icon-close"
+                                             update=":EvaluationListerForm:datalist"
+                                             onclick="PF('EvaluationCreateDialog').hide()"/>
+
+                            <p:commandButton icon="ui-icon-ok" actionListener="#{evaluationController.save()}" value="#{langue['common.enregistrer']}" 
+                                             update="display,:EvaluationListerForm:datalist,:NotifZone,error_msg">
+                                <p:confirm header="#{langue['notification.confirmation']}" 
+                                           message="#{langue['notification.confirmation_enregistrement']}" 
+                                           icon="ui-icon-alert"/>
+                            </p:commandButton>
+
+                        </center>
+
+                    </h:panelGroup>
+
+                </div>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

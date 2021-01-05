@@ -1,0 +1,217 @@
+<ui:composition 
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    template="/s2b_template/template.xhtml"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:jsf="http://xmlns.jcp.org/jsf"
+    xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:define name="contenu" >
+
+        <h1 class="mt-4"></h1>
+        <ol class="breadcrumb mb-4">
+            <li class="breadcrumb-item active">#{langue['contrat.formulaire_creation']}</li>
+        </ol>
+
+        <h:form id="NotifZone">
+            <p:growl id="grow_msg" />
+
+            <p:messages id="growl" closable="true">
+                <p:effect type="pulsate" event="load" delay="50" />
+            </p:messages>
+        </h:form>
+
+        <h:form id="filtre">
+
+            <div class="row">
+                <div class="col-xl-7">
+                    <div class="card mb-4">
+                        <div class="card-header bg-success">#{langue.informations_generales}</div>
+                        <div class="card-body">
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="structure">#{langue.structure}</label>
+                                        <h:selectOneMenu disabled="#{contratController.mode.equals('Edit')}" id="structure" 
+                                                         class="form-control" 
+                                                         value="#{contratController.structure.idstructure}" required="true">
+                                            <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="" />
+                                            <f:selectItems value="#{contratController.structures}" var="st" itemLabel="#{st.nom}" itemValue="#{st.idstructure}" />                                    
+                                            <p:ajax listener="#{contratController.updateData()}" update=":TacheForm:datalist,grid_tache,client,executant" />
+                                        </h:selectOneMenu>                            
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="frequence">#{langue.frequence}</label>
+                                        <h:selectOneMenu disabled="#{contratController.mode.equals('Edit')}" class="form-control" value="#{contratController.contrat.idfrequence.idfrequence}" required="true">
+                                            <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="" />
+                                            <f:selectItems value="#{contratController.frequences}" var="f" itemLabel="#{f.nom}" itemValue="#{f.idfrequence}" />                                    
+                                            <p:ajax listener="#{contratController.updatePeriode()}" update="periode" />
+                                        </h:selectOneMenu>                            
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="periode">#{langue.periode}</label>
+                                        <h:selectOneMenu disabled="#{contratController.mode.equals('Edit')}" 
+                                                         id="periode" class="form-control" value="#{contratController.contrat.idperiode.idperiode}" 
+                                                         required="true">
+                                            <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="" />
+                                            <f:selectItems value="#{contratController.periodes}" var="p" itemLabel="#{p.nom}" itemValue="#{p.idperiode}" />                                    
+                                            <p:ajax listener="#{contratController.updateData()}" update=":TacheForm:datalist,grid_tache,duree,client,executant" />
+                                        </h:selectOneMenu>                            
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="budget">#{langue.budget}</label>
+                                        <h:selectOneMenu disabled="true" id="budget" class="form-control" value="#{contratController.budget.idbudget}" required="true">
+                                            <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="" />
+                                            <f:selectItems value="#{contratController.budgets}" var="b" itemLabel="#{b.nom}" itemValue="#{b.idbudget}" />                                    
+                                            <p:ajax />
+                                        </h:selectOneMenu>                            
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="libelle">#{langue['common.libelle']}</label>
+                                        <h:inputTextarea id="libelle" class="form-control" rows="3" value="#{contratController.contrat.libelle}" >
+                                            <p:ajax />
+                                        </h:inputTextarea>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="client">#{langue['contrat.contractant']}</label>
+                                        <h:inputTextarea id="client" class="form-control" value="#{contratController.contrat.client}" >
+                                            <p:ajax />
+                                        </h:inputTextarea>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="executant">#{langue['contracte.contracte']}</label>
+                                        <h:inputTextarea id="executant" class="form-control" value="#{contratController.contrat.executant}" >
+                                            <p:ajax />
+                                        </h:inputTextarea>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="montant">#{langue['common.montant']}</label>
+                                        <h:inputText disabled="true" id="montant" class="form-control" style="width: 150px" value="#{contratController.contrat.montant}" />
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="duree">#{langue['common.duree']} / Jour</label>
+                                        <h:inputText id="duree" class="form-control" style="width: 150px" value="#{contratController.contrat.duree}" />
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-5">
+                    <div class="card mb-4">
+                        <div class="card-header bg-success">Sélection des taches</div>
+                        <div class="card-body">
+
+                            <div class="row ">
+                                <p:selectManyCheckbox id="grid_tache" value="#{contratController.selectedTaches}" layout="grid" columns="1" converter="tacheConverter">
+                                    <f:selectItems value="#{contratController.taches}" var="t" itemLabel="#{t.nom}" itemValue="#{t}" />
+                                    <p:ajax />
+                                </p:selectManyCheckbox>
+                            </div>
+
+                            <p:separator/>
+
+                            <div class="row">
+                                <p:commandButton class="btn btn-primary btn-sm" value="#{langue['common.ajouter']}"
+                                                 actionListener="#{contratController.addTacheTotable()}"
+                                                 update=":TacheForm:datalist,montant" icon="ui-icon-plus" />
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </h:form>
+
+
+        <div class="card mb-5" >
+            <div class="card-header bg-success"> #{langue['tache.list']}</div>
+
+            <div class="card-body">
+
+                <h:form id="TacheForm">
+
+                    <p:dataTable id="datalist" value="#{contratController.contratTaches}" var="item"                             
+                                 paginator="true"
+                                 editable="true"
+                                 editMode="cell"
+                                 rows="15"
+                                 rowsPerPageTemplate="10,20,30,40,50"
+                                 style="width: 98%;margin-left: 1%;margin-top: 1%;font-size: 15px"
+                                 rowIndexVar="index"
+                                 emptyMessage="#{langue['common.tableau_vide']}">
+
+                        <p:column class="hardBreak" style="width: 75%;" >
+                            <f:facet name="header">
+                                <h:outputText value="#{langue.tache}"/>
+                            </f:facet>
+                            <h:outputText class="hardBreak" value="#{item.tache.nom}"/> 
+                        </p:column>
+
+                        <p:column class="hardBreak" style="width: 15%;" >
+                            <f:facet name="header">
+                                <h:outputText value="#{langue['common.montant_total']}"/>
+                            </f:facet>
+                            <h:outputText class="hardBreak" value="#{item.tache.totalmontantaloue}">
+                                <f:convertNumber />
+                            </h:outputText> 
+                        </p:column>
+
+                        <p:column style="width: 10%">
+                            <f:facet name="header">
+                                <h:outputText value="Action"/>
+                            </f:facet>
+                            <p:commandButton icon="ui-icon-trash">
+                                <p:ajax event="click" listener="#{contratController.removeTache(item)}" update="datalist,:filtre:montant" />
+                            </p:commandButton>
+                        </p:column>
+
+                    </p:dataTable>
+
+                    <br />
+
+                    <p:link style="margin-left: 15px" class="btn btn-info" outcome="/Traitement/contrat/contrat">#{langue['common.retour']}</p:link>
+                    <button style="margin-left: 5px" class="btn btn-success" jsf:update=":filtre,:NotifZone" jsf:actionListener="#{contratController.save()}" ><i class="fa fa-save"></i> #{langue['common.enregistrer']}</button>
+
+                </h:form>
+
+            </div>
+        </div>
+
+    </ui:define>
+
+</ui:composition>

@@ -1,0 +1,287 @@
+<ui:composition 
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    template="/s2b_template/template.xhtml"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:jsf="http://xmlns.jcp.org/jsf"
+    xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:define name="contenu" >
+
+        <h1 class="mt-4"></h1>
+        <ol class="breadcrumb mb-4">
+            <li class="breadcrumb-item active">#{langue['structure.gestion']}</li>
+        </ol>
+
+        <h:form id="NotifZone">
+            <p:growl id="grow_msg" />
+
+            <p:messages id="growl" closable="true">
+                <p:effect type="pulsate" event="load" delay="50" />
+            </p:messages>
+        </h:form>
+
+        <h:form id="StructureCreateForm">
+
+            <div class="row">
+
+                <div class="col-md-12">
+
+                    <div class="card ">
+
+                        <div style="color: white" class="card-header bg-success">#{langue['structure.formulaire_creation']}</div>
+
+                        <div class="card-body">
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label>#{langue['common.nom']}</label>
+                                        <h:inputTextarea rows="2"  class="form-control" value="#{structureController.structure.nom}" required="true" >
+                                            <p:ajax update="contracte_full_name" event="keyup" listener="#{structureController.updateStructureContracte()}" />
+                                        </h:inputTextarea>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>#{langue.institution}</label>
+                                        <h:selectOneMenu class="form-control" value="#{structureController.institution.idinstitution}">
+                                            <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="" />
+                                            <f:selectItems value="#{structureController.institutions}" var="i" itemLabel="#{i.nom}" itemValue="#{i.idinstitution}" />                                    
+                                        </h:selectOneMenu>                                                        
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>#{langue.pyramide}</label>
+                                        <h:selectOneMenu class="form-control" value="#{structureController.pyramide.idpyramide}">
+                                            <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="" />
+                                            <f:selectItems value="#{structureController.pyramides}" var="np" itemLabel="#{np.nom}" itemValue="#{np.idpyramide}" />                                    
+                                        </h:selectOneMenu>                                              
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>#{langue.type_structure}</label>
+                                        <h:selectOneMenu class="form-control" value="#{structureController.typestructure.idtypestructure}">
+                                            <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="" />
+                                            <f:selectItems value="#{structureController.typestructures}" var="ts" itemLabel="#{ts.nom}" itemValue="#{ts.idtypestructure}" />                                    
+                                        </h:selectOneMenu>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>#{langue.status_structure}</label>
+                                        <h:selectOneMenu class="form-control" value="#{structureController.statutstructure.idstatutstructure}">
+                                            <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="" />
+                                            <f:selectItems value="#{structureController.statutstructures}" var="ss" itemLabel="#{ss.nom}" itemValue="#{ss.idstatutstructure}" />                                    
+                                        </h:selectOneMenu>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <div class="form-group">
+                                        <label>#{langue['common.article']}</label>
+                                        <h:inputText class="form-control" value="#{structureController.structure.article}"  />
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label>#{langue['common.code']} / Short name</label>
+                                        <h:inputText  class="form-control" value="#{structureController.structure.contracteSName}" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label>#{langue['structure.arrete_creation']}</label>
+                                        <h:inputTextarea class="form-control" value="#{structureController.structure.arretecreation}" rows="5"  />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label>#{langue['structure.axe_intervention']}</label>
+                                        <h:inputTextarea class="form-control" value="#{structureController.structure.axeintervention}" rows="5"  />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div jsf:rendered="#{structureController.mode.equals('Edit')}" class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>#{langue['common.etat']}</label>
+                                        <h:selectOneMenu class="form-control" value="#{structureController.structure.etat}">
+                                            <f:selectItem itemLabel="#{langue['common.actif']}" itemValue="Actif" />
+                                            <f:selectItem itemLabel="#{langue['common.inactif']}" itemValue="Inactif" />
+                                        </h:selectOneMenu>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <br/>
+            <div class="row">
+
+                <div class="col-md-12">
+
+                    <div class="card">
+                        <div class="card-header bg-success">#{langue.section_contrat} - #{langue.contactant}</div>
+                        <div class="card-body">  
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>#{langue['common.nom']}</label>
+                                        <h:inputTextarea rows="2" class="form-control" value="#{structureController.structure.contractant}" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label>#{langue['common.code']} / Short Name</label>
+                                        <h:inputTextarea rows="1" class="form-control" value="#{structureController.structure.contractantSName}" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>#{langue.representant}</label>
+                                        <h:inputTextarea rows="1" class="form-control" value="#{structureController.structure.repContractant}" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>#{langue.titre}</label>
+                                        <h:inputText  class="form-control" value="#{structureController.structure.titrRepContractant}" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <div class="form-group">
+                                        <label>Article (Le / La / L')</label>
+                                        <h:inputText  class="form-control" value="#{structureController.structure.articleContractantFullName}" />
+                                    </div>
+                                </div>
+
+                                <div class="col-md-2">
+                                    <div class="form-group">
+                                        <label>Article (Du / De la)</label>
+                                        <h:inputText class="form-control" value="#{structureController.structure.deLaDuContractant}" />
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-2">
+                                    <div class="form-group">
+                                        <label>Autres</label>
+                                        <h:inputText class="form-control" value="#{structureController.structure.contractantRepresente}" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <br/>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header bg-success">#{langue.section_contrat} - #{langue.executant}</div>
+                        <div class="card-body"> 
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>#{langue['common.nom']}</label>
+                                        <h:inputTextarea id="contracte_full_name" rows="2" class="form-control" value="#{structureController.structure.contracteFullName}" required="true" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>#{langue.representant}</label>
+                                        <h:inputTextarea rows="1" class="form-control" value="#{structureController.structure.repContracte}" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>#{langue.titre}</label>
+                                        <h:inputText  class="form-control" value="#{structureController.structure.titre_contracte}" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <div class="form-group">
+                                        <label>Article (Le / La / L')</label>
+                                        <h:inputText  class="form-control" value="#{structureController.structure.articleContracteFullName}" />
+                                    </div>
+                                </div>
+
+                                <div class="col-md-2">
+                                    <div class="form-group">
+                                        <label>Article (Du / De la)</label>
+                                        <h:inputText class="form-control" value="#{structureController.structure.deLaDuContracte}" />
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-2">
+                                    <div class="form-group">
+                                        <label>Autres</label>
+                                        <h:inputText class="form-control" value="#{structureController.structure.contracteRepresente}" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card-footer">
+                            <p:link class="btn btn-info" outcome="/Parametrage/structure/structure" value="#{langue['common.retour']}" />
+
+                            <button class="btn btn-success" style="margin-left: 10px" 
+                                    type="submit" 
+                                    jsf:update="StructureCreateForm,:NotifZone" jsf:actionListener="#{structureController.save()}"><span class="fa fa-save"></span> #{langue['common.enregistrer']}</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </h:form>
+    </ui:define>
+</ui:composition>

@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="contrat" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="30" rightMargin="10" topMargin="20" bottomMargin="20" uuid="b71e0bf5-7808-4c46-8764-f3aff4a5cc22">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="idcontrat" class="java.lang.Long">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["D:\\report costing\\"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="idbudget" class="java.lang.Integer"/>
+	<parameter name="idstructure" class="java.lang.Long"/>
+	<parameter name="idperiode" class="java.lang.Integer"/>
+	<queryString>
+		<![CDATA[SELECT
+     contrat."date_signature" AS contrat_date_signature,
+     contrat."montant" AS contrat_montant,
+     contrat."etat" AS contrat_etat,
+     contrat."libelle" AS contrat_libelle,
+     contrat."client" AS contrat_client,
+     contrat."executant" AS contrat_executant,
+     budget."nom" AS budget_nom,
+     budget."annee" AS budget_annee,
+     periode."code" AS periode_code,
+     periode."nom" AS periode_nom,
+     structure."nom" AS structure_nom,
+     structure."article" AS structure_article,
+     structure."nomrespo" AS structure_nomrespo,
+     structure."contractant" AS structure_contractant,
+     structure."rep_contractant" AS structure_rep_contractant,
+     structure."titre_rep_contractant" AS structure_titre_rep_contractant,
+     structure."contracte_s_name" AS structure_contracte_s_name,
+     structure."contracte_full_name" AS structure_contracte_full_name,
+     structure."rep_contracte" AS structure_rep_contracte,
+     structure."titre_contracte" AS structure_titre_contracte,
+     contrat."idcontrat" AS contrat_idcontrat,
+     contrat."idbudget" AS contrat_idbudget,
+     contrat."idperiode" AS contrat_idperiode,
+     contrat."idstructure" AS contrat_idstructure,
+     structure."article_contracte_full_name" AS structure_article_contracte_full_name,
+     structure."article_contractant_full_name" AS structure_article_contractant_full_name,
+     structure."de_la_du_contracte" AS structure_de_la_du_contracte,
+     structure."de_la_du_contractant" AS structure_de_la_du_contractant,
+     contrat."duree" AS contrat_duree,
+     structure."idstructure" AS structure_idstructure,
+     structure."contractant_represente" AS structure_contractant_represente,
+     structure."contracte_represente" AS structure_contracte_represente
+FROM
+     "public"."budget" budget INNER JOIN "public"."contrat" contrat ON budget."idbudget" = contrat."idbudget"
+     INNER JOIN "public"."periode" periode ON contrat."idperiode" = periode."idperiode"
+     INNER JOIN "public"."structure" structure ON contrat."idstructure" = structure."idstructure"
+WHERE
+     contrat.idcontrat = $P{idcontrat}]]>
+	</queryString>
+	<field name="contrat_date_signature" class="java.sql.Date"/>
+	<field name="contrat_montant" class="java.lang.Double"/>
+	<field name="contrat_etat" class="java.lang.Boolean"/>
+	<field name="contrat_libelle" class="java.lang.String"/>
+	<field name="contrat_client" class="java.lang.String"/>
+	<field name="contrat_executant" class="java.lang.String"/>
+	<field name="budget_nom" class="java.lang.String"/>
+	<field name="budget_annee" class="java.lang.String"/>
+	<field name="periode_code" class="java.lang.String"/>
+	<field name="periode_nom" class="java.lang.String"/>
+	<field name="structure_nom" class="java.lang.String"/>
+	<field name="structure_article" class="java.lang.String"/>
+	<field name="structure_nomrespo" class="java.lang.String"/>
+	<field name="structure_contractant" class="java.lang.String"/>
+	<field name="structure_rep_contractant" class="java.lang.String"/>
+	<field name="structure_titre_rep_contractant" class="java.lang.String"/>
+	<field name="structure_contracte_s_name" class="java.lang.String"/>
+	<field name="structure_contracte_full_name" class="java.lang.String"/>
+	<field name="structure_rep_contracte" class="java.lang.String"/>
+	<field name="structure_titre_contracte" class="java.lang.String"/>
+	<field name="contrat_idcontrat" class="java.lang.Long"/>
+	<field name="contrat_idbudget" class="java.lang.Integer"/>
+	<field name="contrat_idperiode" class="java.lang.Integer"/>
+	<field name="contrat_idstructure" class="java.lang.Long"/>
+	<field name="structure_article_contracte_full_name" class="java.lang.String"/>
+	<field name="structure_article_contractant_full_name" class="java.lang.String"/>
+	<field name="structure_de_la_du_contracte" class="java.lang.String"/>
+	<field name="structure_de_la_du_contractant" class="java.lang.String"/>
+	<field name="contrat_duree" class="java.lang.Integer"/>
+	<field name="structure_idstructure" class="java.lang.Long"/>
+	<field name="structure_contractant_represente" class="java.lang.String"/>
+	<field name="structure_contracte_represente" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="388" splitType="Stretch">
+			<textField isStretchWithOverflow="true">
+				<reportElement x="0" y="0" width="555" height="27" uuid="aa2bf092-0b30-4182-9902-92fa6cef9aff"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{contrat_libelle}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="0" y="43" width="271" height="20" uuid="26b4d30b-bc5a-4b8f-a2d5-6e357182b4d0"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["N° ________/CP/MINSANTE/SG/CTN-PBF"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="1" y="63" width="281" height="20" uuid="c5c5268e-9af1-4e2a-b5f6-57e4c578ed0b"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Entre les soussignés :"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement positionType="Float" x="1" y="83" width="532" height="20" uuid="89e890a2-85d1-409c-b83a-5b64b36c17df"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{structure_contractant} +" " +$F{structure_contractant_represente}+" par :"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement positionType="Float" x="-1" y="134" width="532" height="32" uuid="00f9a47c-3060-4f52-9a88-366e97f80c5b"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{structure_article_contracte_full_name}+" "+$F{structure_contracte_full_name}+ " ("+$F{structure_contracte_s_name} + "), "+$F{structure_contracte_represente}  +" par son \n"+$F{structure_titre_contracte} +" "+$F{structure_rep_contracte}+"\nD’autre part,"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement positionType="Float" x="1" y="170" width="532" height="20" uuid="ccff3125-4b20-4316-99e8-10902e1ddc0a"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[Il a été convenu et arrêté ce qui suit :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="1" y="196" width="353" height="17" uuid="90e4f5ec-440b-47d3-9b68-328bbc47b155"/>
+				<textElement verticalAlignment="Top">
+					<font fontName="Times New Roman" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Article 1: Objet du Contrat]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true">
+				<reportElement positionType="Float" x="1" y="221" width="532" height="33" uuid="82d71b57-f837-492a-8b64-90e45a694595"/>
+				<textElement textAlignment="Justified">
+					<font fontName="Times New Roman" size="12" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Le présent Contrat de Performance a pour objet de définir les modalités de contractualisation dans le cadre de la mise en œuvre du PBF à "+$F{structure_article_contracte_full_name}+" "+$F{structure_contracte_full_name}+" ("+ $F{structure_contracte_s_name}+") en contrepartie d’un payement proportionnel à sa performance."]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement positionType="Float" x="1" y="326" width="533" height="20" uuid="96bb166e-1f64-42e3-bdfb-62edd487d880"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Article 3 : Responsabilités de la "+$F{structure_contracte_full_name}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement positionType="Float" x="0" y="352" width="532" height="33" uuid="f5f927f4-a4a8-4355-9262-471c6a28a348"/>
+				<textElement textAlignment="Justified">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA["En conformité avec le décret N°2013/093 du 3 Avril 2013 portant organisation du Ministère de la Santé Publique, la "+ $F{structure_contracte_s_name}  +" s’engage à mener les activités inscrites dans son business plan et déclinées ainsi qu’il suit :"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement positionType="Float" x="-1" y="107" width="533" height="23" uuid="f560c3dc-820d-435e-b993-18b309d8901c"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{structure_rep_contractant}+", "+$F{structure_titre_rep_contractant}+"\nD'une part , \nEt"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement positionType="Float" x="1" y="262" width="531" height="16" uuid="f99f034d-3197-40aa-a5b6-b0faffb15b31"/>
+				<textElement>
+					<font fontName="Times New Roman" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Article 2: Responsabilité du Ministre de la Santé Publique"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement positionType="Float" x="1" y="285" width="531" height="36" uuid="7d0b8922-fec1-4206-aeac-a432b4f3a8be"/>
+				<textElement textAlignment="Justified">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA["1.	Mettre sur pied une équipe d’évaluation de la mise en œuvre du contrat conduite par le Secrétariat Général ou les inspections générales du MINSANTE et comprenant les paires venant d'autres Directions\n"
++""+"2.	Organiser l’évaluation de la performance "+ $F{structure_de_la_du_contracte} + " "+ $F{structure_contracte_s_name}+" avant le 15 Décembre;\n"
++""+"3.	Veiller au payement des factures "+ $F{structure_de_la_du_contracte} +" " + $F{structure_contracte_s_name} +" au plus tard quinze (15) jours après l’évaluation;\n"
++""+"4.	Faciliter le cas échéant l’ouverture du compte/sous-compte PBF de la structure dans une banque commerciale agréée ;\n"
++""+"5.	Garantir la gestion autonome des subsides "+$F{structure_de_la_du_contracte}+" "+$F{structure_contracte_s_name} +" selon le principe de l’outil indice;"]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band splitType="Stretch"/>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="100" splitType="Stretch">
+			<subreport>
+				<reportElement positionType="Float" x="3" y="0" width="528" height="12" uuid="02f9af8e-b3a0-4ba4-9e1b-c3efa9b173cc"/>
+				<subreportParameter name="idcontrat">
+					<subreportParameterExpression><![CDATA[$F{contrat_idcontrat}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["tache_contrat.jasper"]]></subreportExpression>
+			</subreport>
+			<subreport>
+				<reportElement positionType="Float" x="3" y="26" width="528" height="13" uuid="3936e69c-3e12-4c4e-b6cf-685b62f8b255"/>
+				<subreportParameter name="idcontrat">
+					<subreportParameterExpression><![CDATA[$P{idcontrat}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["contrat_moyens.jasper"]]></subreportExpression>
+			</subreport>
+			<subreport>
+				<reportElement positionType="Float" x="3" y="54" width="528" height="14" uuid="aa7e94ee-f9df-4b18-851e-26cf2464c200"/>
+				<subreportParameter name="idstructure">
+					<subreportParameterExpression><![CDATA[$P{idstructure}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["contrat_evaluation_qualite.jasper"]]></subreportExpression>
+			</subreport>
+			<subreport>
+				<reportElement positionType="Float" x="3" y="70" width="528" height="13" uuid="d83c9bba-8c42-495d-a133-9ea2ee727406"/>
+				<subreportParameter name="idstructure">
+					<subreportParameterExpression><![CDATA[$P{idstructure}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["contrat_evaluation_outil_indice.jasper"]]></subreportExpression>
+			</subreport>
+			<subreport>
+				<reportElement positionType="Float" x="3" y="41" width="528" height="11" uuid="3b32fcd1-600f-4298-9150-01cefcacf06b"/>
+				<subreportParameter name="idcontrat">
+					<subreportParameterExpression><![CDATA[$P{idcontrat}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["contrat_critere_validation.jasper"]]></subreportExpression>
+			</subreport>
+			<subreport>
+				<reportElement positionType="Float" x="3" y="13" width="528" height="12" uuid="3b9fb5f5-496c-4d73-ad7a-8d888aea93af"/>
+				<subreportParameter name="idstructure">
+					<subreportParameterExpression><![CDATA[$F{structure_idstructure}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="duree">
+					<subreportParameterExpression><![CDATA[$F{contrat_duree}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="periode_full_name">
+					<subreportParameterExpression><![CDATA[$F{periode_nom}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["contrat_part_3.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</summary>
+</jasperReport>

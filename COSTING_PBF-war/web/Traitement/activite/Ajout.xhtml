@@ -1,0 +1,157 @@
+<ui:composition 
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    template="/s2b_template/template.xhtml"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:jsf="http://xmlns.jcp.org/jsf"
+    xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:define name="contenu" >
+
+        <h1 class="mt-4"></h1>
+        <ol class="breadcrumb mb-4">
+            <li class="breadcrumb-item active">#{langue['activite.gestion']}</li>
+        </ol>
+
+        <h:form id="ActiviteCreateForm">
+
+            <p:messages id="growl" closable="true">
+                <p:effect type="pulsate" event="load" delay="50" />
+            </p:messages>
+
+            <div class="col-xl-12">
+
+                <div class="card ">
+
+                    <div style="color: white" class="card-header bg-success">#{langue['activite.formulaire_creation']}</div>
+
+                    <div class="card-body">
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label>#{langue.programme}</label>
+                                    <h:selectOneMenu id="programme" class="form-control" value="#{activiteController.programme.idprogramme}" required="true">
+                                        <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="" />
+                                        <f:selectItems value="#{activiteController.programmes}" var="prg" itemLabel="#{prg.code} - #{prg.nom}" itemValue="#{prg.idprogramme}" />                                    
+                                        <p:ajax listener="#{activiteController.filtreActionByProgram()}" update="idaction" />
+                                    </h:selectOneMenu>                                                        
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label>#{langue.action}</label>
+                                    <h:selectOneMenu id="idaction" class="form-control" value="#{activiteController.action.idaction}" required="true">
+                                        <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="" />
+                                        <f:selectItems value="#{activiteController.actions}" var="act" itemLabel="#{act.code} - #{act.nom}" itemValue="#{act.idaction}" />                                    
+                                    </h:selectOneMenu>                                                        
+                                </div>                                                       
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label>#{langue.structure}</label>
+                                    <h:selectOneMenu id="structure" class="form-control" value="#{activiteController.structure.idstructure}" required="true">
+                                        <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="" />
+                                        <f:selectItems value="#{activiteController.structures}" var="st" itemLabel="#{st.nom}" itemValue="#{st.idstructure}" />                                    
+                                    </h:selectOneMenu>                                                        
+                                </div>                                                       
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label>#{langue['common.nom']}</label>
+                                    <h:inputTextarea id="nom" class="form-control" value="#{activiteController.activite.nom}" rows="2" required="true" requiredMessage="#{langue['common.nom']} : #{langue['common.valeur_requise']}"/>
+                                    <p:message for="nom" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label>#{langue['common.code']}</label>
+                                    <input style="width: 200px" type="text" class="form-control" jsf:value="#{activiteController.activite.code}" required="true" />
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>#{langue['programme.responsable']}</label>
+                                    <h:inputText class="form-control" value="#{activiteController.activite.responsables}" />                                
+                                </div>  
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>#{langue.type_activite}</label>
+                                    <h:selectOneMenu id="type_activite" class="form-control" value="#{activiteController.typeactivite.idtypeactivite}" required="true">
+                                        <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="" />
+                                        <f:selectItems value="#{activiteController.typeactivites}" var="ta" itemLabel="#{ta.nom}" itemValue="#{ta.idtypeactivite}" />                                    
+                                    </h:selectOneMenu>                                                        
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>#{langue['common.rang']}</label>
+                                    <h:selectOneMenu id="rang" class="form-control" value="#{activiteController.rang.idrang}" required="true">
+                                        <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="" />
+                                        <f:selectItems value="#{activiteController.rangs}" var="r" itemLabel="#{r.nom}" itemValue="#{r.idrang}" />                                    
+                                    </h:selectOneMenu>                                                        
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label>#{langue.description}</label>
+                                    <h:inputTextarea class="form-control" value="#{activiteController.activite.objectif}" rows="6" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label>#{langue['common.justification']}</label>
+                                    <h:inputTextarea class="form-control" value="#{activiteController.activite.justification}" rows="4" />
+                                </div>
+                            </div>
+                        </div>
+                  
+                        <div jsf:rendered="#{activiteController.mode.equals('Edit')}" class="row row-cols-6">
+                            <div class="form-group">
+                                <label>#{langue['common.etat']}</label>
+                                <h:selectOneMenu class="form-control" value="#{activiteController.activite.etat}">
+                                    <f:selectItem itemLabel="#{langue['common.actif']}" itemValue="Actif" />
+                                    <f:selectItem itemLabel="#{langue['common.inactif']}" itemValue="Inactif" />
+                                </h:selectOneMenu>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="card-footer">
+                        <p:link class="btn btn-info" outcome="/Traitement/activite/activite">#{langue['common.retour']}</p:link>                 
+                        <button class="btn btn-success" style="margin-left: 10px" type="submit" jsf:update="ActiviteCreateForm" jsf:actionListener="#{activiteController.save()}"><span class="fa fa-save"></span>  #{langue['common.enregistrer']}</button>                       
+                    </div>
+
+                </div>
+
+            </div>
+        </h:form>
+
+    </ui:define>
+
+</ui:composition>

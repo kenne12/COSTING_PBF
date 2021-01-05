@@ -1,0 +1,429 @@
+<ui:composition 
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    template="/s2b_template/template.xhtml"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:jsf="http://xmlns.jcp.org/jsf"
+    xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:define name="contenu" >
+
+        <h1 class="mt-4"></h1>
+        <ol class="breadcrumb mb-4">
+            <li class="breadcrumb-item active">#{langue['tache.gestion']}</li>
+        </ol>
+
+        <h:form id="NotifZone">
+            <p:growl id="grow_msg" />
+
+            <p:messages id="growl" closable="true">
+                <p:effect type="pulsate" event="load" delay="50" />
+            </p:messages>
+        </h:form>
+
+        <h:form id="TacheCreateForm">
+
+            <div class="row">
+
+                <div class="col-md-12">
+
+                    <div class="card ">
+
+                        <div style="color: white" class="card-header bg-success">#{langue['tache.formulaire_creation']}</div>
+
+                        <div class="card-body">
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label>#{langue.structure}</label>
+                                        <h:selectOneMenu disabled="#{tacheController.mode.equals('Edit')}" id="structure" class="form-control" value="#{tacheController.structure.idstructure}" required="true">
+                                            <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="" />
+                                            <f:selectItems value="#{tacheController.structures}" var="st" itemLabel="#{st.nom}" itemValue="#{st.idstructure}" />                                    
+                                            <p:ajax />
+                                        </h:selectOneMenu>                                                        
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label>#{langue.programme}</label>
+                                        <h:selectOneMenu id="programme" class="form-control" value="#{tacheController.programme.idprogramme}" required="true">
+                                            <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="" />
+                                            <f:selectItems value="#{tacheController.programmes}" var="prg" itemLabel="#{prg.code} - #{prg.nom}" itemValue="#{prg.idprogramme}" />                                    
+                                            <p:ajax listener="#{tacheController.filtreActionByProgram()}" update="idaction" />
+                                        </h:selectOneMenu>                                                        
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label>#{langue.action}</label>
+                                        <h:selectOneMenu id="idaction" class="form-control" value="#{tacheController.action.idaction}" required="true">
+                                            <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="" />
+                                            <f:selectItems value="#{tacheController.actions}" var="act" itemLabel="#{act.code} - #{act.nom}" itemValue="#{act.idaction}" />                                    
+                                            <p:ajax listener="#{tacheController.filtreActiviteByAction()}" update="idactivite" />
+                                        </h:selectOneMenu>                                                        
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label>#{langue.activite}</label>
+                                        <h:selectOneMenu id="idactivite" class="form-control" value="#{tacheController.activite.idactivite}" required="true">
+                                            <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="" />
+                                            <f:selectItems value="#{tacheController.activites}" var="item" itemLabel="#{item.code} - #{item.nom}" itemValue="#{item.idactivite}" />                                    
+                                            <p:ajax update="description_strategie" listener="#{tacheController.updateStrategie()}" />
+                                        </h:selectOneMenu>                                                        
+                                    </div> 
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label>#{langue.description}</label>
+                                        <h:inputTextarea id="description_strategie" disabled="true" class="form-control" rows="6" value="#{tacheController.activite.objectif}" />                                                       
+                                    </div> 
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label>#{langue['common.nom']}</label>
+                                        <h:inputTextarea id="nom" class="form-control" value="#{tacheController.tache.nom}" rows="4" required="true" requiredMessage="#{langue['common.nom']} : #{langue['common.valeur_requise']}">
+                                            <p:ajax />
+                                        </h:inputTextarea>
+                                        <p:message for="nom" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <div class="form-group">
+                                        <label>#{langue['common.numero']}</label>
+                                        <h:inputText  class="form-control" value="#{tacheController.tache.numordre}"  >
+                                            <p:ajax/>
+                                        </h:inputText>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-2">
+                                    <div class="form-group">
+                                        <label>#{langue['common.montant_total_alloue']}</label>
+                                        <h:inputText id="m_t_a" class="form-control" value="#{tacheController.tache.totalmontantaloue}" >
+                                            <f:convertNumber />
+                                        </h:inputText>                                
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>#{langue.bailleur_fond}</label>
+                                        <h:selectOneMenu id="type_activite" class="form-control" value="#{tacheController.bailleurfond.idbailleurfond}" required="true">
+                                            <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="" />
+                                            <f:selectItems value="#{tacheController.bailleurfonds}" var="b" itemLabel="#{b.nom}" itemValue="#{b.idbailleurfond}" />                                    
+                                            <p:ajax />
+                                        </h:selectOneMenu>                                                        
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>#{langue.risque}</label>
+                                        <h:selectOneMenu id="rang" class="form-control" value="#{tacheController.risque.idrisque}" required="true">
+                                            <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="" />
+                                            <f:selectItems value="#{tacheController.risques}" var="r" itemLabel="#{r.nom}" itemValue="#{r.idrisque}" />                                    
+                                            <p:ajax />
+                                        </h:selectOneMenu>                                                        
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label>#{langue['common.resultat_attentu']}</label>
+                                        <h:inputTextarea id="resultat_attentu" class="form-control" value="#{tacheController.tache.resultatattendu}" rows="3" >
+                                            <p:ajax />
+                                        </h:inputTextarea>
+                                        <p:message for="resultat_attentu" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div jsf:rendered="#{tacheController.mode.equals('Edit')}" class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>#{langue['common.etat']}</label>
+                                        <h:selectOneMenu class="form-control" value="#{tacheController.tache.etat}">
+                                            <f:selectItem itemLabel="#{langue['common.actif']}" itemValue="Actif" />
+                                            <f:selectItem itemLabel="#{langue['common.inactif']}" itemValue="Inactif" />
+                                            <p:ajax />
+                                        </h:selectOneMenu>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label>#{langue.periode}</label>
+                                        <h:selectOneMenu id="periode" disabled="#{tacheController.mode.equals('Edit')}" class="form-control" value="#{tacheController.periode.idperiode}" required="true">
+                                            <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="" />
+                                            <f:selectItems value="#{tacheController.periodes}" var="p" itemLabel="#{p.nom}" itemValue="#{p.idperiode}" />                                    
+                                            <p:ajax update="evaluation,chronogramme_1,chronogramme_2,chronogramme_3,chronogramme_4" listener="#{tacheController.updateProbleme()}"/>
+                                        </h:selectOneMenu>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label>#{langue.probleme}</label>
+                                        <h:selectOneMenu id="evaluation" class="form-control" value="#{tacheController.evaluationstructure.idevaluationstructure}" required="true">
+                                            <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="" />
+                                            <f:selectItems value="#{tacheController.evaluationstructures}" var="evs" itemLabel="#{evs.probleme}" itemValue="#{evs.idevaluationstructure}" />                                    
+                                            <p:ajax />
+                                        </h:selectOneMenu>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div jsf:id="chronogramme_1" class="row">
+                                <div class="col-md-4">
+                                    <div class="form-check">                                                                        
+                                        <h:selectBooleanCheckbox id="janvier" class="form-check-input" value="#{tacheController.tache.m1}" >
+                                            <p:ajax />
+                                        </h:selectBooleanCheckbox>
+                                        <label for="janvier" class="form-check-label">#{langue['mois.janvier']}</label>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="form-check">                                                                        
+                                        <h:selectBooleanCheckbox id="fevrier" class="form-check-input" value="#{tacheController.tache.m2}" >
+                                            <p:ajax />
+                                        </h:selectBooleanCheckbox>
+                                        <label for="fevrier" class="form-check-label">#{langue['mois.fevrier']}</label>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="form-check">                                
+                                        <h:selectBooleanCheckbox id="mars" class="form-check-input" value="#{tacheController.tache.m3}" >
+                                            <p:ajax />
+                                        </h:selectBooleanCheckbox>
+                                        <label for="mars" class="form-check-label">#{langue['mois.mars']}</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div jsf:id="chronogramme_2" class="row">
+                                <div class="col-md-4">
+                                    <div class="form-check">                                                                        
+                                        <h:selectBooleanCheckbox id="avril" class="form-check-input" value="#{tacheController.tache.m4}" >
+                                            <p:ajax />
+                                        </h:selectBooleanCheckbox>                                        
+                                        <label for="avril" class="form-check-label">#{langue['mois.avril']}</label>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="form-check">                                                                        
+                                        <h:selectBooleanCheckbox id="mai" class="form-check-input" value="#{tacheController.tache.m5}" >
+                                            <p:ajax />
+                                        </h:selectBooleanCheckbox>                                        
+                                        <label for="mai" class="form-check-label">#{langue['mois.mai']}</label>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="form-check">                                                                        
+                                        <h:selectBooleanCheckbox id="juin" class="form-check-input" value="#{tacheController.tache.m6}" >
+                                            <p:ajax />
+                                        </h:selectBooleanCheckbox>                                        
+                                        <label for="juin" class="form-check-label">#{langue['mois.juin']}</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div jsf:id="chronogramme_3" class="row">
+                                <div class="col-md-4">
+                                    <div class="form-check">                                        
+                                        <h:selectBooleanCheckbox id="juillet" class="form-check-input" value="#{tacheController.tache.m7}" >
+                                            <p:ajax />
+                                        </h:selectBooleanCheckbox>
+                                        <label for="juillet" class="form-check-label">#{langue['mois.juillet']}</label>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="form-check">                                                                                                                
+                                        <h:selectBooleanCheckbox id="aout" class="form-check-input" value="#{tacheController.tache.m8}" >
+                                            <p:ajax />
+                                        </h:selectBooleanCheckbox>                                        
+                                        <label for="aout" class="form-check-label">#{langue['mois.aout']}</label>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="form-check">
+                                        <h:selectBooleanCheckbox id="sept" class="form-check-input" value="#{tacheController.tache.m9}" >
+                                            <p:ajax />
+                                        </h:selectBooleanCheckbox>
+                                        <label for="sept" class="form-check-label">#{langue['mois.septembre']}</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div jsf:id="chronogramme_4" class="row">
+                                <div class="col-md-4">
+                                    <div class="form-check">
+                                        <h:selectBooleanCheckbox id="oct" class="form-check-input" value="#{tacheController.tache.m10}" >
+                                            <p:ajax />
+                                        </h:selectBooleanCheckbox>
+                                        <label for="oct" class="form-check-label">#{langue['mois.octobre']}</label>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="form-check"> 
+                                        <h:selectBooleanCheckbox class="form-check-input" value="#{tacheController.tache.m11}" >
+                                            <p:ajax />
+                                        </h:selectBooleanCheckbox>                                        
+                                        <label class="form-check-label">#{langue['mois.novembre']}</label>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="form-check">
+                                        <h:selectBooleanCheckbox id="dec" class="form-check-input" value="#{tacheController.tache.m12}" >
+                                            <p:ajax />
+                                        </h:selectBooleanCheckbox>                                        
+                                        <label for="dec" class="form-check-label">#{langue['mois.decembre']}</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>    
+            <br/>
+
+            <div class="row">
+                <div class="col-md-12">
+
+                    <div class="card">
+
+                        <div style="color: white" class="card-header bg-success">#{langue['common.paragraphe_budgetaires']}</div>
+                        <div class="card-body">
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label>#{langue.indicateur_output}</label>
+                                        <h:selectOneMenu  id="idparagraphe" class="form-control" value="#{tacheController.imputation.idimputation}" required="true">
+                                            <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="0" />
+                                            <f:selectItems value="#{tacheController.imputations}" var="im" itemLabel="#{im.code} - #{im.nicename}" itemValue="#{im.idimputation}" />                                    
+                                            <p:ajax listener="#{tacheController.updateCu()}" update="id_cu,m_t" />
+                                        </h:selectOneMenu>                                                        
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <div class="form-group">
+                                        <label >#{langue['common.cout_unitaire']}</label>
+                                        <h:inputText id="id_cu" value="#{tacheController.moyens.cu}" class="form-control" >
+                                            <p:ajax update="m_t" event="keyup" listener="#{tacheController.updateMoyenLine()}" />
+                                        </h:inputText>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <div class="form-group">
+                                        <label >#{langue['common.quantite']}</label>
+                                        <h:inputText id="id_qte" value="#{tacheController.moyens.qte}" class="form-control" >
+                                            <p:ajax update="m_t" event="keyup" listener="#{tacheController.updateMoyenLine()}" />
+                                        </h:inputText>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <div class="form-group">
+                                        <label>#{langue['common.montant_total']}</label>
+                                        <h:inputText id="m_t" disabled="true" value="#{tacheController.moyens.ct}" class="form-control" >
+                                            <f:convertNumber />
+                                        </h:inputText>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label>#{langue['common.observation']}</label>
+                                <h:inputTextarea id="observation" value="#{tacheController.moyens.observation}" 
+                                                 class="form-control"
+                                                 rows="3"/>
+                            </div>
+
+                            <p:commandLink class="btn bg-success" style="color: white" 
+                                           update="m_t,id_cu,id_qte,idparagraphe,datalist,:TacheCreateForm:m_t_a,:NotifZone:grow_msg,observation" 
+                                           actionListener="#{tacheController.addParagraphe()}" ><i class="fa fa-plus"></i>  #{langue['common.ajouter']}</p:commandLink>
+
+                            <p:separator />
+
+                            <table jsf:id="datalist" class="table" >
+                                <thead>
+                                    <tr>
+                                        <th>#{langue['common.indicateur']}</th>
+                                        <th>#{langue['common.cu']}</th>
+                                        <th>#{langue['common.qte']}</th>
+                                        <th>#{langue['common.total']}</th>
+                                        <th colspan="2">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <ui:repeat value="#{tacheController.listMoyens}" var="moyens">
+                                        <tr>
+                                            <td>#{moyens.idimputation.code} - #{moyens.idimputation.nom}</td>
+                                            <td><p:outputLabel value="#{moyens.cu}"> <f:convertNumber /> </p:outputLabel> </td>
+                                            <td>#{moyens.qte}</td>
+                                            <td><h:outputLabel value="#{moyens.ct}"> <f:convertNumber /> </h:outputLabel> </td>
+                                            <td><p:commandLink class="btn btn-success" value="edit" update="TacheCreateForm:idparagraphe,TacheCreateForm:id_cu,TacheCreateForm:id_qte,TacheCreateForm:m_t" actionListener="#{tacheController.prepareEditParagraphe(moyens)}"  /> </td>
+                                            <td><p:commandLink class="btn btn-danger" value="rm" update="TacheCreateForm:datalist" actionListener="#{tacheController.removeParagraphe(moyens)}" />  </td>
+                                        </tr>
+                                    </ui:repeat>
+                                </tbody>
+                            </table>
+
+                        </div>
+
+                        <div class="card-footer">
+                            <p:link class="btn btn-info" outcome="/Traitement/tache/tache">#{langue['common.retour']}</p:link>                 
+                            <button class="btn btn-success" style="margin-left: 10px" type="submit" jsf:update="TacheCreateForm,:NotifZone" jsf:actionListener="#{tacheController.save()}"><span class="fa fa-save"></span>  #{langue['common.enregistrer']}</button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>   
+
+        </h:form>
+    </ui:define>
+
+</ui:composition>

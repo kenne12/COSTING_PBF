@@ -1,0 +1,158 @@
+<ui:composition 
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    template="/s2b_template/template.xhtml"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:jsf="http://xmlns.jcp.org/jsf"
+    xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:define name="contenu" >
+
+        <h1 class="mt-4"></h1>
+        <ol class="breadcrumb mb-4">
+            <li class="breadcrumb-item active">#{langue['paragraphe.gestion']}</li>
+        </ol>
+
+        <h:form id="ParagrapheCreateForm">
+
+            <p:messages id="growl" closable="true">
+                <p:effect type="pulsate" event="load" delay="50" />
+            </p:messages>
+
+            <div class="row">
+
+                <div class="col-md-12">
+
+                    <div class="card">
+
+                        <div style="color: white" class="card-header bg-success">#{langue['paragraphe.formulaire_creation']}</div>
+
+                        <div class="card-body">
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="nom">#{langue['common.nom']}</label>
+                                        <h:inputTextarea id="nom" class="form-control" value="#{paragrapheController.imputation.nom}" required="true" rows="3" />
+                                        <p:message for="nom" />
+                                    </div>  
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label>#{langue['imputation.nice_name']}</label>
+                                        <h:inputTextarea  class="form-control" id="nice_name" value="#{paragrapheController.imputation.nicename}" required="true" rows="3" />
+                                        <p:message for="nice_name" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <div class="form-group">
+                                        <label>#{langue['common.code']}</label>
+                                        <h:inputText class="form-control" id="code" value="#{paragrapheController.imputation.code}" required="true" />
+                                        <p:message for="code" />
+                                    </div>
+                                </div>
+
+                                <div class="col-md-5">
+                                    <div class="form-group">
+                                        <label for="unite">#{langue.unite}</label>
+                                        <h:selectOneMenu id="unite" class="form-control" value="#{paragrapheController.imputation.idunite.idunite}">
+                                            <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="-1" />
+                                            <f:selectItems value="#{paragrapheController.unites}" var="unit" itemLabel="#{unit.nom}" itemValue="#{unit.idunite}" />
+                                        </h:selectOneMenu>
+                                        <p:message for="unite" />
+                                    </div>
+                                </div>
+
+                                <div class="col-md-2">
+                                    <div class="form-group">
+                                        <label>#{langue['common.cout_unitaire']}</label>
+                                        <h:inputText class="form-control" id="cu" value="#{paragrapheController.imputation.coutUnitaire}" required="true" />
+                                        <p:message for="cu" />
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>#{langue.origine}</label>
+                                        <h:selectOneMenu id="origine" class="form-control" value="#{paragrapheController.origine.idorigine}">
+                                            <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="" />
+                                            <f:selectItems value="#{paragrapheController.origines}" var="item" itemLabel="#{item.nom}" itemValue="#{item.idorigine}" />                                    
+                                        </h:selectOneMenu>                                
+                                        <p:message for="origine" />
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>#{langue.sous_rubrique}</label>
+                                        <h:selectOneMenu id="s_r" class="form-control" value="#{paragrapheController.sousrubrique.idsousrubrique}">
+                                            <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="" />
+                                            <f:selectItems value="#{paragrapheController.sousrubriques}" var="sr" itemLabel="#{sr.nom}" itemValue="#{sr.idsousrubrique}" />                                    
+                                        </h:selectOneMenu>
+                                        <p:message for="s_r" />
+                                    </div> 
+                                </div>
+                            </div>       
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label>#{langue['paragraphe.critere_validation']}</label>
+                                        <h:inputTextarea class="form-control" value="#{paragrapheController.imputation.criterevalidation}" rows="4"  />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label>#{langue['common.description']}</label>
+                                        <h:inputTextarea class="form-control" value="#{paragrapheController.imputation.description}" rows="4"  />
+                                    </div>
+                                </div>
+                            </div>                       
+
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-check">                                
+                                        <input id="bonus" type="checkbox" class="form-check-input" jsf:value="#{paragrapheController.imputation.bonus}" />
+                                        <label for="bonus" class="form-check-label">#{langue['paragraphe.application_bonus']}</label>
+                                    </div>
+                                </div>
+
+                                <div jsf:rendered="#{paragrapheController.mode.equals('Edit')}" class="col-md-4">
+                                    <div class="form-group">
+                                        <label>#{langue['common.etat']}</label>
+                                        <h:selectOneMenu class="form-control" value="#{paragrapheController.imputation.etat}">
+                                            <f:selectItem itemLabel="#{langue['common.actif']}" itemValue="Actif" />
+                                            <f:selectItem itemLabel="#{langue['common.inactif']}" itemValue="Inactif" />
+                                        </h:selectOneMenu>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="card-footer">
+                            <p:link class="btn btn-info" outcome="/Parametrage/paragraphe/paragraphe">#{langue['common.retour']}</p:link>                  
+                            <button class="btn btn-success" style="margin-left: 10px" type="submit" jsf:update="ParagrapheCreateForm" jsf:actionListener="#{paragrapheController.save()}"><span class="fa fa-save"></span>  #{langue['common.enregistrer']}</button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </h:form>
+
+    </ui:define>
+
+</ui:composition>

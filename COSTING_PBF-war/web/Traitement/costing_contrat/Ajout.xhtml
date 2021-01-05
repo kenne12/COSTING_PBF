@@ -1,0 +1,275 @@
+<ui:composition 
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    template="/s2b_template/template.xhtml"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:jsf="http://xmlns.jcp.org/jsf"
+    xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:define name="contenu" >
+
+        <h1 class="mt-4"></h1>
+        <ol class="breadcrumb mb-4">
+            <li class="breadcrumb-item active">#{langue['contrat.formulaire_costing']}</li>
+        </ol>
+
+        <h:form id="NotifZone">
+            <p:growl id="grow_msg" />
+
+            <p:messages id="growl" closable="true">
+                <p:effect type="pulsate" event="load" delay="50" />
+            </p:messages>
+        </h:form>
+
+        <div class="row">
+
+            <div class="col-md-12">
+                <div class="card" >
+                    <div class="card-header bg-success">#{langue.informations_generales}</div>
+
+                    <div class="card-body">
+
+                        <h:form id="filtre">
+
+                            <p:growl />
+
+                            <div class="form-group">
+                                <label for="structure">#{langue.structure}</label>
+                                <h:selectOneMenu disabled="#{costingContratController.mode.equals('Edit')}" id="structure" 
+                                                 class="form-control" 
+                                                 value="#{costingContratController.structure.idstructure}" required="true">
+                                    <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="" />
+                                    <f:selectItems value="#{costingContratController.structures}" var="st" itemLabel="#{st.nom}" itemValue="#{st.idstructure}" />                                    
+                                </h:selectOneMenu>                            
+                            </div>
+
+                            <div class="form-group">
+                                <label for="periode">#{langue.periode}</label>
+                                <h:selectOneMenu disabled="#{costingContratController.mode.equals('Edit')}" 
+                                                 id="periode" class="form-control" value="#{costingContratController.contrat.idperiode.idperiode}" 
+                                                 required="true">
+                                    <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="" />
+                                    <f:selectItems value="#{costingContratController.periodes}" var="p" itemLabel="#{p.nom}" itemValue="#{p.idperiode}" />                                              
+                                </h:selectOneMenu>                            
+                            </div>
+
+                            <div class="form-group">
+                                <label for="libelle">#{langue['common.libelle']}</label>
+                                <h:inputTextarea disabled="true" id="libelle" class="form-control" value="#{costingContratController.contrat.libelle}" >
+                                    <p:ajax />
+                                </h:inputTextarea>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="client">#{langue['contrat.client']}</label>
+                                <h:inputTextarea disabled="true" id="client" class="form-control" value="#{costingContratController.contrat.client}" >
+                                    <p:ajax />
+                                </h:inputTextarea>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="montant">#{langue['common.montant']}</label>
+                                <h:inputText disabled="true" id="montant" class="form-control" style="width: 150px" value="#{costingContratController.contrat.montant}" >
+                                    <f:convertNumber />
+                                </h:inputText>
+                            </div>
+
+                        </h:form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <br/>
+
+        <div class="row">
+
+            <div class="col-md-12">
+
+                <div class="card " >
+
+                    <div class="card-header bg-success">#{langue['tache.list']}</div>
+
+                    <div class="card-body">
+
+                        <h:form id="TacheForm">
+
+                            <p:dataTable id="datalist" value="#{costingContratController.contratTaches}" var="item"                             
+                                         paginator="true"
+                                         editable="true"
+                                         editMode="cell"
+                                         rows="15"
+                                         rowsPerPageTemplate="10,20,30,40,50"
+                                         style="width: 98%;margin-left: 1%;margin-top: 1%;font-size: 15px"
+                                         rowIndexVar="index"
+                                         emptyMessage="#{langue['common.tableau_vide']}">
+                                
+                                
+                                <p:column class="hardBreak" style="width: 40%;" filterBy="#{item.tache.idactivite.code} - #{item.tache.idactivite.nom}" filterMatchMode="contains" >
+                                    <f:facet name="header">
+                                        <h:outputText value="#{langue.activite}"/>
+                                    </f:facet>
+                                    <h:outputText class="hardBreak" value="#{item.tache.idactivite.code} - #{item.tache.idactivite.nom}"/> 
+                                </p:column>
+
+                                <p:column class="hardBreak" style="width: 35%;" filterBy="#{item.tache.nom}" filterMatchMode="contains" >
+                                    <f:facet name="header">
+                                        <h:outputText value="#{langue.tache}"/>
+                                    </f:facet>
+                                    <h:outputText class="hardBreak" value="#{item.tache.nom}"/> 
+                                </p:column>
+
+                                <p:column class="hardBreak" style="width: 15%;" filterBy="#{item.tache.totalmontantaloue}" filterMatchMode="contains" >
+                                    <f:facet name="header">
+                                        <h:outputText value="#{langue['common.montant_total']}"/>
+                                    </f:facet>
+                                    <h:outputText class="hardBreak" value="#{item.tache.totalmontantaloue}">
+                                        <f:convertNumber />
+                                    </h:outputText> 
+                                </p:column>
+
+                            </p:dataTable>
+
+                            <br/>
+
+                            <div class="row ml-md-2">
+                                <p:selectManyCheckbox id="grid_moyens" value="#{costingContratController.selectedMoyens}" layout="grid" columns="1" converter="moyensConverter">
+                                    <f:selectItems value="#{costingContratController.listMoyens}" var="t" itemLabel="#{t.idimputation.code} - #{t.idimputation.nom} / #{t.idtache.nom}" itemValue="#{t}" />
+                                    <p:ajax />
+                                </p:selectManyCheckbox>
+                            </div>
+
+                            <p:separator class="ml-md-2" />
+                            <p:commandButton value="#{langue['common.ajouter']}"
+                                             class="ml-md-2"
+                                             actionListener="#{costingContratController.addMoyenTotable()}"
+                                             update="grid_moyens,:MoyensForm:datalist_1,:TacheForm:datalist,:filtre:montant,:NotifZone"
+                                             icon="ui-icon-plus" />
+                        </h:form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <br/>
+
+        <div class="card">
+            <div class="card-header bg-success">#{langue.costing_indicateurs}</div>
+
+            <div class="card-body">
+                <h:form id="MoyensForm">
+
+                    <p:dataTable id="datalist_1" value="#{costingContratController.contratMoyens}" var="item"                             
+                                 paginator="true"
+                                 editable="true"
+                                 editMode="cell"
+                                 rows="#{costingContratController.contratMoyens.size()}"
+                                 rowsPerPageTemplate="10,20,30,40,50"
+                                 style="margin-top: 1%;font-size: 15px"
+                                 rowIndexVar="index"
+                                 emptyMessage="#{langue['common.tableau_vide']}">
+
+                        <p:column class="hardBreak" style="width: 15%;" filterMatchMode="contains" filterBy="#{item.moyens.idtache.idactivite.idaction.nom}" >
+                            <f:facet name="header">
+                                <h:outputText value="#{langue.action}"/>
+                            </f:facet>
+                            <h:outputText class="hardBreak" value="#{item.moyens.idtache.idactivite.idaction.code} - #{item.moyens.idtache.idactivite.idaction.nom}"/> 
+                        </p:column>
+
+                        <p:column class="hardBreak" style="width: 15%;" filterMatchMode="contains" filterBy="#{item.moyens.idtache.nom}" >
+                            <f:facet name="header">
+                                <h:outputText value="#{langue.tache}"/>
+                            </f:facet>
+                            <h:outputText class="hardBreak" value="#{item.moyens.idtache.nom}"/> 
+                        </p:column>
+
+                        <p:column class="hardBreak" style="width: 20%;" filterMatchMode="contains" filterBy="#{item.moyens.idimputation.nicename}"  >
+                            <f:facet name="header">
+                                <h:outputText value="#{langue.paragraphe}"/>
+                            </f:facet>
+                            <h:outputText class="hardBreak" value="#{item.moyens.idimputation.code} - #{item.moyens.idimputation.nicename} [#{item.observationAuto}]"/> 
+                        </p:column>
+
+                        <p:column style="width: 7% ; text-align:right" filterMatchMode="contains" filterBy="#{item.cu}" headerText="#{langue['common.cu']}">
+                            <p:cellEditor>
+                                <f:facet name="output">
+                                    <h:outputText value="#{item.cu}" >
+                                        <f:convertNumber />
+                                    </h:outputText>                                         
+                                </f:facet>
+                                <f:facet name="input">
+                                    <p:inputText style="width: 100%"  required="true" value="#{item.cu}">
+                                        <p:ajax event="keyup" />
+                                        <f:convertNumber />
+                                    </p:inputText>
+                                </f:facet>
+                            </p:cellEditor>
+                        </p:column>
+
+                        <p:column style="width: 5%;text-align: center">
+                            <f:facet name="header">
+                                <h:outputText value="#{langue['common.qte']}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.quantite}">
+                                <f:convertNumber />
+                            </h:outputText> 
+                        </p:column>
+
+                        <p:column class="hardBreak" style="width: 9%;text-align: center" filterMatchMode="contains" filterBy="#{item.ct}" >
+                            <f:facet name="header">
+                                <h:outputText value="MT"/>
+                            </f:facet>
+                            <h:outputText style="text-align: right" value="#{item.ct}">
+                                <f:convertNumber />
+                            </h:outputText> 
+                        </p:column>
+
+                        <p:column style="width: 20% ; text-align:left" headerText="#{langue.observations}">
+                            <p:cellEditor>
+                                <f:facet name="output">
+                                    <h:outputText value="#{item.observation}" />                                         
+                                </f:facet>
+                                <f:facet name="input">
+                                    <p:inputTextarea style="width: 100%" rows="3" required="true" value="#{item.observation}">
+                                        <p:ajax event="keyup" />
+                                    </p:inputTextarea>
+                                </f:facet>
+                            </p:cellEditor>
+                        </p:column>
+
+                        <p:column style="width: 8%" >
+                            <f:facet name="header">
+                                <h:outputText value="Action"/>
+                            </f:facet>
+                            <p:commandButton icon="ui-icon-trash">
+                                <p:ajax event="click" update=":TacheForm:grid_moyens,MoyensForm,:NotifZone" listener="#{costingContratController.removeMoyens(item)}" />
+                            </p:commandButton>
+                            <p:commandButton icon="ui-icon-pencil">
+                                <p:ajax event="click" update=":CostingQteEditForm,MoyensForm" listener="#{costingContratController.prepareEditCostingQte(item)}" />
+                            </p:commandButton>
+                        </p:column>
+
+                    </p:dataTable>
+
+                    <br/>
+
+                    <div class="row">
+                        <h:outputText id="total_contract" style="margin-left: 63%" value="#{costingContratController.contrat.montant}" > <f:convertNumber />  </h:outputText>
+                    </div>
+
+                    <p:commandButton actionListener="#{costingContratController.forward()}"
+                                     value="#{langue['common.retour']}"/>
+
+                    <p:commandButton value="#{langue['common.enregistrer']}"
+                                     actionListener="#{costingContratController.save()}"
+                                     update="MoyensForm,:NotifZone"/>
+                </h:form>
+            </div>
+        </div>
+
+
+        <ui:include src="CostingQte.xhtml" />
+
+    </ui:define>
+</ui:composition>

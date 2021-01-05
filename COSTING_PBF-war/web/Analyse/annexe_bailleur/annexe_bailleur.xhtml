@@ -1,0 +1,115 @@
+<ui:composition 
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    template="/s2b_template/template.xhtml"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:jsf="http://xmlns.jcp.org/jsf"
+    xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:define name="contenu" >
+
+        <h1 class="mt-4"></h1>
+        <ol class="breadcrumb mb-4">
+            <li class="breadcrumb-item active">#{langue['chronogramme.gestion']}</li>
+        </ol>
+
+        <h:form id="NotifZone">
+            <p:growl id="grow_msg" />
+
+            <p:messages id="growl" closable="true">
+                <p:effect type="pulsate" event="load" delay="50" />
+            </p:messages>
+        </h:form>
+
+
+        <h:form id="MoyensForm">
+
+            <div class="row">
+                <div class="ml-md-2">
+                    <div class="form-group">
+                        <label>#{langue.periode}</label>
+                        <h:selectOneMenu id="periode" class="form-control" value="#{analyseBController.idPeriode}" required="true">
+                            <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="0" />
+                            <f:selectItems value="#{analyseBController.periodes}" var="p" itemLabel="#{p.nom}" itemValue="#{p.idperiode}" />                                    
+                            <p:ajax listener="#{analyseBController.updateData()}" update="MoyensForm" />
+                        </h:selectOneMenu>                            
+                    </div>
+                </div>           
+            </div>
+
+            <div class="row">
+
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header bg-success">#{langue.tableau_comparatif_financement}</div>
+                        <div class="card-body">
+
+                            <div class="table-responsive">
+                                <table class="table table-bordered" id="dataTable" jsf:id="datalist_" width="100%" cellspacing="0">
+                                    <thead>
+                                        <tr>
+                                            <th style="width: 40%">#{langue.bailleur_fond}</th>
+                                            <th style="width: 15%">#{langue['common.montant_disponible']}</th>
+                                            <th style="width: 15%">#{langue['common.montant_programme']}</th>
+                                            <th style="width: 15%">#{langue.gap}</th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+                                        <ui:repeat value="#{analyseBController.analyses}" var="item">
+                                            <tr>
+                                                <td>#{item.bailleurfondoriginefinancement.idoriginefinancement.nom} #{item.bailleurfondoriginefinancement.pourcentage} %</td>
+                                                <td><h:outputText value="#{item.montantDisponible}"> <f:convertNumber/> </h:outputText></td>
+                                                <td><h:outputText value="#{item.montantProgramme}"> <f:convertNumber/> </h:outputText></td>
+                                                <td><h:outputLabel value="#{item.ecart}"> <f:convertNumber /> </h:outputLabel>  </td>                                    
+                                            </tr>
+                                        </ui:repeat>
+                                    </tbody>
+
+                                    <tfoot>
+                                        <tr>
+                                            <th colspan="">Totaux </th>                               
+                                            <th> <h:outputLabel value="#{analyseBController.montantTotalDisponible}"> <f:convertNumber />  </h:outputLabel>  </th>
+                                            <th> <h:outputLabel value="#{analyseBController.montantTotalProgramme}"> <f:convertNumber />  </h:outputLabel>  </th>
+                                            <th> <h:outputLabel value="#{analyseBController.ecart}"> <f:convertNumber />  </h:outputLabel>  </th>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-12 mt-4">
+                    <div class="card">
+                        <div class="card-header bg-success"></div>
+                        <div class="card-body">
+                            <p:chart type="bar" model="#{analyseBController.barModel}" style="height:500px"/>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 mt-4">
+                    <div class="card">
+                        <div class="card-header bg-success"></div>
+                        <div class="card-body">
+
+                            <p:chart type="pie" model="#{analyseBController.pieChartModel}" style="height:500px"/>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 mt-4">
+                    <div class="card">
+                        <div class="card-header bg-success"></div>
+                        <div class="card-body">                                                                           
+                            <p:chart type="pie" model="#{analyseBController.pieChartModel2}" style="height:500px"/>                                                      
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </h:form>
+    </ui:define>
+</ui:composition>

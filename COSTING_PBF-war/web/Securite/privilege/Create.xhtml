@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition>
+
+        <p:dialog id="AccessCreateDlg" 
+                  widgetVar="AccessCreateDialog" 
+                  modal="true" resizable="false" appendTo="@(body)" 
+                  header="#{langue['privilege.ajout_retrait']}" 
+                  closeOnEscape="true">
+
+            <h:form id="AccessCreateForm">
+
+                <h:panelGroup id="display" rendered="true">
+
+                    <center>
+
+                        <h:panelGrid columns="3" columnClasses="column">
+
+                            <p:outputLabel value="#{langue.utilisateur}" for="user" />
+                            <p:selectOneMenu value="#{privilegeController.compte.idCompte}" id="user" filter="true" required="true" requiredMessage="#{langue['common.valeur_requise']}">
+                                <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue=""/>
+                                <f:selectItems value="#{privilegeController.comptes}" var="item" itemLabel="#{item.idUtilisateur.nom} #{item.idUtilisateur.prenom}" itemValue="#{item.idCompte}"/> 
+                                <p:ajax update="access" listener="#{privilegeController.handleUserChange()}"/>
+                            </p:selectOneMenu>                        
+                            <p:message for="user" id="msg_user" />
+
+                        </h:panelGrid>
+                    </center>
+
+                    <p:pickList id="access" value="#{privilegeController.dualMenu}" var="menu" effect="bounce"
+                                itemValue="#{menu}" itemLabel="#{menu.nom}" showSourceControls="true" showTargetControls="true" showCheckbox="false"
+                                showSourceFilter="true" showTargetFilter="true" filterMatchMode="contains" converter="menuConverter">
+
+                        <f:facet name="sourceCaption">#{langues.items_disponibles}</f:facet>
+                        <f:facet name="targetCaption">#{langues.items_selectionnes}</f:facet>                            
+                    </p:pickList>
+
+                    <p:separator/>
+
+                    <center>
+                        <p:commandButton value="#{langue['common.annuler']}" 
+                                         oncomplete="PF('AccesCreerDialog').hide()" 
+                                         icon="ui-icon-close"/>
+                        <p:commandButton actionListener="#{privilegeController.save()}" value="#{langue['common.enregistrer']}" 
+                                         update="display,:AccessListerForm" 
+                                         icon="ui-icon-check"/>
+                    </center>
+
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

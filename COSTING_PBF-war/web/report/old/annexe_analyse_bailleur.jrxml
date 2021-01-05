@@ -1,0 +1,324 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="annexe_analyse_bailleur" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="b247eb05-0a23-43a6-b966-44697cec0329">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="idPeriode" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="idInstitution" class="java.lang.Long">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="idBudget" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="total_bailleur" class="java.lang.Double"/>
+	<queryString>
+		<![CDATA[SELECT
+     contrat_moyens."ct" AS contrat_moyens_ct,
+     tache."nom" AS tache_nom,
+     contrat."idcontrat" AS contrat_idcontrat,
+     activite."idactivite" AS activite_idactivite,
+     programme."idprogramme" AS programme_idprogramme,
+     action."idaction" AS action_idaction,
+     tache."idtache" AS tache_idtache,
+     structure."idinstitution" AS structure_idinstitution,
+     programme."idinstitution" AS programme_idinstitution,
+     contrat."idbudget" AS contrat_idbudget,
+     periode."idperiode" AS periode_idperiode,
+     periode."nom" AS periode_nom,
+     bailleurfond."nom" AS bailleurfond_nom,
+     bailleurfond."code" AS bailleurfond_code,
+     action."montantdisponible" AS action_montantdisponible,
+     programme."montantdisponible" AS programme_montantdisponible,
+     bailleurfond."idbailleurfond" AS bailleurfond_idbailleurfond,
+     bailleurfond."montantdisponible" AS bailleurfond_montantdisponible
+FROM
+     "public"."moyens" moyens INNER JOIN "public"."contrat_moyens" contrat_moyens ON moyens."idmoyens" = contrat_moyens."idmoyens"
+     INNER JOIN "public"."contrat" contrat ON contrat_moyens."idcontrat" = contrat."idcontrat"
+     INNER JOIN "public"."structure" structure ON contrat."idstructure" = structure."idstructure"
+     INNER JOIN "public"."periode" periode ON contrat."idperiode" = periode."idperiode"
+     INNER JOIN "public"."tache" tache ON structure."idstructure" = tache."idstructure"
+     AND moyens."idtache" = tache."idtache"
+     INNER JOIN "public"."activite" activite ON tache."idactivite" = activite."idactivite"
+     INNER JOIN "public"."bailleurfond" bailleurfond ON tache."idbailleurfond" = bailleurfond."idbailleurfond"
+     INNER JOIN "public"."action" action ON activite."idaction" = action."idaction"
+     INNER JOIN "public"."programme" programme ON action."idprogramme" = programme."idprogramme"
+WHERE
+     contrat.idperiode = $P{idPeriode}
+ AND structure.idinstitution = $P{idInstitution}
+ AND contrat.idbudget = $P{idBudget}
+ AND structure.etat = 'Actif'
+ORDER BY
+     bailleurfond.nom ASC,
+     programme.code ASC,
+     action.code ASC,
+     activite.code ASC,
+     tache.idtache ASC]]>
+	</queryString>
+	<field name="contrat_moyens_ct" class="java.lang.Double"/>
+	<field name="tache_nom" class="java.lang.String"/>
+	<field name="contrat_idcontrat" class="java.lang.Long"/>
+	<field name="activite_idactivite" class="java.lang.Long"/>
+	<field name="programme_idprogramme" class="java.lang.Long"/>
+	<field name="action_idaction" class="java.lang.Long"/>
+	<field name="tache_idtache" class="java.lang.Long"/>
+	<field name="structure_idinstitution" class="java.lang.Long"/>
+	<field name="programme_idinstitution" class="java.lang.Long"/>
+	<field name="contrat_idbudget" class="java.lang.Integer"/>
+	<field name="periode_idperiode" class="java.lang.Integer"/>
+	<field name="periode_nom" class="java.lang.String"/>
+	<field name="bailleurfond_nom" class="java.lang.String"/>
+	<field name="bailleurfond_code" class="java.lang.String"/>
+	<field name="action_montantdisponible" class="java.lang.Double"/>
+	<field name="programme_montantdisponible" class="java.lang.Double"/>
+	<field name="bailleurfond_idbailleurfond" class="java.lang.Long"/>
+	<field name="bailleurfond_montantdisponible" class="java.lang.Double"/>
+	<variable name="contrat_moyens_ct_1" class="java.lang.Double" resetType="Group" resetGroup="bailleur_fond_group" calculation="Sum">
+		<variableExpression><![CDATA[$F{contrat_moyens_ct}]]></variableExpression>
+	</variable>
+	<variable name="contrat_moyens_ct_2" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{contrat_moyens_ct}]]></variableExpression>
+	</variable>
+	<variable name="bailleurfond_montantdisponible_1" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{bailleurfond_montantdisponible}]]></variableExpression>
+	</variable>
+	<group name="bailleur_fond_group">
+		<groupExpression><![CDATA[$F{bailleurfond_idbailleurfond}]]></groupExpression>
+		<groupHeader>
+			<band height="36">
+				<textField isStretchWithOverflow="true">
+					<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="322" height="36" uuid="f870ea92-66f7-47dc-994e-0091c2f05cf2"/>
+					<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Times New Roman"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{bailleurfond_nom}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" evaluationTime="Group" evaluationGroup="bailleur_fond_group" pattern="#,##0">
+					<reportElement stretchType="RelativeToBandHeight" x="430" y="0" width="117" height="36" uuid="cbc0e58b-6890-4cfc-b5d0-2a3d63052e9d"/>
+					<box topPadding="2" bottomPadding="2" rightPadding="2">
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Times New Roman" size="11"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{contrat_moyens_ct_1}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" evaluationTime="Group" evaluationGroup="bailleur_fond_group" pattern="#,##0">
+					<reportElement stretchType="RelativeToBandHeight" x="547" y="0" width="117" height="36" uuid="cc59ebe8-aba9-47fd-8405-d66c9c13b329"/>
+					<box topPadding="2" bottomPadding="2" rightPadding="2">
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Times New Roman" size="11"/>
+					</textElement>
+					<textFieldExpression><![CDATA[($F{bailleurfond_montantdisponible} - $V{contrat_moyens_ct_1})]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" pattern="#,##0">
+					<reportElement stretchType="RelativeToBandHeight" x="322" y="0" width="108" height="36" uuid="ce5bb854-600c-40d1-b811-0009b031ed72"/>
+					<box topPadding="2" bottomPadding="2" rightPadding="2">
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Times New Roman" size="11"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{bailleurfond_montantdisponible}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band/>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="45" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="664" height="30" uuid="60cc00e6-6d9b-4a6e-a436-000d4fc65148"/>
+				<box>
+					<topPen lineWidth="0.5" lineStyle="Dashed"/>
+					<leftPen lineWidth="0.5" lineStyle="Dashed"/>
+					<bottomPen lineWidth="0.5" lineStyle="Dashed"/>
+					<rightPen lineWidth="0.5" lineStyle="Dashed"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="14"/>
+				</textElement>
+				<text><![CDATA[ANALYSE PAR SOURCE DE FINANCEMENT]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="33" splitType="Stretch">
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="0" width="322" height="33" backcolor="#F0F8FF" uuid="4cea7682-ac5d-4477-b566-cd2d366b9b73"/>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[Bailleur]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="322" y="0" width="108" height="33" backcolor="#F0F8FF" uuid="fbbd1bcb-03b0-4c68-9782-758027663dcd"/>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[Montant
+Disponible]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="430" y="0" width="117" height="33" backcolor="#F0F8FF" uuid="ee3d84dd-f658-4fc7-82e6-aaa3811bd2c1"/>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[Montant
+Programmé]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="547" y="0" width="117" height="33" backcolor="#F0F8FF" uuid="70a05ec2-4681-4370-ab08-3aabb0cfe4c4"/>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[GAP]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band splitType="Stretch"/>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="338" splitType="Stretch">
+			<textField isStretchWithOverflow="true" pattern="#,##0">
+				<reportElement stretchType="RelativeToBandHeight" mode="Opaque" x="430" y="0" width="117" height="29" backcolor="#F0F8FF" uuid="ed35b822-1a6c-49cc-8839-aeefd5d6a187"/>
+				<box topPadding="2" bottomPadding="2" rightPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{contrat_moyens_ct_2}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0">
+				<reportElement stretchType="RelativeToBandHeight" mode="Opaque" x="322" y="0" width="108" height="29" backcolor="#F0F8FF" uuid="7c2f362e-8558-4491-8fe3-8cce49511233"/>
+				<box topPadding="2" bottomPadding="2" rightPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{total_bailleur}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0">
+				<reportElement stretchType="RelativeToBandHeight" mode="Opaque" x="547" y="0" width="117" height="29" backcolor="#F0F8FF" uuid="a052a0ec-a11f-4ad7-aec5-6d97065e2279"/>
+				<box topPadding="2" bottomPadding="2" rightPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($P{total_bailleur} - $V{contrat_moyens_ct_2})]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToBandHeight" mode="Opaque" x="0" y="0" width="322" height="29" backcolor="#F0F8FF" uuid="bc1a9495-7769-45b1-b8a7-a8b79dce1183"/>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Total"]]></textFieldExpression>
+			</textField>
+			<barChart>
+				<chart>
+					<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="11" y="47" width="779" height="274" uuid="41927bf4-e01d-415e-8a63-7c6e5a97f774"/>
+					<chartTitle/>
+					<chartSubtitle/>
+					<chartLegend/>
+				</chart>
+				<categoryDataset>
+					<categorySeries>
+						<seriesExpression><![CDATA["Montant disponible"]]></seriesExpression>
+						<categoryExpression><![CDATA[$F{bailleurfond_nom}]]></categoryExpression>
+						<valueExpression><![CDATA[$F{bailleurfond_montantdisponible}]]></valueExpression>
+					</categorySeries>
+					<categorySeries>
+						<seriesExpression><![CDATA["Montant programmé"]]></seriesExpression>
+						<categoryExpression><![CDATA[$F{bailleurfond_nom}]]></categoryExpression>
+						<valueExpression><![CDATA[$F{contrat_moyens_ct}]]></valueExpression>
+					</categorySeries>
+				</categoryDataset>
+				<barPlot>
+					<plot/>
+					<itemLabel/>
+					<categoryAxisFormat>
+						<axisFormat/>
+					</categoryAxisFormat>
+					<valueAxisFormat>
+						<axisFormat/>
+					</valueAxisFormat>
+				</barPlot>
+			</barChart>
+		</band>
+	</summary>
+</jasperReport>

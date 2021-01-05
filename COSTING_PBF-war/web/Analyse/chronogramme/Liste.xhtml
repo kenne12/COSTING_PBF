@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:jsf="http://xmlns.jcp.org/jsf">
+
+    <h:form id="NotifZone">
+        <p:growl id="grow_msg" />
+
+        <p:messages id="growl" closable="true">
+            <p:effect type="pulsate" event="load" delay="50" />
+        </p:messages>
+    </h:form>
+
+    <h:form id="ActionListerForm">
+
+        <div class="card">
+
+            <div style="color: white" class="card-header bg-success">#{langue['contrat.list']}</div>
+
+            <div class="card-body">
+
+                <div class="row">
+                    <div class="col-md-2">
+                        <h:selectOneMenu id="structure" class="form-control" value="#{impressionAnnexeController.idPeriode}" required="true">
+                            <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="0" />
+                            <f:selectItems value="#{impressionAnnexeController.periodes}" var="p" itemLabel="#{p.nom}" itemValue="#{p.idperiode}" />                                    
+                            <p:ajax listener="#{impressionAnnexeController.filtreContrat()}" update="ActionListerForm" />
+                        </h:selectOneMenu>
+
+                    </div>
+
+                    <div class="col-md-2">
+                        <p:commandButton class="btn btn-primary btn-sm" value="Imprimer PDF" style="margin-left: 3px" ajax="false" icon="ui-icon-print" actionListener="#{impressionAnnexeController.printChronogramme('pdf')}" />       
+                    </div>
+                    
+                    <div class="col-md-3">
+                        <p:commandButton class="btn btn-primary btn-sm" value="Imprimer DOCX" style="margin-left: 3px" ajax="false" icon="ui-icon-print" actionListener="#{impressionAnnexeController.printChronogramme('docx')}" />       
+                    </div>
+                </div>
+
+                <br/>
+                
+                <div class="table-responsive">
+                    <table class="table table-bordered" id="dataTable" jsf:id="datalist" width="100%" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th style="width: 20%">#{langue.structure}</th>
+                                <th style="width: 45%">#{langue['common.libelle']}</th>
+                                <th style="width: 15%">#{langue.periode}</th>
+                                <th style="width: 10%">#{langue['common.montant']}</th>
+                            </tr>
+                        </thead>
+
+                        <tfoot>
+                            <tr>
+                                <th colspan="3">Totaux </th>                               
+                                <th> <h:outputLabel value="#{impressionAnnexeController.montantTotal}"> <f:convertNumber />  </h:outputLabel>  </th>
+                            </tr>
+                        </tfoot>
+
+                        <tbody>
+                            <ui:repeat value="#{impressionAnnexeController.contrats}" var="item">
+                                <tr>
+                                    <td>#{item.idstructure.nom}</td>
+                                    <td>#{item.libelle}</td>
+                                    <td>#{item.idperiode.nom}</td>
+                                    <td><h:outputLabel value="#{item.montant}"> <f:convertNumber /> </h:outputLabel>  </td>                                    
+                                </tr>
+                            </ui:repeat>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </h:form>
+
+    <!-- ****************************************Information************************************************************************************************************************************************************************************************************** -->
+
+    <p:dialog id="notify1" widgetVar="NotifyDialog1" height="400" width="700" resizable="true" responsive="true" modal="true" style="text-align: center; font-size: 14px; font-family: Cambria;">
+        <f:facet name="header">
+            <h:outputText style="font-family: Cambria; font-size: 14px;" value="#{activiteController.routine.titleNotify}" />
+        </f:facet>
+        <h:form id="NotifyForm1">
+            <h:graphicImage id="nt_img" url="#{activiteController.routine.iconMessage}" style="cursor:pointer" />
+
+            <hr size="3" style="background-color: cornflowerblue;"/>
+
+            <h:outputText id="nt_msg" value="#{activiteController.routine.message}"/>
+
+            <hr size="3" style="background-color: cornflowerblue; margin-top: 5%;"/>
+
+            <p:commandButton style="font-family: Cambria; font-size: 14px;" value="#{langue['common.fermer']}" onclick="PF('NotifyDialog1').hide()" type="button" immediate="true"/>
+
+            <hr size="3" style="background-color: cornflowerblue;"/>
+        </h:form>
+    </p:dialog>
+
+    <!-- ****************************************Information************************************************************************************************************************************************************************************************************** -->
+</ui:composition>
