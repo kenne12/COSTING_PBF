@@ -44,4 +44,6 @@ public interface CostingContratQteFacadeLocal {
 
     List<CostingContratQte> findByIdContrat(long idContrat, boolean etatTache);
 
+    List<CostingContratQte> findByIdStructureIdBudgetIdPeriodeIdActivite(long idStructure, int idBudget, int idPeriode, long idActivite , boolean etat);
+
 }

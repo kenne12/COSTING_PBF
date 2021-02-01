@@ -6,6 +6,8 @@
 package controllers.costing_contrat;
 
 import controllers.util.SessionMBean;
+import entities.Action;
+import entities.Activite;
 import entities.Budget;
 import entities.Contrat;
 import entities.ContratMoyens;
@@ -14,12 +16,15 @@ import entities.CostingContratQte;
 import entities.Frequence;
 import entities.Moyens;
 import entities.Periode;
+import entities.Programme;
 import entities.Structure;
 import entities.UniteCosting;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.faces.context.FacesContext;
+import sessions.ActionFacadeLocal;
+import sessions.ActiviteFacadeLocal;
 import sessions.BudgetFacadeLocal;
 import sessions.ContratFacadeLocal;
 import sessions.ContratMoyensFacadeLocal;
@@ -28,6 +33,7 @@ import sessions.CostingContratQteFacadeLocal;
 import sessions.FrequenceFacadeLocal;
 import sessions.MoyensFacadeLocal;
 import sessions.PeriodeFacadeLocal;
+import sessions.ProgrammeFacadeLocal;
 import sessions.StructureFacadeLocal;
 import sessions.UniteCostingFacadeLocal;
 import utils.Routine;
@@ -85,6 +91,21 @@ public class AbstractCostingContrat {
     protected UniteCostingFacadeLocal uniteCostingFacadeLocal;
     protected List<UniteCosting> uniteCostings = new ArrayList<>();
     protected List<UniteCosting> selectedUniteCostings = new ArrayList<>();
+
+    @EJB
+    protected ProgrammeFacadeLocal programmeFacadeLocal;
+    protected Programme programme = new Programme();
+    protected List<Programme> programmes = new ArrayList<>();
+
+    @EJB
+    protected ActionFacadeLocal actionFacadeLocal;
+    protected Action action = new Action();
+    protected List<Action> actions = new ArrayList<>();
+
+    @EJB
+    protected ActiviteFacadeLocal activiteFacadeLocal;
+    protected Activite activite = new Activite();
+    protected List<Activite> activites = new ArrayList<>();
 
     protected double montantTotal;
 
@@ -197,6 +218,47 @@ public class AbstractCostingContrat {
 
     public List<CostingContratQte> getCostingContratQtesAll() {
         return costingContratQtesAll;
+    }
+
+    public Programme getProgramme() {
+        return programme;
+    }
+
+    public void setProgramme(Programme programme) {
+        this.programme = programme;
+    }
+
+    public List<Programme> getProgrammes() {
+        programmes = programmeFacadeLocal.findByIdinstitution(SessionMBean.getInstitution().getIdinstitution());
+        return programmes;
+    }
+
+    public Action getAction() {
+        return action;
+    }
+
+    public void setAction(Action action) {
+        this.action = action;
+    }
+
+    public List<Action> getActions() {
+        return actions;
+    }
+
+    public Activite getActivite() {
+        return activite;
+    }
+
+    public void setActivite(Activite activite) {
+        this.activite = activite;
+    }
+
+    public List<Activite> getActivites() {
+        return activites;
+    }
+
+    public void setActivites(List<Activite> activites) {
+        this.activites = activites;
     }
 
 }

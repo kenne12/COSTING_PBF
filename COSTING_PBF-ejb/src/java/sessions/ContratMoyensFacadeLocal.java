@@ -46,4 +46,6 @@ public interface ContratMoyensFacadeLocal {
 
     List<ContratMoyens> findByIdTache(Long idTache);
 
+    List<ContratMoyens> findByIdPeriodeIdActivite(int idPeriode, long idInstitution, int idBudget, long idActivite, boolean etatTache);
+
 }

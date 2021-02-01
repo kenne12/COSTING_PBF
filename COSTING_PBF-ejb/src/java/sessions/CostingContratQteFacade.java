@@ -81,12 +81,18 @@ public class CostingContratQteFacade extends AbstractFacade<CostingContratQte> i
         query.setParameter("idContrat", idContrat);
         return query.getResultList();
     }
-    
-    
+
     @Override
-    public List<CostingContratQte> findByIdContrat(long idContrat , boolean etatTache) {
+    public List<CostingContratQte> findByIdContrat(long idContrat, boolean etatTache) {
         Query query = em.createQuery("SELECT c FROM CostingContratQte c WHERE c.idcontrat.idcontrat=:idContrat AND c.etat=:etat");
         query.setParameter("idContrat", idContrat).setParameter("etat", etatTache);
+        return query.getResultList();
+    }
+
+    @Override
+    public List<CostingContratQte> findByIdStructureIdBudgetIdPeriodeIdActivite(long idStructure, int idBudget, int idPeriode, long idActivite, boolean etat) {
+        Query query = em.createQuery("SELECT c FROM CostingContratQte c WHERE c.idmoyens.idtache.idactivite.idstructure.idstructure=:idStructure AND c.idmoyens.idtache.idbudget.idbudget=:idBudget AND c.idcontrat.idperiode.idperiode=:idPeriode AND c.idmoyens.idtache.idactivite.idactivite=:idActivite AND c.etat=:etat");
+        query.setParameter("idStructure", idStructure).setParameter("idBudget", idBudget).setParameter("idPeriode", idPeriode).setParameter("idActivite", idActivite).setParameter("etat", etat);
         return query.getResultList();
     }
 

@@ -89,7 +89,7 @@
 
                 <div class="card " >
 
-                    <div class="card-header bg-success">#{langue['tache.list']}</div>
+                    <div class="card-header bg-success">#{langue['contrat.ajout_des_paragraphes']}</div>
 
                     <div class="card-body">
 
@@ -103,11 +103,20 @@
                             </div>
 
                             <p:separator class="ml-md-2" />
+                            
+                            <p:commandButton value="#{langue.charger}"
+                                             class="ml-md-2"
+                                             actionListener="#{costingContratController.loadMoyens()}"
+                                             update="grid_moyens"
+                                             icon="ui-icon-refresh" />
+                            
                             <p:commandButton value="#{langue['common.ajouter']}"
                                              class="ml-md-2"
                                              actionListener="#{costingContratController.addMoyenTotable()}"
                                              update="grid_moyens,:MoyensForm:datalist_1,:filtre:montant,:NotifZone"
                                              icon="ui-icon-plus" />
+                            
+                            
                         </h:form>
                     </div>
                 </div>
@@ -115,6 +124,41 @@
         </div>
 
         <br/>
+
+        <h:form>
+
+            <div class="row">
+                <div class="form-group col-md-4">
+                    <label>#{langue.programme}</label>
+                    <h:selectOneMenu class="form-control" value="#{costingContratController.programme.idprogramme}">
+                        <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="0" />
+                        <f:selectItems value="#{costingContratController.programmes}" var="prg" itemLabel="#{prg.code} - #{prg.nom}" itemValue="#{prg.idprogramme}" />
+                        <p:ajax update="id_filtre_action" listener="#{costingContratController.updateAction()}" />
+                    </h:selectOneMenu>
+                </div>
+
+                <div class="form-group col-md-4">
+                    <label>#{langue.action}</label>
+                    <h:selectOneMenu class="form-control" id="id_filtre_action" value="#{costingContratController.action.idaction}">
+                        <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="0" />
+                        <f:selectItems value="#{costingContratController.actions}" var="act" itemLabel="#{act.code} - #{act.nom}" itemValue="#{act.idaction}" />
+                        <p:ajax update="id_filtre_activite" listener="#{costingContratController.updateActivite()}" />
+                    </h:selectOneMenu>
+                </div>
+
+                <div class="form-group col-md-4">
+                    <label>#{langue.activite}</label>
+                    <h:selectOneMenu class="form-control" id="id_filtre_activite" value="#{costingContratController.activite.idactivite}">
+                        <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="0" />
+                        <f:selectItems value="#{costingContratController.activites}" var="activite" itemLabel="#{activite.code} - #{activite.nom}" itemValue="#{activite.idactivite}" />
+                    </h:selectOneMenu>
+                </div>
+                 
+            </div>
+            <p:commandButton class="btn btn-primary" value="Rechercher" update="MoyensForm" 
+                                 actionListener="#{costingContratController.searchCosting()}" />
+
+        </h:form>
 
         <div class="card">
             <div class="card-header bg-success">#{langue.costing_indicateurs}</div>
@@ -229,7 +273,6 @@
                 </h:form>
             </div>
         </div>
-
 
         <ui:include src="CostingQte.xhtml" />
 

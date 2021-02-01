@@ -6,11 +6,15 @@
 package controllers.costing_contrat;
 
 import controllers.util.JsfUtil;
+import controllers.util.SessionMBean;
+import entities.Action;
+import entities.Activite;
 import entities.Contrat;
 import entities.ContratMoyens;
 import entities.ContratMoyensPK;
 import entities.CostingContratQte;
 import entities.Moyens;
+import entities.Programme;
 import entities.UniteCosting;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -35,44 +39,49 @@ public class CostingContratController extends AbstractCostingContrat implements 
     
     public void prepareEdit(Contrat c) {
         this.contrat = c;
-        if (c != null) {
-            mode = "Edit";
-            selectedMoyens.clear();
-            listMoyens.clear();
-            structure = c.getIdstructure();
-            contratTaches = contratTacheFacadeLocal.findByIdContrat(c.getIdcontrat(), true);
-            
-            contratMoyens = contratMoyensFacadeLocal.findByIdContrat(c.getIdcontrat());
-            
-            List<ContratMoyens> listInactifs = new ArrayList<>();
-            costingContratQtesAll = costingContratQteFacadeLocal.findByIdContrat(c.getIdcontrat(), true);
-            
-            if (!contratMoyens.isEmpty()) {
-                contratMoyens.forEach(cm -> {
-                    selectedMoyens.add(cm.getMoyens());
-                    if (!cm.isEtat()) {
-                        listInactifs.add(cm);
-                    }
-                });
-            }
-            
-            List<Moyens> list = new ArrayList<>();
-            contratTaches.forEach(ct -> {
-                list.addAll(moyensFacadeLocal.findByTache(ct.getTache().getIdtache()));
-            });
-            
-            list.removeAll(selectedMoyens);
-            listMoyens.addAll(list);
-            
-            periodes.clear();
-            periodes.add(contrat.getIdperiode());
-            selectedMoyens.clear();
-            contratMoyens.removeAll(listInactifs);
-            try {
-                FacesContext.getCurrentInstance().getExternalContext().redirect(this.sc + "/Traitement/costing_contrat/Ajout.html");
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+        structure = c.getIdstructure();
+        mode = "Edit";
+        periodes.clear();
+        periodes.add(contrat.getIdperiode());
+        selectedMoyens.clear();
+        listMoyens.clear();
+        activites.clear();
+        actions.clear();
+        activite = new Activite();
+        programme = new Programme();
+        action = new Action();
+        
+        costingContratQtesAll = costingContratQteFacadeLocal.findByIdContrat(c.getIdcontrat(), true);
+        costingContratQtes.clear();
+        /*contratTaches = contratTacheFacadeLocal.findByIdContrat(c.getIdcontrat(), true);
+         contratMoyens = contratMoyensFacadeLocal.findByIdContrat(c.getIdcontrat());
+
+         List<ContratMoyens> listInactifs = new ArrayList<>();
+         
+
+         if (!contratMoyens.isEmpty()) {
+         contratMoyens.forEach(cm -> {
+         selectedMoyens.add(cm.getMoyens());
+         if (!cm.isEtat()) {
+         listInactifs.add(cm);
+         }
+         });
+         }
+
+         List<Moyens> list = new ArrayList<>();
+         contratTaches.forEach(ct -> {
+         list.addAll(moyensFacadeLocal.findByTache(ct.getTache().getIdtache()));
+         });
+
+         list.removeAll(selectedMoyens);
+         listMoyens.addAll(list);
+
+         selectedMoyens.clear();
+         contratMoyens.removeAll(listInactifs);*/
+        try {
+            FacesContext.getCurrentInstance().getExternalContext().redirect(this.sc + "/Traitement/costing_contrat/Ajout.html");
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
     
@@ -111,6 +120,7 @@ public class CostingContratController extends AbstractCostingContrat implements 
                 cp.setIduniteCosting(uc);
                 cp.setQuantite(1d);
                 cp.setIdmoyens(contratMoyen.getMoyens());
+                cp.setEtat(true);
                 costingContratQtes.add(cp);
                 costingContratQtesAll.add(cp);
             }
@@ -162,12 +172,12 @@ public class CostingContratController extends AbstractCostingContrat implements 
             if (i == 0) {
                 if (cp.getQuantite() != null && cp.getQuantite() > 0) {
                     sommeQte = cp.getQuantite();
-                    observation = cp.getQuantite() + " X " + cp.getIduniteCosting().getNom();
+                    observation = cp.getQuantite() + " X " + cp.getIduniteCosting().getNom()+" ; ";
                 }
             } else {
                 if (cp.getQuantite() != null && cp.getQuantite() > 0) {
                     sommeQte = sommeQte * cp.getQuantite();
-                    observation += " " + cp.getQuantite() + " X " + cp.getIduniteCosting().getNom();
+                    observation += " " + cp.getQuantite() + " X " + cp.getIduniteCosting().getNom()+" ; ";
                 }
             }
             i++;
@@ -178,8 +188,8 @@ public class CostingContratController extends AbstractCostingContrat implements 
         contratMoyen.setCt((contratMoyen.getCu() * contratMoyen.getQuantite()));
         int index = returnIndexMoyens(contratMoyen);
         contratMoyens.set(index, contratMoyen);
-        
-        this.calculMontant();
+
+        //this.calculMontant()
         this.contratFacadeLocal.edit(contrat);
         RequestContext.getCurrentInstance().execute("PF('CostingQteEditDialog').hide()");
         JsfUtil.addErrorMessage(routine.localizeMessage("notification.operation_reussie"));
@@ -211,6 +221,30 @@ public class CostingContratController extends AbstractCostingContrat implements 
         } catch (Exception e) {
             JsfUtil.addFatalErrorMessage("Exception survénue");
             e.printStackTrace();
+        }
+    }
+    
+    public void updateAction() {
+        actions.clear();
+        if (!programme.getIdprogramme().equals(0)) {
+            actions = actionFacadeLocal.findByProgramme(programme.getIdprogramme());
+        }
+    }
+    
+    public void updateActivite() {
+        activites.clear();
+        if (!action.getIdaction().equals(0)) {
+            activites = activiteFacadeLocal.findByAction(action.getIdaction());
+        }
+    }
+    
+    public void searchCosting() {
+        contratMoyens.clear();
+        costingContratQtesAll.clear();
+        costingContratQtes.clear();
+        if (!activite.getIdactivite().equals(0l)) {
+            contratMoyens = contratMoyensFacadeLocal.findByIdPeriodeIdActivite(contrat.getIdperiode().getIdperiode(), SessionMBean.getInstitution().getIdinstitution(), SessionMBean.getBudget().getIdbudget(), activite.getIdactivite(), true);
+            costingContratQtesAll = costingContratQteFacadeLocal.findByIdStructureIdBudgetIdPeriodeIdActivite(structure.getIdstructure(), SessionMBean.getBudget().getIdbudget(), contrat.getIdperiode().getIdperiode(), activite.getIdactivite(), true);
         }
     }
     
@@ -266,6 +300,32 @@ public class CostingContratController extends AbstractCostingContrat implements 
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+    
+    public void loadMoyens() {
+        
+        listMoyens.clear();
+        List<ContratMoyens> listCms = contratMoyensFacadeLocal.findByIdContrat(contrat.getIdcontrat());
+        
+        if (!listCms.isEmpty()) {
+            listCms.forEach(cm -> {
+                if (cm.isEtat()) {
+                    selectedMoyens.add(cm.getMoyens());
+                }
+            });
+        }
+        
+        contratTaches = contratTacheFacadeLocal.findByIdContrat(contrat.getIdcontrat(), true);
+        List<Moyens> list = new ArrayList<>();
+        contratTaches.forEach(ct -> {
+            list.addAll(moyensFacadeLocal.findByTache(ct.getTache().getIdtache()));
+        });
+        
+        list.removeAll(selectedMoyens);
+        listMoyens.addAll(list);
+        selectedMoyens.clear();
+        
+        costingContratQtesAll = costingContratQteFacadeLocal.findByIdContrat(contrat.getIdcontrat(), true);
     }
     
     public void addMoyenTotable() {
@@ -332,10 +392,7 @@ public class CostingContratController extends AbstractCostingContrat implements 
                 return;
             }
             
-            this.sommeContrat();
-            
             if ("Edit".equals(mode)) {
-                contratFacadeLocal.edit(contrat);
                 
                 for (ContratMoyens cm : contratMoyens) {
                     if (cm.getContrat() == null) {
@@ -363,6 +420,9 @@ public class CostingContratController extends AbstractCostingContrat implements 
                     }
                 }
                 
+                contrat.setMontant(this.calculMontantContrat(contrat));
+                contratFacadeLocal.edit(contrat);
+                
                 contratMoyens.clear();
                 contratTaches.clear();
                 costingContratQtes.clear();
@@ -386,6 +446,15 @@ public class CostingContratController extends AbstractCostingContrat implements 
     public String formatToStringMoney(Double montant) {
         double value = montant;
         return utilitaire.Utilitaires.formaterStringMoney(value);
+    }
+    
+    private double calculMontantContrat(Contrat contrat) {
+        List<ContratMoyens> list = contratMoyensFacadeLocal.findByIdContrat(contrat.getIdcontrat(), true);
+        double montant = 0;
+        for (ContratMoyens ccq : list) {
+            montant += ccq.getCt();
+        }
+        return montant;
     }
     
 }
