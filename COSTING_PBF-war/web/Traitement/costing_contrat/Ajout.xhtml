@@ -95,44 +95,6 @@
 
                         <h:form id="TacheForm">
 
-                            <p:dataTable id="datalist" value="#{costingContratController.contratTaches}" var="item"                             
-                                         paginator="true"
-                                         editable="true"
-                                         editMode="cell"
-                                         rows="15"
-                                         rowsPerPageTemplate="10,20,30,40,50"
-                                         style="width: 98%;margin-left: 1%;margin-top: 1%;font-size: 15px"
-                                         rowIndexVar="index"
-                                         emptyMessage="#{langue['common.tableau_vide']}">
-                                
-                                
-                                <p:column class="hardBreak" style="width: 40%;" filterBy="#{item.tache.idactivite.code} - #{item.tache.idactivite.nom}" filterMatchMode="contains" >
-                                    <f:facet name="header">
-                                        <h:outputText value="#{langue.activite}"/>
-                                    </f:facet>
-                                    <h:outputText class="hardBreak" value="#{item.tache.idactivite.code} - #{item.tache.idactivite.nom}"/> 
-                                </p:column>
-
-                                <p:column class="hardBreak" style="width: 35%;" filterBy="#{item.tache.nom}" filterMatchMode="contains" >
-                                    <f:facet name="header">
-                                        <h:outputText value="#{langue.tache}"/>
-                                    </f:facet>
-                                    <h:outputText class="hardBreak" value="#{item.tache.nom}"/> 
-                                </p:column>
-
-                                <p:column class="hardBreak" style="width: 15%;" filterBy="#{item.tache.totalmontantaloue}" filterMatchMode="contains" >
-                                    <f:facet name="header">
-                                        <h:outputText value="#{langue['common.montant_total']}"/>
-                                    </f:facet>
-                                    <h:outputText class="hardBreak" value="#{item.tache.totalmontantaloue}">
-                                        <f:convertNumber />
-                                    </h:outputText> 
-                                </p:column>
-
-                            </p:dataTable>
-
-                            <br/>
-
                             <div class="row ml-md-2">
                                 <p:selectManyCheckbox id="grid_moyens" value="#{costingContratController.selectedMoyens}" layout="grid" columns="1" converter="moyensConverter">
                                     <f:selectItems value="#{costingContratController.listMoyens}" var="t" itemLabel="#{t.idimputation.code} - #{t.idimputation.nom} / #{t.idtache.nom}" itemValue="#{t}" />
@@ -144,7 +106,7 @@
                             <p:commandButton value="#{langue['common.ajouter']}"
                                              class="ml-md-2"
                                              actionListener="#{costingContratController.addMoyenTotable()}"
-                                             update="grid_moyens,:MoyensForm:datalist_1,:TacheForm:datalist,:filtre:montant,:NotifZone"
+                                             update="grid_moyens,:MoyensForm:datalist_1,:filtre:montant,:NotifZone"
                                              icon="ui-icon-plus" />
                         </h:form>
                     </div>
