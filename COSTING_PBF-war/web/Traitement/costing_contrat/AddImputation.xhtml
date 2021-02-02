@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition>
+
+        <p:dialog id="ImputationCreateDlg" 
+                  widgetVar="ImputationCreateDialog" 
+                  modal="true" resizable="false" appendTo="@(body)" 
+                  header="#{langue['sous_critere.formulaire_creation']}"
+                  closeOnEscape="true"
+                  width="50%"
+                  height="600px">
+
+            <h:form id="ImputationCreateForm">
+
+                <h:panelGroup id="display">
+
+                    <div class="row">
+                        <div class="form-group col-md-12">
+                            <label>#{langue.indicateur_output}</label>
+                            <h:selectOneMenu  id="idparagraphe" class="form-control" value="#{costingContratController.imputation.idimputation}" required="true">
+                                <f:selectItem itemLabel="#{langue['common.choisir']}" itemValue="0" />
+                                <f:selectItems value="#{costingContratController.imputations}" var="im" itemLabel="#{im.code} - #{im.nicename}" itemValue="#{im.idimputation}" />                                    
+                                <p:ajax listener="#{costingContratController.updateCu()}" update="id_cu,m_t" />
+                            </h:selectOneMenu>                                                        
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group col-md-3">
+                            <label >#{langue['common.cout_unitaire']}</label>
+                            <h:inputText id="id_cu" value="#{costingContratController.moyens.cu}" class="form-control" >
+                                <p:ajax update="m_t" event="keyup" listener="#{costingContratController.updateMoyenLine()}" />
+                            </h:inputText>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group col-md-3">
+                            <label >#{langue['common.quantite']}</label>
+                            <h:inputText id="id_qte" value="#{costingContratController.moyens.qte}" class="form-control" >
+                                <p:ajax update="m_t" event="keyup" listener="#{costingContratController.updateMoyenLine()}" />
+                            </h:inputText>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group col-md-3">
+                            <label>#{langue['common.montant_total']}</label>
+                            <h:inputText id="m_t" disabled="true" value="#{costingContratController.moyens.ct}" class="form-control" >
+                                <f:convertNumber />
+                            </h:inputText>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>#{langue['common.observation']}</label>
+                        <h:inputTextarea id="observation" value="#{costingContratController.moyens.observation}" 
+                                         class="form-control"
+                                         rows="3"/>
+                    </div>
+
+                    <p:commandLink class="btn bg-success" style="color: white" 
+                                   update="m_t,id_cu,id_qte,idparagraphe,observation,:MoyensForm,:NotifZone:growl,:MoyensForm:total_contract" 
+                                   actionListener="#{costingContratController.addParagraphe()}" ><i class="fa fa-plus"></i>  #{langue['common.ajouter']}</p:commandLink>
+
+                    <p:separator />
+
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

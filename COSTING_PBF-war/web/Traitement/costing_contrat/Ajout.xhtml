@@ -115,8 +115,7 @@
                                              actionListener="#{costingContratController.addMoyenTotable()}"
                                              update="grid_moyens,:MoyensForm:datalist_1,:filtre:montant,:NotifZone"
                                              icon="ui-icon-plus" />
-                            
-                            
+                                                       
                         </h:form>
                     </div>
                 </div>
@@ -172,7 +171,7 @@
                                  editMode="cell"
                                  rows="#{costingContratController.contratMoyens.size()}"
                                  rowsPerPageTemplate="10,20,30,40,50"
-                                 style="margin-top: 1%;font-size: 15px"
+                                 style="margin-top: 1%;font-size: 13px"
                                  rowIndexVar="index"
                                  emptyMessage="#{langue['common.tableau_vide']}">
 
@@ -231,7 +230,7 @@
                             </h:outputText> 
                         </p:column>
 
-                        <p:column style="width: 20% ; text-align:left" headerText="#{langue.observations}">
+                        <p:column style="width: 18%; text-align:left" headerText="#{langue.observations}">
                             <p:cellEditor>
                                 <f:facet name="output">
                                     <h:outputText value="#{item.observation}" />                                         
@@ -244,7 +243,7 @@
                             </p:cellEditor>
                         </p:column>
 
-                        <p:column style="width: 8%" >
+                        <p:column style="width: 10%" >
                             <f:facet name="header">
                                 <h:outputText value="Action"/>
                             </f:facet>
@@ -253,6 +252,9 @@
                             </p:commandButton>
                             <p:commandButton icon="ui-icon-pencil">
                                 <p:ajax event="click" update=":CostingQteEditForm,MoyensForm" listener="#{costingContratController.prepareEditCostingQte(item)}" />
+                            </p:commandButton>
+                            <p:commandButton icon="ui-icon-plus">
+                                <p:ajax event="click" update=":ImputationCreateForm" listener="#{costingContratController.prepareAddMoyens(item)}" />
                             </p:commandButton>
                         </p:column>
 
@@ -275,6 +277,7 @@
         </div>
 
         <ui:include src="CostingQte.xhtml" />
+        <ui:include src="AddImputation.xhtml" />
 
     </ui:define>
 </ui:composition>

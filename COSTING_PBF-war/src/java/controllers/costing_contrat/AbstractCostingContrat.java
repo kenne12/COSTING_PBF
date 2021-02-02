@@ -14,10 +14,12 @@ import entities.ContratMoyens;
 import entities.ContratTache;
 import entities.CostingContratQte;
 import entities.Frequence;
+import entities.Imputation;
 import entities.Moyens;
 import entities.Periode;
 import entities.Programme;
 import entities.Structure;
+import entities.Tache;
 import entities.UniteCosting;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,10 +33,12 @@ import sessions.ContratMoyensFacadeLocal;
 import sessions.ContratTacheFacadeLocal;
 import sessions.CostingContratQteFacadeLocal;
 import sessions.FrequenceFacadeLocal;
+import sessions.ImputationFacadeLocal;
 import sessions.MoyensFacadeLocal;
 import sessions.PeriodeFacadeLocal;
 import sessions.ProgrammeFacadeLocal;
 import sessions.StructureFacadeLocal;
+import sessions.TacheFacadeLocal;
 import sessions.UniteCostingFacadeLocal;
 import utils.Routine;
 
@@ -79,6 +83,7 @@ public class AbstractCostingContrat {
 
     @EJB
     protected MoyensFacadeLocal moyensFacadeLocal;
+    protected Moyens moyens = new Moyens();
     protected List<Moyens> listMoyens = new ArrayList<>();
     protected List<Moyens> selectedMoyens = new ArrayList<>();
 
@@ -106,6 +111,16 @@ public class AbstractCostingContrat {
     protected ActiviteFacadeLocal activiteFacadeLocal;
     protected Activite activite = new Activite();
     protected List<Activite> activites = new ArrayList<>();
+
+    @EJB
+    protected TacheFacadeLocal tacheFacadeLocal;
+    protected Tache tache = new Tache();
+    protected List<Tache> taches = new ArrayList<>();
+
+    @EJB
+    protected ImputationFacadeLocal imputationFacadeLocal;
+    protected Imputation imputation = new Imputation();
+    protected List<Imputation> imputations = new ArrayList<>();
 
     protected double montantTotal;
 
@@ -257,8 +272,37 @@ public class AbstractCostingContrat {
         return activites;
     }
 
-    public void setActivites(List<Activite> activites) {
-        this.activites = activites;
+    public Tache getTache() {
+        return tache;
+    }
+
+    public void setTache(Tache tache) {
+        this.tache = tache;
+    }
+
+    public List<Tache> getTaches() {
+        return taches;
+    }
+
+    public Moyens getMoyens() {
+        return moyens;
+    }
+
+    public void setMoyens(Moyens moyens) {
+        this.moyens = moyens;
+    }
+
+    public Imputation getImputation() {
+        return imputation;
+    }
+
+    public void setImputation(Imputation imputation) {
+        this.imputation = imputation;
+    }
+
+    public List<Imputation> getImputations() {
+        imputations = imputationFacadeLocal.findAllOrder();
+        return imputations;
     }
 
 }

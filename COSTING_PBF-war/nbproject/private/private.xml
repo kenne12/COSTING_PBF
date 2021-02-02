@@ -4,6 +4,12 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/D:/batrapi%20projet%20jee/COSTING%20CONTRAT%20V1%20SEMESTRIEL/COSTING_PBF/COSTING_PBF-war/src/java/langues/langue_en.properties</file>
+            <file>file:/D:/batrapi%20projet%20jee/COSTING%20CONTRAT%20V1%20SEMESTRIEL/COSTING_PBF/COSTING_PBF-war/web/Traitement/costing_contrat/AddImputation.xhtml</file>
+            <file>file:/D:/batrapi%20projet%20jee/COSTING%20CONTRAT%20V1%20SEMESTRIEL/COSTING_PBF/COSTING_PBF-war/src/java/controllers/costing_contrat/CostingContratController.java</file>
+            <file>file:/D:/batrapi%20projet%20jee/COSTING%20CONTRAT%20V1%20SEMESTRIEL/COSTING_PBF/COSTING_PBF-war/web/Traitement/costing_contrat/CostingQte.xhtml</file>
+            <file>file:/D:/batrapi%20projet%20jee/COSTING%20CONTRAT%20V1%20SEMESTRIEL/COSTING_PBF/COSTING_PBF-war/src/java/controllers/costing_contrat/AbstractCostingContrat.java</file>
+            <file>file:/D:/batrapi%20projet%20jee/COSTING%20CONTRAT%20V1%20SEMESTRIEL/COSTING_PBF/COSTING_PBF-war/web/s2b_template/menu_top.xhtml</file>
+            <file>file:/D:/batrapi%20projet%20jee/COSTING%20CONTRAT%20V1%20SEMESTRIEL/COSTING_PBF/COSTING_PBF-war/web/Traitement/tache/Ajout.xhtml</file>
         </group>
     </open-files>
 </project-private>

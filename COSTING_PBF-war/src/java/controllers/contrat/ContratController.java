@@ -94,32 +94,32 @@ public class ContratController extends AbstractContrat implements Serializable {
     public void prepareEdit(Contrat c) {
         this.contrat = c;
         this.selectedTaches.clear();
-        
-            mode = "Edit";
 
-            structure = c.getIdstructure();
-            contratTaches = contratTacheFacadeLocal.findByIdContrat(c.getIdcontrat());
-            contratMoyens = contratMoyensFacadeLocal.findByIdContrat(c.getIdcontrat());
+        mode = "Edit";
 
-            contratMoyensTrue = contratMoyensFacadeLocal.findByIdContrat(c.getIdcontrat(), true);
+        structure = c.getIdstructure();
+        contratTaches = contratTacheFacadeLocal.findByIdContrat(c.getIdcontrat());
+        contratMoyens = contratMoyensFacadeLocal.findByIdContrat(c.getIdcontrat());
 
-            contrat.setMontant(this.sommeContrat(contratMoyensTrue));
+        contratMoyensTrue = contratMoyensFacadeLocal.findByIdContrat(c.getIdcontrat(), true);
 
-            taches = tacheFacadeLocal.findByIdStructureIdAnneIdPeriode(structure.getIdstructure(), SessionMBean.getAnnee().getIdannee(), contrat.getIdperiode().getIdperiode());
-            contratTaches.forEach(ct -> {
-                selectedTaches.add(ct.getTache());
-            });
+        contrat.setMontant(this.sommeContrat(contratMoyensTrue));
 
-            periodes.clear();
-            periodes.add(contrat.getIdperiode());
-            taches.removeAll(selectedTaches);
-            selectedTaches.clear();
-            try {
-                FacesContext.getCurrentInstance().getExternalContext().redirect(this.sc + "/Traitement/contrat/Ajout.html");
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        
+        taches = tacheFacadeLocal.findByIdStructureIdAnneIdPeriode(structure.getIdstructure(), SessionMBean.getAnnee().getIdannee(), contrat.getIdperiode().getIdperiode());
+        contratTaches.forEach(ct -> {
+            selectedTaches.add(ct.getTache());
+        });
+
+        periodes.clear();
+        periodes.add(contrat.getIdperiode());
+        taches.removeAll(selectedTaches);
+        selectedTaches.clear();
+        try {
+            FacesContext.getCurrentInstance().getExternalContext().redirect(this.sc + "/Traitement/contrat/Ajout.html");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
     private void forwordToIndex() {
@@ -306,10 +306,6 @@ public class ContratController extends AbstractContrat implements Serializable {
     @Transactional
     public void save() {
         try {
-            /*if (contratTaches.isEmpty()) {
-             JsfUtil.addErrorMessage(routine.localizeMessage("common.tableau_vide"));
-             return;
-             }*/
 
             if ("Create".equals(mode)) {
                 contrat.setMontant(this.sommeContrat(contratMoyensTrue));
